@@ -163,9 +163,9 @@ function Protfolio() {
                                     ))}
                                 </ul>
                             </div>
-                            <a href={selectedProject.link} className="modal-btn" target="_blank" rel="noopener noreferrer">
+                            <button className="modal-btn" onClick={() => alert("🚀 Coming Soon! Live demo will be available shortly.")}>
                                 <i className="fa-solid fa-arrow-up-right-from-square"></i> View Live
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
