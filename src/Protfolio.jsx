@@ -6,7 +6,6 @@ function Protfolio() {
     const [activeFilter, setActiveFilter] = useState('All');
     const headRef = useReveal();
     const filterRef = useReveal();
-    const gridRef = useReveal();
     const cardRefs = useRef([]);
 
     const BASE = 'https://nahid788-coder.github.io/live-designs';
@@ -16,7 +15,7 @@ function Protfolio() {
             title: 'Harvest Co.',
             category: 'E-Commerce',
             link: `${BASE}/organick/`,
-            description: 'Premium farm-to-table organic produce platform with Subscription Box Builder (pick size, frequency, items with live price). Full-stack — React + Node + MongoDB. Editorial cream + sage + terracotta palette.',
+            description: 'Premium farm-to-table organic produce platform with Subscription Box Builder — pick size, frequency, and items with live price updates. Full-stack React + Node + MongoDB.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Subscription Box Builder', 'Product Catalog', 'Recipes CMS', 'Admin Dashboard'],
             featured: true,
@@ -26,7 +25,7 @@ function Protfolio() {
             title: 'Lyric Studio',
             category: 'Agency',
             link: `${BASE}/andia/`,
-            description: 'Awwwards-tier creative agency platform with custom magnetic cursor, awwwards-style page transitions, case studies, careers, and admin dashboard. Built full-stack with React + Node + MongoDB.',
+            description: 'Awwwards-tier creative agency with magnetic cursor, page transitions, case studies, careers section, and full admin dashboard. React + Node + MongoDB.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Custom Magnetic Cursor', 'Page Transitions', 'Case Studies CMS', 'Careers + Admin'],
         },
@@ -35,7 +34,7 @@ function Protfolio() {
             title: 'Catalyst Consulting',
             category: 'Business',
             link: `${BASE}/babun/`,
-            description: 'Premium financial advisory platform with interactive ROI calculator (live area chart with sliders), service booking, blog, and admin analytics dashboard. Full-stack — React + Node + MongoDB + JWT.',
+            description: 'Financial advisory platform with interactive ROI calculator (live area chart + sliders), service booking, blog, and admin analytics. React + Node + MongoDB + JWT.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Recharts'],
             features: ['Live ROI Calculator', 'Booking System', 'Blog CMS', 'Admin Dashboard'],
         },
@@ -44,7 +43,7 @@ function Protfolio() {
             title: 'Vesper Journal',
             category: 'Web Design',
             link: `${BASE}/elegance/`,
-            description: 'Editorial travel magazine + boutique stays platform with parallax storytelling (text + images move at different speeds), long-form articles, hotel booking with auto-tax, and admin newsroom dashboard. Full-stack — React + Node + MongoDB.',
+            description: 'Editorial travel magazine with parallax storytelling, long-form articles, boutique hotel booking with auto-tax calculation, and admin newsroom dashboard. React + Node + MongoDB.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Parallax Storytelling', 'Boutique Stays Booking', 'Editorial CMS', 'Newsroom Dashboard'],
             featured: true,
@@ -54,8 +53,8 @@ function Protfolio() {
             title: 'Slice & Crust',
             category: 'Business',
             link: `${BASE}/pizza/`,
-            description: 'Wood-fired pizzeria full-stack app with Pizza Customizer (size/crust/sauce/toppings), Razorpay payments, Socket.io live order tracking, table booking, and admin charts dashboard.',
-            technologies: ['React', 'Node.js', 'MongoDB', 'Razorpay', 'Socket.io'],
+            description: 'Wood-fired pizzeria app with full Pizza Customizer, Razorpay payments, Socket.io live order tracking, table booking, and admin charts dashboard.',
+            technologies: ['React', 'Node.js', 'MongoDB', 'Socket.io'],
             features: ['Pizza Customizer', 'Razorpay Payments', 'Live Order Tracking', 'Admin Dashboard'],
         },
         {
@@ -63,7 +62,7 @@ function Protfolio() {
             title: 'Verde Living',
             category: 'E-Commerce',
             link: `${BASE}/mfurniro/`,
-            description: 'Premium furniture e-commerce with Room Visualizer (drag-drop furniture in 2D room), wishlist, reviews, full checkout flow, and admin product management. Light editorial theme.',
+            description: 'Premium furniture e-commerce with drag-drop 2D Room Visualizer, wishlist, reviews, full checkout flow, and admin product management.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Room Visualizer', 'Wishlist + Reviews', 'Full Checkout', 'Product CMS'],
         },
@@ -72,7 +71,7 @@ function Protfolio() {
             title: 'Helix Industrial',
             category: 'Business',
             link: `${BASE}/nisuka/`,
-            description: 'Industrial B2B platform with multi-step RFQ Calculator (live pricing with material/finish/lead-time multipliers + animated breakdown bars), product catalog, case studies, and sales pipeline dashboard. Bold modernist palette with extra animations. Full-stack — React + Node + MongoDB.',
+            description: 'Industrial B2B platform with multi-step RFQ Calculator, live pricing breakdowns, product catalog, case studies, and sales pipeline dashboard. React + Node + MongoDB.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Live RFQ Calculator', 'Product Catalog', 'Case Studies', 'Pipeline Dashboard'],
         },
@@ -81,7 +80,7 @@ function Protfolio() {
             title: 'Atelier 9',
             category: 'Agency',
             link: `${BASE}/studio-people/`,
-            description: 'Brutalist architecture & acoustics studio platform with sticky horizontal scroll showcase (no GSAP), project case studies, press archive, inquiries, and admin console. Black + bone editorial.',
+            description: 'Brutalist architecture & acoustics studio with sticky horizontal scroll showcase, project case studies, press archive, inquiry system, and admin console.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Horizontal Scroll Showcase', 'Project Detail Pages', 'Press Archive', 'Inquiry CMS'],
         },
@@ -95,13 +94,21 @@ function Protfolio() {
         const observers = [];
         cardRefs.current.forEach((el, i) => {
             if (!el) return;
+            el.classList.remove('revealed');
             el.style.opacity = '0';
-            el.style.transform = 'translateY(70px)';
-            el.style.transition = `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.12}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.12}s`;
+            el.style.transform = 'translateY(60px) scale(0.97)';
+            el.style.transition = `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.1}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.1}s`;
             const obs = new IntersectionObserver(([entry]) => {
                 if (entry.isIntersecting) {
                     el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
+                    el.style.transform = 'translateY(0) scale(1)';
+                    const onDone = () => {
+                        el.style.opacity = '';
+                        el.style.transform = '';
+                        el.style.transition = '';
+                        el.classList.add('revealed');
+                    };
+                    el.addEventListener('transitionend', onDone, { once: true });
                     obs.unobserve(el);
                 }
             }, { threshold: 0.08 });
@@ -121,7 +128,7 @@ function Protfolio() {
                     <i className="fa-solid fa-layer-group"></i> Portfolio
                 </div>
                 <h1 className="section-title">My Recent <span>Works</span></h1>
-                <p className="section-subtitle">A collection of projects I've built and designed</p>
+                <p className="section-subtitle">A collection of full-stack projects I've designed and engineered</p>
             </div>
 
             <div className="portfolio-filter reveal" ref={filterRef}>
@@ -136,23 +143,63 @@ function Protfolio() {
                 ))}
             </div>
 
-            <div className="portfolio-grid" ref={gridRef}>
+            <div className="portfolio-grid">
                 {filtered.map((project, index) => (
                     <div
                         className={`portfolio-item ${project.featured ? 'featured' : ''}`}
-                        key={index}
+                        key={project.title}
                         ref={el => cardRefs.current[index] = el}
                     >
-                        <img src={project.image} alt={project.title} />
-                        <div className="portfolio-overlay">
-                            <span className="portfolio-category">{project.category}</span>
-                            <h3>{project.title}</h3>
-                            <div className="portfolio-links">
-                                <button onClick={() => openModal(project)} className="eye-btn" aria-label="View project">
-                                    <i className="fa-solid fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
+                        {project.featured ? (
+                            <>
+                                <div className="portfolio-img-wrap">
+                                    <img src={project.image} alt={project.title} />
+                                </div>
+                                <div className="portfolio-featured-body">
+                                    <span className="portfolio-big-num">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </span>
+                                    <span className="portfolio-category">{project.category}</span>
+                                    <h3>{project.title}</h3>
+                                    <p className="portfolio-featured-desc">{project.description}</p>
+                                    <div className="portfolio-tech-row">
+                                        {project.technologies.slice(0, 3).map((t, i) => (
+                                            <span key={i}>{t}</span>
+                                        ))}
+                                    </div>
+                                    <button onClick={() => openModal(project)} className="portfolio-cta-btn">
+                                        <i className="fa-solid fa-eye"></i> View Project
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <span className="portfolio-num">
+                                    {String(index + 1).padStart(2, '0')}
+                                </span>
+                                <div className="portfolio-img-wrap">
+                                    <img src={project.image} alt={project.title} />
+                                </div>
+                                <div className="portfolio-meta">
+                                    <div className="portfolio-meta-top">
+                                        <span className="portfolio-category">{project.category}</span>
+                                        <button
+                                            onClick={() => openModal(project)}
+                                            className="eye-btn"
+                                            aria-label="View project"
+                                        >
+                                            <i className="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <h3>{project.title}</h3>
+                                    <div className="portfolio-tech-row">
+                                        {project.technologies.slice(0, 3).map((t, i) => (
+                                            <span key={i}>{t}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 ))}
             </div>
@@ -186,7 +233,10 @@ function Protfolio() {
                                     ))}
                                 </ul>
                             </div>
-                            <button className="modal-btn" onClick={() => window.open(selectedProject.link, '_blank')}>
+                            <button
+                                className="modal-btn"
+                                onClick={() => window.open(selectedProject.link, '_blank')}
+                            >
                                 <i className="fa-solid fa-arrow-up-right-from-square"></i> View Live
                             </button>
                         </div>
