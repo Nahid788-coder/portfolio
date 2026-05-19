@@ -39,7 +39,14 @@ function App() {
       )}
 
       <div className="scroll-progress" style={{ width: `${progress}%` }}></div>
-      <div className="gradient-mesh"></div>
+
+      <div className="blob-bg">
+        <div className="blob blob1"></div>
+        <div className="blob blob2"></div>
+        <div className="blob blob3"></div>
+        <div className="blob blob4"></div>
+        <div className="blob blob5"></div>
+      </div>
 
       <div className='main'>
         <Menu />
