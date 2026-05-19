@@ -6,7 +6,7 @@ function Protfolio() {
     const [activeFilter, setActiveFilter] = useState('All');
     const headRef = useReveal();
     const filterRef = useReveal();
-    const cardRefs = useRef([]);
+    const rowRefs = useRef([]);
 
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
@@ -15,45 +15,43 @@ function Protfolio() {
             title: 'Harvest Co.',
             category: 'E-Commerce',
             link: `${BASE}/organick/`,
-            description: 'Premium farm-to-table organic produce platform with Subscription Box Builder — pick size, frequency, and items with live price updates. Full-stack React + Node + MongoDB.',
+            description: 'Farm-to-table organic produce platform with a Subscription Box Builder — live pricing, size & frequency picker. Full-stack React + Node + MongoDB.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Subscription Box Builder', 'Product Catalog', 'Recipes CMS', 'Admin Dashboard'],
-            featured: true,
         },
         {
             image: '/image/andia.png',
             title: 'Lyric Studio',
             category: 'Agency',
             link: `${BASE}/andia/`,
-            description: 'Awwwards-tier creative agency with magnetic cursor, page transitions, case studies, careers section, and full admin dashboard. React + Node + MongoDB.',
+            description: 'Awwwards-tier creative agency with magnetic cursor, animated page transitions, case study CMS, careers section, and full admin dashboard.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
-            features: ['Custom Magnetic Cursor', 'Page Transitions', 'Case Studies CMS', 'Careers + Admin'],
+            features: ['Magnetic Cursor', 'Page Transitions', 'Case Studies CMS', 'Careers + Admin'],
         },
         {
             image: '/image/babun.png',
             title: 'Catalyst Consulting',
             category: 'Business',
             link: `${BASE}/babun/`,
-            description: 'Financial advisory platform with interactive ROI calculator (live area chart + sliders), service booking, blog, and admin analytics. React + Node + MongoDB + JWT.',
+            description: 'Financial advisory platform with an interactive ROI calculator (live area chart + sliders), service booking, blog CMS, and analytics dashboard.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Recharts'],
-            features: ['Live ROI Calculator', 'Booking System', 'Blog CMS', 'Admin Dashboard'],
+            features: ['Live ROI Calculator', 'Booking System', 'Blog CMS', 'Admin Analytics'],
         },
         {
             image: '/image/elegance.png',
             title: 'Vesper Journal',
             category: 'Web Design',
             link: `${BASE}/elegance/`,
-            description: 'Editorial travel magazine with parallax storytelling, long-form articles, boutique hotel booking with auto-tax calculation, and admin newsroom dashboard. React + Node + MongoDB.',
+            description: 'Editorial travel magazine with parallax storytelling, long-form article CMS, boutique hotel booking with auto-tax, and newsroom admin dashboard.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
-            features: ['Parallax Storytelling', 'Boutique Stays Booking', 'Editorial CMS', 'Newsroom Dashboard'],
-            featured: true,
+            features: ['Parallax Storytelling', 'Boutique Booking', 'Editorial CMS', 'Newsroom Dashboard'],
         },
         {
             image: '/image/pizza.png',
             title: 'Slice & Crust',
             category: 'Business',
             link: `${BASE}/pizza/`,
-            description: 'Wood-fired pizzeria app with full Pizza Customizer, Razorpay payments, Socket.io live order tracking, table booking, and admin charts dashboard.',
+            description: 'Pizzeria app with full Pizza Customizer, Razorpay payments, Socket.io live order tracking, table booking system, and admin charts dashboard.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Socket.io'],
             features: ['Pizza Customizer', 'Razorpay Payments', 'Live Order Tracking', 'Admin Dashboard'],
         },
@@ -62,16 +60,16 @@ function Protfolio() {
             title: 'Verde Living',
             category: 'E-Commerce',
             link: `${BASE}/mfurniro/`,
-            description: 'Premium furniture e-commerce with drag-drop 2D Room Visualizer, wishlist, reviews, full checkout flow, and admin product management.',
+            description: 'Premium furniture store with a drag-and-drop 2D Room Visualizer, wishlist, reviews, full checkout flow, and admin product management.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
-            features: ['Room Visualizer', 'Wishlist + Reviews', 'Full Checkout', 'Product CMS'],
+            features: ['2D Room Visualizer', 'Wishlist + Reviews', 'Full Checkout', 'Product CMS'],
         },
         {
             image: '/image/nisuka.png',
             title: 'Helix Industrial',
             category: 'Business',
             link: `${BASE}/nisuka/`,
-            description: 'Industrial B2B platform with multi-step RFQ Calculator, live pricing breakdowns, product catalog, case studies, and sales pipeline dashboard. React + Node + MongoDB.',
+            description: 'Industrial B2B platform with a multi-step RFQ Calculator, live pricing breakdowns, product catalog, case studies, and sales pipeline dashboard.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Live RFQ Calculator', 'Product Catalog', 'Case Studies', 'Pipeline Dashboard'],
         },
@@ -80,9 +78,9 @@ function Protfolio() {
             title: 'Atelier 9',
             category: 'Agency',
             link: `${BASE}/studio-people/`,
-            description: 'Brutalist architecture & acoustics studio with sticky horizontal scroll showcase, project case studies, press archive, inquiry system, and admin console.',
+            description: 'Architecture & acoustics studio with sticky horizontal scroll showcase, project case studies, press archive, inquiry system, and admin console.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
-            features: ['Horizontal Scroll Showcase', 'Project Detail Pages', 'Press Archive', 'Inquiry CMS'],
+            features: ['Horizontal Scroll', 'Project Case Studies', 'Press Archive', 'Inquiry CMS'],
         },
     ];
 
@@ -90,28 +88,27 @@ function Protfolio() {
     const filtered = activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter);
 
     useEffect(() => {
-        cardRefs.current = cardRefs.current.slice(0, filtered.length);
+        rowRefs.current = rowRefs.current.slice(0, filtered.length);
         const observers = [];
-        cardRefs.current.forEach((el, i) => {
+        rowRefs.current.forEach((el, i) => {
             if (!el) return;
-            el.classList.remove('revealed');
+            el.classList.remove('row-visible');
             el.style.opacity = '0';
-            el.style.transform = 'translateY(60px) scale(0.97)';
-            el.style.transition = `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.1}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.1}s`;
+            el.style.transform = 'translateY(50px)';
+            el.style.transition = `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.09}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.09}s`;
             const obs = new IntersectionObserver(([entry]) => {
                 if (entry.isIntersecting) {
                     el.style.opacity = '1';
-                    el.style.transform = 'translateY(0) scale(1)';
-                    const onDone = () => {
+                    el.style.transform = 'translateY(0)';
+                    el.addEventListener('transitionend', () => {
                         el.style.opacity = '';
                         el.style.transform = '';
                         el.style.transition = '';
-                        el.classList.add('revealed');
-                    };
-                    el.addEventListener('transitionend', onDone, { once: true });
+                        el.classList.add('row-visible');
+                    }, { once: true });
                     obs.unobserve(el);
                 }
-            }, { threshold: 0.08 });
+            }, { threshold: 0.06 });
             obs.observe(el);
             observers.push(obs);
         });
@@ -127,8 +124,8 @@ function Protfolio() {
                 <div className="section-tag">
                     <i className="fa-solid fa-layer-group"></i> Portfolio
                 </div>
-                <h1 className="section-title">My Recent <span>Works</span></h1>
-                <p className="section-subtitle">A collection of full-stack projects I've designed and engineered</p>
+                <h1 className="section-title">Selected <span>Projects</span></h1>
+                <p className="section-subtitle">Full-stack applications I've designed, engineered, and shipped</p>
             </div>
 
             <div className="portfolio-filter reveal" ref={filterRef}>
@@ -143,63 +140,32 @@ function Protfolio() {
                 ))}
             </div>
 
-            <div className="portfolio-grid">
+            <div className="portfolio-list">
                 {filtered.map((project, index) => (
                     <div
-                        className={`portfolio-item ${project.featured ? 'featured' : ''}`}
+                        className={`p-row ${index % 2 !== 0 ? 'p-row--reverse' : ''}`}
                         key={project.title}
-                        ref={el => cardRefs.current[index] = el}
+                        ref={el => rowRefs.current[index] = el}
                     >
-                        {project.featured ? (
-                            <>
-                                <div className="portfolio-img-wrap">
-                                    <img src={project.image} alt={project.title} />
-                                </div>
-                                <div className="portfolio-featured-body">
-                                    <span className="portfolio-big-num">
-                                        {String(index + 1).padStart(2, '0')}
-                                    </span>
-                                    <span className="portfolio-category">{project.category}</span>
-                                    <h3>{project.title}</h3>
-                                    <p className="portfolio-featured-desc">{project.description}</p>
-                                    <div className="portfolio-tech-row">
-                                        {project.technologies.slice(0, 3).map((t, i) => (
-                                            <span key={i}>{t}</span>
-                                        ))}
-                                    </div>
-                                    <button onClick={() => openModal(project)} className="portfolio-cta-btn">
-                                        <i className="fa-solid fa-eye"></i> View Project
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <span className="portfolio-num">
-                                    {String(index + 1).padStart(2, '0')}
-                                </span>
-                                <div className="portfolio-img-wrap">
-                                    <img src={project.image} alt={project.title} />
-                                </div>
-                                <div className="portfolio-meta">
-                                    <div className="portfolio-meta-top">
-                                        <span className="portfolio-category">{project.category}</span>
-                                        <button
-                                            onClick={() => openModal(project)}
-                                            className="eye-btn"
-                                            aria-label="View project"
-                                        >
-                                            <i className="fa-solid fa-eye"></i>
-                                        </button>
-                                    </div>
-                                    <h3>{project.title}</h3>
-                                    <div className="portfolio-tech-row">
-                                        {project.technologies.slice(0, 3).map((t, i) => (
-                                            <span key={i}>{t}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </>
-                        )}
+                        <div className="p-row__img">
+                            <img src={project.image} alt={project.title} loading="lazy" />
+                            <span className="p-row__num">{String(index + 1).padStart(2, '0')}</span>
+                        </div>
+
+                        <div className="p-row__body">
+                            <span className="p-row__cat">{project.category}</span>
+                            <h3 className="p-row__title">{project.title}</h3>
+                            <p className="p-row__desc">{project.description}</p>
+                            <div className="p-row__tech">
+                                {project.technologies.map((t, i) => (
+                                    <span key={i}>{t}</span>
+                                ))}
+                            </div>
+                            <button onClick={() => openModal(project)} className="p-row__btn">
+                                View Project
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
