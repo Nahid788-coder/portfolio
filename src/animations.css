@@ -25,12 +25,13 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.55;
+  opacity: 0.85;
   background:
-    radial-gradient(at 12% 18%, rgba(108, 99, 255, 0.18) 0px, transparent 45%),
-    radial-gradient(at 88% 22%, rgba(255, 101, 132, 0.15) 0px, transparent 45%),
-    radial-gradient(at 70% 85%, rgba(67, 233, 123, 0.10) 0px, transparent 45%),
-    radial-gradient(at 25% 75%, rgba(139, 92, 246, 0.12) 0px, transparent 45%);
+    radial-gradient(at 12% 18%, rgba(108, 99, 255, 0.30) 0px, transparent 45%),
+    radial-gradient(at 88% 22%, rgba(255, 101, 132, 0.22) 0px, transparent 45%),
+    radial-gradient(at 70% 85%, rgba(67, 233, 123, 0.16) 0px, transparent 45%),
+    radial-gradient(at 25% 75%, rgba(139, 92, 246, 0.20) 0px, transparent 45%),
+    radial-gradient(at 55% 40%, rgba(56, 189, 248, 0.08) 0px, transparent 40%);
   animation: meshShift 18s ease-in-out infinite alternate;
 }
 
