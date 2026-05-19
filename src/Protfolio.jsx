@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useReveal } from './hooks';
 
 function Protfolio() {
@@ -7,6 +7,28 @@ function Protfolio() {
     const headRef = useReveal();
     const filterRef = useReveal();
     const gridRef = useReveal();
+    const cardRefs = useRef([]);
+
+    useEffect(() => {
+        cardRefs.current = cardRefs.current.slice(0, filtered.length);
+        const observers = [];
+        cardRefs.current.forEach((el, i) => {
+            if (!el) return;
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(70px)';
+            el.style.transition = `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.12}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.12}s`;
+            const obs = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                    obs.unobserve(el);
+                }
+            }, { threshold: 0.08 });
+            obs.observe(el);
+            observers.push(obs);
+        });
+        return () => observers.forEach(o => o.disconnect());
+    }, [filtered.length]);
 
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
@@ -114,11 +136,12 @@ function Protfolio() {
                 ))}
             </div>
 
-            <div className="portfolio-grid reveal-stagger" ref={gridRef}>
+            <div className="portfolio-grid" ref={gridRef}>
                 {filtered.map((project, index) => (
                     <div
                         className={`portfolio-item ${project.featured ? 'featured' : ''}`}
                         key={index}
+                        ref={el => cardRefs.current[index] = el}
                     >
                         <img src={project.image} alt={project.title} />
                         <div className="portfolio-overlay">
