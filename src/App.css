@@ -27,105 +27,10 @@ html {
 
 body {
   font-family: 'Space Grotesk', sans-serif;
-  background: #04040f;
+  background: #07071a;
   color: var(--text-primary);
   overflow-x: hidden;
   cursor: none;
-}
-
-/* ============ LIQUID BLOB BACKGROUND ============ */
-.blob-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  filter: blur(70px) saturate(1.4);
-}
-
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.55;
-  mix-blend-mode: screen;
-}
-
-.blob1 {
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle at 40% 40%, #00ff9f, #00b4d8 60%, transparent 80%);
-  top: -120px;
-  left: -80px;
-  animation: blobFloat1 14s ease-in-out infinite;
-}
-
-.blob2 {
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle at 50% 50%, #7c3aed, #4f46e5 50%, transparent 80%);
-  top: 20%;
-  right: -100px;
-  animation: blobFloat2 18s ease-in-out infinite;
-}
-
-.blob3 {
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle at 40% 60%, #00d4ff, #0ea5e9 50%, transparent 80%);
-  bottom: 10%;
-  left: 15%;
-  animation: blobFloat3 20s ease-in-out infinite;
-}
-
-.blob4 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle at 50% 50%, #39ff14, #00ff88 50%, transparent 80%);
-  bottom: -60px;
-  right: 20%;
-  animation: blobFloat4 16s ease-in-out infinite;
-}
-
-.blob5 {
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle at 50% 50%, #a855f7, #ec4899 50%, transparent 80%);
-  top: 45%;
-  left: 40%;
-  animation: blobFloat5 22s ease-in-out infinite;
-}
-
-@keyframes blobFloat1 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 50%; }
-  25%  { transform: translate(60px, 80px) scale(1.1) rotate(20deg); border-radius: 60% 40% 55% 45%; }
-  50%  { transform: translate(20px, 150px) scale(0.92) rotate(-10deg); border-radius: 45% 55% 40% 60%; }
-  75%  { transform: translate(-40px, 60px) scale(1.05) rotate(15deg); border-radius: 55% 45% 60% 40%; }
-}
-
-@keyframes blobFloat2 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 50%; }
-  30%  { transform: translate(-80px, 60px) scale(1.08) rotate(-15deg); border-radius: 40% 60% 45% 55%; }
-  60%  { transform: translate(-40px, 120px) scale(0.95) rotate(20deg); border-radius: 55% 45% 60% 40%; }
-  80%  { transform: translate(30px, 40px) scale(1.03) rotate(-8deg); border-radius: 48% 52% 42% 58%; }
-}
-
-@keyframes blobFloat3 {
-  0%, 100% { transform: translate(0, 0) scale(1); border-radius: 50%; }
-  35%  { transform: translate(80px, -60px) scale(1.12) rotate(12deg); border-radius: 42% 58% 55% 45%; }
-  65%  { transform: translate(40px, -120px) scale(0.9) rotate(-18deg); border-radius: 58% 42% 45% 55%; }
-}
-
-@keyframes blobFloat4 {
-  0%, 100% { transform: translate(0, 0) scale(1); border-radius: 50%; }
-  40%  { transform: translate(-60px, -80px) scale(1.15) rotate(25deg); border-radius: 44% 56% 50% 50%; }
-  70%  { transform: translate(50px, -40px) scale(0.88) rotate(-12deg); border-radius: 56% 44% 42% 58%; }
-}
-
-@keyframes blobFloat5 {
-  0%, 100% { transform: translate(0, 0) scale(1); border-radius: 50%; }
-  20%  { transform: translate(60px, -50px) scale(1.2) rotate(18deg); border-radius: 52% 48% 58% 42%; }
-  50%  { transform: translate(-50px, 70px) scale(0.85) rotate(-22deg); border-radius: 46% 54% 44% 56%; }
-  80%  { transform: translate(30px, -30px) scale(1.1) rotate(10deg); border-radius: 54% 46% 52% 48%; }
 }
 
 h1, h2, h3, h4 {

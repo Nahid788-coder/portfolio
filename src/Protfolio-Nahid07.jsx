@@ -1,5 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useReveal } from './hooks';
+
+function useStairReveal(count) {
+  const refs = useRef([]);
+  useEffect(() => {
+    const observers = [];
+    refs.current.forEach((el, i) => {
+      if (!el) return;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(80px)';
+      el.style.transition = `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.13}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.13}s`;
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, [count]);
+  return refs;
+}
 
 function Protfolio() {
     const [selectedProject, setSelectedProject] = useState(null);
@@ -7,6 +33,7 @@ function Protfolio() {
     const headRef = useReveal();
     const filterRef = useReveal();
     const gridRef = useReveal();
+    const cardRefs = useStairReveal(filtered.length);
 
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
@@ -114,11 +141,12 @@ function Protfolio() {
                 ))}
             </div>
 
-            <div className="portfolio-grid reveal-stagger" ref={gridRef}>
+            <div className="portfolio-grid" ref={gridRef}>
                 {filtered.map((project, index) => (
                     <div
                         className={`portfolio-item ${project.featured ? 'featured' : ''}`}
                         key={index}
+                        ref={el => cardRefs.current[index] = el}
                     >
                         <img src={project.image} alt={project.title} />
                         <div className="portfolio-overlay">
