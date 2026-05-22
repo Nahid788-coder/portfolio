@@ -199,12 +199,14 @@ function Protfolio() {
                                     ))}
                                 </ul>
                             </div>
-                            <button
+                            <a
                                 className="modal-btn"
-                                onClick={() => window.open(selectedProject.link, '_blank')}
+                                href={selectedProject.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
                                 <i className="fa-solid fa-arrow-up-right-from-square"></i> View Live
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
