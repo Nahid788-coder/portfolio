@@ -79,12 +79,12 @@
 
 /* N SVG */
 .lp-n-svg {
-  width: 170px; height: auto;
-  animation: nGlowPulse 1.8s ease-in-out infinite alternate;
+  width: 190px; height: auto;
+  animation: nGlowPulse 1.6s ease-in-out infinite alternate;
 }
 @keyframes nGlowPulse {
-  from { filter: drop-shadow(0 0 14px rgba(201,169,110,0.45)); }
-  to   { filter: drop-shadow(0 0 44px rgba(201,169,110,0.85)); }
+  from { filter: drop-shadow(0 0 10px rgba(201,169,110,0.35)); }
+  to   { filter: drop-shadow(0 0 55px rgba(223,192,144,0.95)); }
 }
 
 /* ══════════════════════════════════════════════════════

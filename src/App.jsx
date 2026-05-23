@@ -65,43 +65,66 @@ function App() {
 
           {/* N Symbol */}
           <div className={symbolCls}>
-            <svg className="lp-n-svg" viewBox="0 0 100 115" xmlns="http://www.w3.org/2000/svg">
+            <svg className="lp-n-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <filter id="nGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="2.5" result="blur"/>
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                {/* Strong glow for N + circle */}
+                <filter id="gA" x="-55%" y="-55%" width="210%" height="210%">
+                  <feGaussianBlur stdDeviation="2.8" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                {/* Soft glow for diamonds */}
+                <filter id="gB" x="-80%" y="-80%" width="260%" height="260%">
+                  <feGaussianBlur stdDeviation="1.5" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
                 </filter>
               </defs>
 
-              {/* Outer hexagon border */}
-              <polygon
-                points="50,2 96,27 96,88 50,113 4,88 4,27"
-                fill="none" stroke="#c9a96e" strokeWidth="1.3"
-                filter="url(#nGlowFilter)"
-              />
-              {/* Inner hex ring */}
-              <polygon
-                points="50,10 88,32 88,83 50,105 12,83 12,32"
-                fill="none" stroke="#c9a96e" strokeWidth="0.5" opacity="0.4"
+              {/* Faint fill inside circle */}
+              <circle cx="50" cy="50" r="45" fill="rgba(201,169,110,0.04)"/>
+
+              {/* Outer circle — the Avengers-style ring */}
+              <circle cx="50" cy="50" r="45"
+                fill="none" stroke="#c9a96e" strokeWidth="1.5"
+                filter="url(#gA)"
               />
 
-              {/* N — left vertical bar */}
-              <rect x="19" y="23" width="12" height="69" fill="#c9a96e" filter="url(#nGlowFilter)"/>
-              {/* N — right vertical bar */}
-              <rect x="69" y="23" width="12" height="69" fill="#c9a96e" filter="url(#nGlowFilter)"/>
-              {/* N — diagonal stroke */}
-              <line x1="25" y1="23" x2="75" y2="92"
-                stroke="#c9a96e" strokeWidth="13" strokeLinecap="square"
-                filter="url(#nGlowFilter)"
+              {/* Inner ring — subtle depth */}
+              <circle cx="50" cy="50" r="39.5"
+                fill="none" stroke="#c9a96e" strokeWidth="0.5" opacity="0.28"
               />
 
-              {/* Hex corner dots */}
-              <circle cx="50"  cy="2"   r="2.5" fill="#c9a96e"/>
-              <circle cx="96"  cy="27"  r="2.5" fill="#c9a96e"/>
-              <circle cx="96"  cy="88"  r="2.5" fill="#c9a96e"/>
-              <circle cx="50"  cy="113" r="2.5" fill="#c9a96e"/>
-              <circle cx="4"   cy="88"  r="2.5" fill="#c9a96e"/>
-              <circle cx="4"   cy="27"  r="2.5" fill="#c9a96e"/>
+              {/* 4 arc-gap indicators (like watch bezels) at compass points */}
+              {/* Top arc gap */}
+              <path d="M 41,5.5 A 45,45 0 0,1 59,5.5"
+                fill="none" stroke="#070707" strokeWidth="3.5"/>
+              {/* Bottom arc gap */}
+              <path d="M 59,94.5 A 45,45 0 0,1 41,94.5"
+                fill="none" stroke="#070707" strokeWidth="3.5"/>
+              {/* Left arc gap */}
+              <path d="M 5.5,41 A 45,45 0 0,0 5.5,59"
+                fill="none" stroke="#070707" strokeWidth="3.5"/>
+              {/* Right arc gap */}
+              <path d="M 94.5,59 A 45,45 0 0,0 94.5,41"
+                fill="none" stroke="#070707" strokeWidth="3.5"/>
+
+              {/* Diamond markers at the 4 gap positions */}
+              <polygon points="50,1  53.5,7  50,13  46.5,7"  fill="#c9a96e" filter="url(#gB)"/>
+              <polygon points="50,99 53.5,93 50,87  46.5,93" fill="#c9a96e" filter="url(#gB)"/>
+              <polygon points="1,50  7,46.5  13,50  7,53.5"  fill="#c9a96e" filter="url(#gB)"/>
+              <polygon points="99,50 93,46.5 87,50  93,53.5" fill="#c9a96e" filter="url(#gB)"/>
+
+              {/* ── N LETTERFORM ── */}
+              {/* Single clean stroke path: angular miter joins = Avengers sharpness */}
+              <path
+                d="M 23,83 L 23,17 L 77,83 L 77,17"
+                fill="none"
+                stroke="#c9a96e"
+                strokeWidth="11.5"
+                strokeLinejoin="miter"
+                strokeMiterlimit="28"
+                strokeLinecap="square"
+                filter="url(#gA)"
+              />
             </svg>
           </div>
         </>
