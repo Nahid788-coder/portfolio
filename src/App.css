@@ -26,6 +26,10 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg);
+  /* dot grid — robotics HUD feel */
+  background-image:
+    radial-gradient(circle, rgba(201,169,110,0.09) 1px, transparent 1px);
+  background-size: 36px 36px;
   color: var(--text);
   overflow-x: hidden;
   cursor: none;

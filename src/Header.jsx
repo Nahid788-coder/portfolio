@@ -18,73 +18,136 @@ function Header() {
         const canvas = document.getElementById('bg-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
 
-        const particles = Array.from({ length: 100 }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.4,
-            vy: (Math.random() - 0.5) * 0.4,
-            r: Math.random() * 1.6 + 0.4,
-            opacity: Math.random() * 0.5 + 0.15,
-            hue: Math.random() < 0.5 ? '201, 169, 110' : '223, 192, 144',
-        }));
+        const GRID = 72;
+        let nodes = [], traces = [], raf;
 
-        let mouse = { x: -999, y: -999 };
-        const onMove = e => { mouse.x = e.clientX; mouse.y = e.clientY; };
-        window.addEventListener('mousemove', onMove);
-
-        let raf;
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                const dxm = p.x - mouse.x, dym = p.y - mouse.y;
-                const distM = Math.sqrt(dxm * dxm + dym * dym);
-                if (distM < 130) {
-                    const force = (130 - distM) / 130;
-                    p.x += (dxm / distM) * force * 1.5;
-                    p.y += (dym / distM) * force * 1.5;
-                }
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${p.hue}, ${p.opacity})`;
-                ctx.fill();
-            });
-
-            particles.forEach((p, i) => {
-                particles.slice(i + 1).forEach(p2 => {
-                    const dx = p.x - p2.x, dy = p.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 130) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(201,169,110,${0.08 * (1 - dist / 130)})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.stroke();
-                    }
-                });
-            });
-            raf = requestAnimationFrame(draw);
-        }
-        draw();
-
-        const onResize = () => {
-            canvas.width = window.innerWidth;
+        const resize = () => {
+            canvas.width  = window.innerWidth;
             canvas.height = window.innerHeight;
         };
+        resize();
+
+        const build = () => {
+            nodes  = [];
+            traces = [];
+            const cols = Math.ceil(canvas.width  / GRID) + 1;
+            const rows = Math.ceil(canvas.height / GRID) + 1;
+            const map  = {};
+
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    if (Math.random() > 0.36) {
+                        const n = {
+                            x: c * GRID, y: r * GRID, c, r,
+                            glow: Math.random() > 0.6,
+                            phase: Math.random() * Math.PI * 2,
+                            size: Math.random() > 0.8 ? 3 : 1.8,
+                        };
+                        nodes.push(n);
+                        map[`${c},${r}`] = n;
+                    }
+                }
+            }
+
+            nodes.forEach(n => {
+                const right  = map[`${n.c+1},${n.r}`];
+                const bottom = map[`${n.c},${n.r+1}`];
+                if (right  && Math.random() > 0.32)
+                    traces.push({ a: n, b: right,  pulses: [], next: Math.random() * 3000 });
+                if (bottom && Math.random() > 0.32)
+                    traces.push({ a: n, b: bottom, pulses: [], next: Math.random() * 3000 });
+            });
+        };
+        build();
+
+        let last = 0;
+        const draw = (now) => {
+            const dt = Math.min(now - last, 60);
+            last = now;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            /* ── TRACES ── */
+            traces.forEach(t => {
+                /* base line */
+                ctx.beginPath();
+                ctx.moveTo(t.a.x, t.a.y);
+                ctx.lineTo(t.b.x, t.b.y);
+                ctx.strokeStyle = 'rgba(201,169,110,0.07)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                /* spawn pulses */
+                t.next -= dt;
+                if (t.next <= 0) {
+                    t.pulses.push({ p: 0, spd: 0.00065 + Math.random() * 0.0009 });
+                    t.next = 1800 + Math.random() * 4500;
+                }
+
+                /* move + draw pulses */
+                t.pulses = t.pulses.filter(pk => pk.p < 1.05);
+                t.pulses.forEach(pk => {
+                    pk.p += pk.spd * dt;
+                    const tp = Math.min(pk.p, 1);
+                    const x  = t.a.x + (t.b.x - t.a.x) * tp;
+                    const y  = t.a.y + (t.b.y - t.a.y) * tp;
+
+                    /* glow halo */
+                    const g = ctx.createRadialGradient(x, y, 0, x, y, 13);
+                    g.addColorStop(0, 'rgba(223,192,144,0.65)');
+                    g.addColorStop(1, 'rgba(201,169,110,0)');
+                    ctx.fillStyle = g;
+                    ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI*2); ctx.fill();
+
+                    /* trail */
+                    const tx = x - (t.b.x - t.a.x) * 0.08;
+                    const ty = y - (t.b.y - t.a.y) * 0.08;
+                    const trail = ctx.createLinearGradient(tx, ty, x, y);
+                    trail.addColorStop(0, 'rgba(201,169,110,0)');
+                    trail.addColorStop(1, 'rgba(201,169,110,0.55)');
+                    ctx.strokeStyle = trail;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(x, y); ctx.stroke();
+
+                    /* core dot */
+                    ctx.fillStyle = '#dfc090';
+                    ctx.beginPath(); ctx.arc(x, y, 2.2, 0, Math.PI*2); ctx.fill();
+                });
+            });
+
+            /* ── NODES ── */
+            nodes.forEach(n => {
+                if (n.glow) {
+                    const a = 0.12 + 0.18 * Math.sin(now * 0.0012 + n.phase);
+                    const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 16);
+                    g.addColorStop(0, `rgba(201,169,110,${a})`);
+                    g.addColorStop(1, 'rgba(201,169,110,0)');
+                    ctx.fillStyle = g;
+                    ctx.beginPath(); ctx.arc(n.x, n.y, 16, 0, Math.PI*2); ctx.fill();
+                }
+                /* node dot */
+                ctx.fillStyle = `rgba(201,169,110,${n.glow ? 0.45 : 0.16})`;
+                ctx.beginPath(); ctx.arc(n.x, n.y, n.size, 0, Math.PI*2); ctx.fill();
+
+                /* cross hair on large nodes */
+                if (n.size > 2) {
+                    ctx.strokeStyle = 'rgba(201,169,110,0.22)';
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(n.x - 7, n.y); ctx.lineTo(n.x + 7, n.y);
+                    ctx.moveTo(n.x, n.y - 7); ctx.lineTo(n.x, n.y + 7);
+                    ctx.stroke();
+                }
+            });
+
+            raf = requestAnimationFrame(draw);
+        };
+        raf = requestAnimationFrame(draw);
+
+        const onResize = () => { resize(); build(); };
         window.addEventListener('resize', onResize);
         return () => {
             window.removeEventListener('resize', onResize);
-            window.removeEventListener('mousemove', onMove);
             cancelAnimationFrame(raf);
         };
     }, []);
