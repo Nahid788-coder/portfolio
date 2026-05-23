@@ -132,7 +132,11 @@ function App() {
 
       {/* ── PAGE CONTENT ───────────────────────────── */}
       <div className="scroll-progress" style={{ width: `${progress}%` }}></div>
-      <div className="gradient-mesh"></div>
+      <div className="gradient-mesh">
+        <div className="gm-blob gm-blob1"></div>
+        <div className="gm-blob gm-blob2"></div>
+        <div className="gm-blob gm-blob3"></div>
+      </div>
 
       <div className='main'>
         <Menu />

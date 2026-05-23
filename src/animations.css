@@ -105,20 +105,68 @@
 .gradient-mesh {
   position: fixed; inset: 0;
   z-index: 0; pointer-events: none;
-  background:
-    /* subtle scanlines — classic robotics HUD */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(201,169,110,0.013) 3px,
-      rgba(201,169,110,0.013) 4px
-    ),
-    /* top glow */
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,169,110,0.08) 0%, transparent 65%),
-    /* corner glows */
-    radial-gradient(ellipse 35% 35% at 90% 85%, rgba(168,128,64,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 28% 28% at 10% 70%, rgba(201,169,110,0.04) 0%, transparent 55%);
+  overflow: hidden;
+}
+
+/* ── Animated gradient blobs (Linear.app / Stripe style) ── */
+.gm-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+/* Blob 1 — warm gold, top-right */
+.gm-blob1 {
+  width: 750px; height: 750px;
+  top: -220px; right: -180px;
+  background: radial-gradient(circle,
+    rgba(201,169,110,0.18) 0%,
+    rgba(168,128,64,0.08)  45%,
+    transparent 70%
+  );
+  animation: gmBlob1 24s ease-in-out infinite alternate;
+}
+
+/* Blob 2 — deep indigo, bottom-left */
+.gm-blob2 {
+  width: 600px; height: 600px;
+  bottom: -150px; left: -130px;
+  background: radial-gradient(circle,
+    rgba(99,102,241,0.11) 0%,
+    rgba(79,70,229,0.05)  45%,
+    transparent 70%
+  );
+  animation: gmBlob2 30s ease-in-out infinite alternate;
+}
+
+/* Blob 3 — sky blue, center */
+.gm-blob3 {
+  width: 450px; height: 450px;
+  top: 38%; left: 38%;
+  background: radial-gradient(circle,
+    rgba(14,165,233,0.07) 0%,
+    transparent 70%
+  );
+  animation: gmBlob3 20s ease-in-out infinite alternate;
+}
+
+@keyframes gmBlob1 {
+  0%   { transform: translate(0,   0)    scale(1);    }
+  33%  { transform: translate(-100px, 160px) scale(1.08); }
+  66%  { transform: translate(80px,  220px) scale(0.94); }
+  100% { transform: translate(-60px, 100px) scale(1.04); }
+}
+@keyframes gmBlob2 {
+  0%   { transform: translate(0,   0)    scale(1);    }
+  33%  { transform: translate(180px,-100px) scale(1.1);  }
+  66%  { transform: translate(260px, 80px)  scale(0.92); }
+  100% { transform: translate(140px,-60px)  scale(1.06); }
+}
+@keyframes gmBlob3 {
+  0%   { transform: translate(0,    0)   scale(1);    }
+  50%  { transform: translate(-120px,-140px) scale(1.12); }
+  100% { transform: translate(100px, -80px)  scale(0.9);  }
 }
 
 /* ══════════════════════════════════════════════════════
