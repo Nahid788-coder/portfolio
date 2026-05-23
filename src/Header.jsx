@@ -28,7 +28,7 @@ function Header() {
             vy: (Math.random() - 0.5) * 0.4,
             r: Math.random() * 1.6 + 0.4,
             opacity: Math.random() * 0.5 + 0.15,
-            hue: Math.random() < 0.5 ? '108, 99, 255' : '255, 101, 132',
+            hue: Math.random() < 0.5 ? '201, 169, 110' : '223, 192, 144',
         }));
 
         let mouse = { x: -999, y: -999 };
@@ -67,7 +67,7 @@ function Header() {
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(108,99,255,${0.1 * (1 - dist / 130)})`;
+                        ctx.strokeStyle = `rgba(201,169,110,${0.08 * (1 - dist / 130)})`;
                         ctx.lineWidth = 0.6;
                         ctx.stroke();
                     }
