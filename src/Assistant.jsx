@@ -28,13 +28,17 @@ Skills:
 - Database: MongoDB, Supabase (PostgreSQL), MySQL
 - Tools: Git, GitHub, Vite, Vercel, Figma
 
-Projects:
-1. AI ChatBot — Multi-model chat app (Groq, Gemini APIs), Google login, Supabase auth & history, OTP verification. Live: ai-chatbot-one-bice-57.vercel.app
-2. GitHub Explorer — Search any GitHub user, view repos, stats, languages. Built with React + TypeScript. Live: github-explorer-ashen-two.vercel.app
-3. Harvest Co. — E-Commerce platform with Subscription Box Builder, React + Node + MongoDB
-4. Lyric Studio — Creative agency with magnetic cursor, page transitions, CMS
-5. Slice & Crust — Pizzeria app with Razorpay payments, Socket.io live order tracking
-6. Verde Living — Furniture store with 2D Room Visualizer, wishlist, full checkout
+Projects (all have live demos):
+1. AI ChatBot — Multi-model chat app (Groq, Gemini APIs), Google login, Supabase auth & history, OTP verification. Live: https://ai-chatbot-one-bice-57.vercel.app
+2. GitHub Explorer — Search any GitHub user, view repos, stats, languages. Built with React + TypeScript. Live: https://github-explorer-ashen-two.vercel.app
+3. Harvest Co. — E-Commerce platform with Subscription Box Builder, React + Node + MongoDB. Live: https://nahid788-coder.github.io/live-designs/organick/
+4. Lyric Studio — Awwwards-tier creative agency with magnetic cursor, page transitions, CMS. Live: https://nahid788-coder.github.io/live-designs/andia/
+5. Catalyst Consulting — Financial advisory platform with live ROI calculator, booking system, blog CMS. Live: https://nahid788-coder.github.io/live-designs/babun/
+6. Vesper Journal — Editorial travel magazine with parallax storytelling, boutique hotel booking. Live: https://nahid788-coder.github.io/live-designs/elegance/
+7. Slice & Crust — Pizzeria app with Razorpay payments, Socket.io live order tracking, admin dashboard. Live: https://nahid788-coder.github.io/live-designs/pizza/
+8. Verde Living — Premium furniture store with 2D Room Visualizer, wishlist, full checkout. Live: https://nahid788-coder.github.io/live-designs/mfurniro/
+9. Helix Industrial — Industrial B2B platform with live RFQ calculator, product catalog. Live: https://nahid788-coder.github.io/live-designs/nisuka/
+10. Atelier 9 — Architecture studio with horizontal scroll showcase, case studies, inquiry system. Live: https://nahid788-coder.github.io/live-designs/studio-people/
 
 Experience: 2+ years building full-stack web applications
 English level: Professional (B2)
