@@ -211,6 +211,41 @@
 }
 
 /* ══════════════════════════════════════════════════════
+   MOBILE PERFORMANCE — kill heavy GPU effects on phones
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Kill animated blobs — biggest FPS killer on mobile */
+  .gradient-mesh { display: none; }
+
+  /* Kill will-change to free GPU memory */
+  .gm-blob,
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-stagger > * {
+    will-change: auto;
+  }
+
+  /* Simplify reveal animations on mobile (still animate, just faster/simpler) */
+  .reveal,
+  .reveal-left,
+  .reveal-right {
+    transition-duration: 0.4s;
+  }
+}
+
+/* Respect system reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-mesh { display: none; }
+  .reveal, .reveal-left, .reveal-right, .reveal-stagger > * {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .typed-text { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════
    SHINE TEXT (hero line2 handled by CSS gradient)
    ══════════════════════════════════════════════════════ */
 .shine-text {

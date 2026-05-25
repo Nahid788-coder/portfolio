@@ -916,6 +916,17 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
+  /* ── Mobile performance: kill heavy blur/filter effects ── */
+  .header-bg-orb { display: none; }
+  .cursor, .cursor-follower { display: none; }
+  body { cursor: auto; }
+  .main::before { display: none; }
+  /* Remove backdrop-filter on mobile (very slow on low-end phones) */
+  .menu.scrolled { backdrop-filter: none; background: rgba(7,7,7,0.98); }
+  .project-modal-overlay .project-modal { backdrop-filter: none; }
+  /* Remove image filters on portfolio rows */
+  .p-row__img img { filter: none !important; transition: transform 0.4s ease; }
+
   .menu { padding: 18px 22px; }
   .hamburger { display: flex; align-items: center; justify-content: center; }
   .menubar {
