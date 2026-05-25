@@ -11,6 +11,24 @@ function Protfolio() {
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
         {
+            image: '/image/ai-chatbot.png',
+            title: 'AI ChatBot',
+            category: 'TypeScript',
+            link: 'https://ai-chatbot-one-bice-57.vercel.app',
+            description: 'Multi-model AI chat app with 10+ free AI models (Groq, Gemini), Google login, email/phone auth, OTP verification, and full chat history saved to Supabase database.',
+            technologies: ['React', 'TypeScript', 'Supabase', 'Groq API', 'Gemini API'],
+            features: ['10+ AI Models', 'Google Login + OTP Auth', 'Chat History (Supabase)', 'Real-time Streaming'],
+        },
+        {
+            image: '/image/github-explorer.png',
+            title: 'GitHub Explorer',
+            category: 'TypeScript',
+            link: 'https://github-explorer-ashen-two.vercel.app',
+            description: 'GitHub profile explorer built with React + TypeScript. Search any GitHub user to view their profile, repositories, stars, languages, and activity stats in real-time.',
+            technologies: ['React', 'TypeScript', 'GitHub API', 'Vite'],
+            features: ['User Profile Search', 'Repository Explorer', 'Language Filter', 'Sort by Stars / Updated'],
+        },
+        {
             image: '/image/organick.png',
             title: 'Harvest Co.',
             category: 'E-Commerce',
@@ -84,7 +102,7 @@ function Protfolio() {
         },
     ];
 
-    const filters = ['All', 'Web Design', 'Agency', 'Business', 'E-Commerce'];
+    const filters = ['All', 'TypeScript', 'Web Design', 'Agency', 'Business', 'E-Commerce'];
     const filtered = activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter);
 
     useEffect(() => {
