@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Nahid Husain – CV</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Calibri', 'Arial', sans-serif;
+    font-size: 9.8pt;
+    color: #222;
+    background: #fff;
+    padding: 28px 42px;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .cv-header {
+    padding-top: 4px;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .cv-name {
+    font-size: 24pt; font-weight: 700;
+    letter-spacing: 3px; color: #1a1a1a; text-transform: uppercase;
+  }
+  .cv-role {
+    font-size: 10pt; color: #1a56a0; letter-spacing: 2px;
+    text-transform: uppercase; margin-top: 3px; font-weight: 600;
+  }
+  .cv-divider {
+    width: 50px; height: 2px; background: #1a56a0;
+    margin: 8px auto 8px;
+    opacity: 0.4;
+  }
+  .cv-contact {
+    text-align: center; font-size: 8.8pt; color: #444;
+    margin-top: 2px; line-height: 1.6;
+    display: flex; justify-content: center; align-items: center;
+    flex-wrap: wrap; gap: 2px 8px;
+  }
+  .cv-contact a { color: #1a56a0; text-decoration: none; }
+  .dot { color: #bbb; font-size: 10pt; }
+  .section { margin-top: 13px; }
+  .section-title {
+    font-size: 10pt; font-weight: 700; color: #1a56a0;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1.5px solid #1a56a0;
+    padding-bottom: 2px; margin-bottom: 7px;
+  }
+  .about-text { line-height: 1.55; color: #333; font-size: 9.5pt; }
+  .entry { margin-bottom: 7px; }
+  .entry-header { display: flex; justify-content: space-between; align-items: baseline; }
+  .entry-title { font-weight: 700; font-size: 9.8pt; }
+  .entry-company { color: #1a56a0; font-weight: 600; }
+  .entry-date { font-size: 9pt; color: #666; font-style: italic; white-space: nowrap; }
+  .entry-sub { font-size: 9pt; color: #555; margin-top: 1px; }
+  .entry-bullets { padding-left: 16px; margin-top: 3px; }
+  .entry-bullets li { margin-bottom: 2px; line-height: 1.45; }
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+  .project { margin-bottom: 5px; }
+  .project-title { font-weight: 700; font-size: 9.8pt; }
+  .project-link { font-size: 8.5pt; color: #1a56a0; margin-left: 5px; }
+  .project-bullets { padding-left: 15px; margin-top: 2px; }
+  .project-bullets li { margin-bottom: 1px; line-height: 1.4; font-size: 9.3pt; }
+  .tech { font-size: 8.5pt; color: #666; font-style: italic; }
+  .skills-table { width: 100%; border-collapse: collapse; }
+  .skills-table td { padding: 2px 0; vertical-align: top; font-size: 9.5pt; line-height: 1.5; }
+  .skills-table td:first-child { font-weight: 700; width: 140px; white-space: nowrap; }
+  @media print {
+    body { padding: 18px 32px; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="cv-header">
+    <div class="cv-name">Nahid Husain</div>
+    <div class="cv-role">Full Stack Developer</div>
+    <div class="cv-divider"></div>
+    <div class="cv-contact">
+      <span>📍 Himmatnagar, Gujarat, India</span>
+      <span class="dot">•</span>
+      <span>📞 +91 9510440462</span>
+      <span class="dot">•</span>
+      <a href="mailto:doiznahidhusain1234@gmail.com">✉ doiznahidhusain1234@gmail.com</a>
+      <span class="dot">•</span>
+      <a href="https://linkedin.com/in/nahid-husaindoi">🔗 linkedin.com/in/nahid-husaindoi</a>
+      <span class="dot">•</span>
+      <a href="https://github.com/Nahid788-coder">🐙 github.com/Nahid788-coder</a>
+      <span class="dot">•</span>
+      <a href="https://portfolio-coral-nu-78.vercel.app">🌐 portfolio-coral-nu-78.vercel.app</a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="section-title">About Me</div>
+    <p class="about-text">Full Stack Developer with 2+ years of experience building production-ready web applications using React.js, TypeScript, Node.js, and MongoDB. Skilled in end-to-end development — from responsive UI to REST APIs and cloud database integration (Supabase, MongoDB). Seeking a Frontend/Full Stack Developer role in Germany (visa sponsorship required), available from June 2026, open to on-site work in Berlin.</p>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Experience</div>
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">Full Stack Developer Intern &nbsp;|&nbsp; <span class="entry-company">Junkies Coder</span></div>
+        <div class="entry-date">Feb 2026 – Present</div>
+      </div>
+      <ul class="entry-bullets">
+        <li>Built full-stack web applications using React.js, Node.js, and MongoDB with RESTful API integration.</li>
+        <li>Developed responsive UI components with Tailwind CSS and Framer Motion animations.</li>
+        <li>Used AI-assisted development and Prompt Engineering to accelerate delivery and improve code quality.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">Projects</div>
+    <div class="projects-grid">
+
+      <div class="project">
+        <span class="project-title">AI ChatBot</span>
+        <a class="project-link" href="https://ai-chatbot-one-bice-57.vercel.app">↗ Live</a>
+        <ul class="project-bullets">
+          <li>Multi-model AI chat (10+ models via Groq &amp; Gemini APIs).</li>
+          <li>Google OAuth, email/phone login, OTP verification.</li>
+          <li>Full chat history saved to Supabase (PostgreSQL + RLS).</li>
+          <li class="tech">React · TypeScript · Supabase · Groq · Gemini</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <span class="project-title">GitHub Explorer</span>
+        <a class="project-link" href="https://github-explorer-ashen-two.vercel.app">↗ Live</a>
+        <ul class="project-bullets">
+          <li>Search any GitHub user — repos, stars, languages, stats.</li>
+          <li>Language filter, sort by stars/updated, real-time API.</li>
+          <li class="tech">React · TypeScript · GitHub API · Vite</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <span class="project-title">Slice & Crust — Pizzeria App</span>
+        <a class="project-link" href="https://nahid788-coder.github.io/live-designs/pizza/">↗ Live</a>
+        <ul class="project-bullets">
+          <li>Pizza Builder, Razorpay payments, Socket.io live order tracking.</li>
+          <li>Admin dashboard with real-time analytics charts.</li>
+          <li class="tech">React · Node.js · MongoDB · Socket.io · Razorpay</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <span class="project-title">Harvest Co. — E-Commerce</span>
+        <a class="project-link" href="https://nahid788-coder.github.io/live-designs/organick/">↗ Live</a>
+        <ul class="project-bullets">
+          <li>Subscription Box Builder with live pricing &amp; frequency picker.</li>
+          <li>Product catalog, recipe CMS, and admin dashboard.</li>
+          <li class="tech">React · Node.js · MongoDB · Framer Motion</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <span class="project-title">Verde Living — Furniture Store</span>
+        <a class="project-link" href="https://nahid788-coder.github.io/live-designs/mfurniro/">↗ Live</a>
+        <ul class="project-bullets">
+          <li>Drag-and-drop 2D Room Visualizer, wishlist, full checkout.</li>
+          <li class="tech">React · Node.js · MongoDB · Framer Motion</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <span class="project-title">Lyric Studio — Creative Agency</span>
+        <a class="project-link" href="https://nahid788-coder.github.io/live-designs/andia/">↗ Live</a>
+        <ul class="project-bullets">
+          <li>Magnetic cursor, animated page transitions, case study CMS.</li>
+          <li class="tech">React · Node.js · MongoDB · Framer Motion</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-title">Education</div>
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">Bachelor of Technology – Computer Engineering</div>
+        <div class="entry-date">Oct 2021 – Jun 2025</div>
+      </div>
+      <div class="entry-sub">Aditya Silver Oak College of Engineering and Technology &nbsp;|&nbsp; CGPA: 6.62</div>
+    </div>
+    <div class="entry" style="margin-top:5px">
+      <div class="entry-header">
+        <div class="entry-title">Higher School Certificate (Science)</div>
+        <div class="entry-date">Jun 2020 – Apr 2021</div>
+      </div>
+      <div class="entry-sub">Madresa High School &nbsp;|&nbsp; 60.4%</div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">Skills & Certifications</div>
+    <table class="skills-table">
+      <tr>
+        <td>Frontend:</td>
+        <td>React.js, TypeScript, Next.js, Tailwind CSS, Framer Motion, HTML5, CSS3, JavaScript (ES6+)</td>
+      </tr>
+      <tr>
+        <td>Backend:</td>
+        <td>Node.js, Express.js, REST APIs, Socket.io</td>
+      </tr>
+      <tr>
+        <td>Database:</td>
+        <td>MongoDB, Supabase (PostgreSQL), MySQL</td>
+      </tr>
+      <tr>
+        <td>Tools:</td>
+        <td>Git, GitHub, Vite, Vercel, Figma, Adobe Photoshop, Razorpay</td>
+      </tr>
+      <tr>
+        <td>Certification:</td>
+        <td>Full Stack Development</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+</html>
