@@ -54,7 +54,21 @@ function Assistant() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const bottomRef = useRef(null);
+
+  // Show hint bubble after 3s, hide after 6s (only once)
+  useEffect(() => {
+    const show = setTimeout(() => setShowHint(true), 3000);
+    const hide = setTimeout(() => setShowHint(false), 9000);
+    return () => { clearTimeout(show); clearTimeout(hide); };
+  }, []);
+
+  // Hide hint when chat is opened
+  const handleFabClick = () => {
+    setShowHint(false);
+    setOpen(o => !o);
+  };
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -121,8 +135,16 @@ function Assistant() {
 
   return (
     <>
+      {/* Hint Bubble */}
+      {showHint && !open && (
+        <div className="ai-hint-bubble">
+          <span>👋 Ask me anything about Nahid!</span>
+          <button className="ai-hint-close" onClick={() => setShowHint(false)}>×</button>
+        </div>
+      )}
+
       {/* Floating Button */}
-      <button className="ai-fab" onClick={() => setOpen(!open)} aria-label="AI Assistant">
+      <button className="ai-fab" onClick={handleFabClick} aria-label="AI Assistant">
         {open ? (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="20" height="20">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>

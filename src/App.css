@@ -974,6 +974,49 @@ h1, h2, h3, h4 {
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ============ AI ASSISTANT ============ */
+
+/* Hint bubble */
+.ai-hint-bubble {
+  position: fixed;
+  bottom: 162px;
+  right: 22px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px 12px 4px 12px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1001;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  animation: hintPop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+.ai-hint-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 18px;
+  width: 12px; height: 12px;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+  transform: rotate(45deg);
+}
+.ai-hint-close {
+  background: none; border: none; color: var(--text-muted);
+  cursor: pointer; font-size: 16px; line-height: 1;
+  padding: 0 2px; margin-left: 4px;
+}
+.ai-hint-close:hover { color: var(--text); }
+@keyframes hintPop {
+  from { opacity: 0; transform: scale(0.8) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
 .ai-fab { position: fixed; bottom: 96px; right: 28px; width: 56px; height: 56px; border-radius: 50%; background: var(--accent); border: none; color: #070707; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(201,169,110,0.4); z-index: 1000; transition: transform 0.2s, box-shadow 0.2s; }
 .ai-fab:hover { transform: scale(1.1); box-shadow: 0 6px 32px rgba(201,169,110,0.6); }
 .ai-fab-ping { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-radius: 50%; background: #ef4444; border: 2px solid var(--accent); animation: ping 1.5s infinite; }
