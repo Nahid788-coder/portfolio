@@ -11,7 +11,7 @@ function Protfolio() {
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
         {
-            image: '/image/ai-chatbot.png',
+            image: '/image/github-explorer.png',
             title: 'AI ChatBot',
             category: 'TypeScript',
             link: 'https://ai-chatbot-one-bice-57.vercel.app',
@@ -20,7 +20,7 @@ function Protfolio() {
             features: ['10+ AI Models', 'Google Login + OTP Auth', 'Chat History (Supabase)', 'Real-time Streaming'],
         },
         {
-            image: '/image/github-explorer.png',
+            image: '/image/ai-chatbot.png',
             title: 'GitHub Explorer',
             category: 'TypeScript',
             link: 'https://github-explorer-ashen-two.vercel.app',
