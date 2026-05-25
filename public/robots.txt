@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portfolio-coral-nu-78.vercel.app/sitemap.xml
