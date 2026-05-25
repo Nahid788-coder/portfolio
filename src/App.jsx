@@ -10,6 +10,7 @@ import Protfolio from './Protfolio'
 import Contact from './Contact'
 import Footer from './Footer'
 import { useScrollProgress } from './hooks'
+import Assistant from './Assistant'
 
 function App() {
   const progress = useScrollProgress()
@@ -156,6 +157,8 @@ function App() {
       >
         <i className="fa-solid fa-arrow-up"></i>
       </button>
+
+      <Assistant />
     </>
   )
 }
