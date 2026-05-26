@@ -173,7 +173,7 @@ function Assistant() {
             </div>
             {langSelected && (
               <button className="ai-lang-reset" onClick={reset} title="Change language">
-                {selectedLang.flag}
+                {selectedLang.flag} <span className="ai-lang-reset-label">Change</span>
               </button>
             )}
           </div>
