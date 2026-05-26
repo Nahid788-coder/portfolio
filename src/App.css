@@ -1030,9 +1030,9 @@ h1, h2, h3, h4 {
 .ai-chat-title { font-size: 14px; font-weight: 600; color: var(--text); }
 .ai-chat-status { font-size: 11px; color: #10b981; display: flex; align-items: center; gap: 4px; }
 .ai-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
-.ai-lang-reset { background: none; border: 1px solid var(--border-gold); border-radius: 8px; padding: 4px 10px; font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px; color: var(--text); }
+.ai-lang-reset { background: none; border: 1px solid var(--border-gold); border-radius: 8px; padding: 5px 10px; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; color: var(--text); line-height: 1; }
 .ai-lang-reset:hover { border-color: var(--accent); background: rgba(201,169,110,0.08); }
-.ai-lang-reset-label { font-size: 11px; color: var(--text-muted); font-family: 'Inter', sans-serif; }
+.ai-lang-reset-label { font-size: 11px; color: var(--text-muted); font-family: 'Inter', sans-serif; line-height: 1; vertical-align: middle; }
 
 .ai-lang-select { padding: 20px 16px; }
 .ai-lang-title { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; text-align: center; }
