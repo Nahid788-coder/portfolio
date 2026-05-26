@@ -14,16 +14,9 @@ import Assistant from './Assistant'
 
 function App() {
   const progress = useScrollProgress()
-  const [showTop, setShowTop] = useState(false)
   const [loaderGone, setLoaderGone] = useState(false)
   const [loaderPhase, setLoaderPhase] = useState('symbol') // symbol | cover | hold | reveal
   const [symbolVisible, setSymbolVisible] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 600)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   useEffect(() => {
     // 80ms  → symbol fades IN
@@ -39,7 +32,6 @@ function App() {
     return () => [t0, t1, t2, t3, t4].forEach(clearTimeout)
   }, [])
 
-  const toTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
   /* symbol class logic */
   let symbolCls = 'lp-symbol'
@@ -149,14 +141,6 @@ function App() {
         <Contact />
         <Footer />
       </div>
-
-      <button
-        className={`back-to-top ${showTop ? 'show' : ''}`}
-        onClick={toTop}
-        aria-label="Back to top"
-      >
-        <i className="fa-solid fa-arrow-up"></i>
-      </button>
 
       <Assistant />
     </>
