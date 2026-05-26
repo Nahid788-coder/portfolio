@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useReveal } from './hooks';
+import { useLanguage } from './context/LanguageContext';
 
 function Protfolio() {
     const [selectedProject, setSelectedProject] = useState(null);
@@ -7,6 +8,8 @@ function Protfolio() {
     const headRef = useReveal();
     const filterRef = useReveal();
     const rowRefs = useRef([]);
+    const { t } = useLanguage();
+    const p = t.portfolio;
 
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
@@ -103,7 +106,7 @@ function Protfolio() {
     ];
 
     const filters = ['All', 'TypeScript', 'Web Design', 'Agency', 'Business', 'E-Commerce'];
-    const filtered = activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter);
+    const filtered = activeFilter === 'All' ? projects : projects.filter(proj => proj.category === activeFilter);
 
     useEffect(() => {
         rowRefs.current = rowRefs.current.slice(0, filtered.length);
@@ -133,17 +136,17 @@ function Protfolio() {
         return () => observers.forEach(o => o.disconnect());
     }, [filtered.length]);
 
-    const openModal = (p) => { setSelectedProject(p); document.body.style.overflow = 'hidden'; };
+    const openModal = (proj) => { setSelectedProject(proj); document.body.style.overflow = 'hidden'; };
     const closeModal = () => { setSelectedProject(null); document.body.style.overflow = 'auto'; };
 
     return (
         <section className="protfolio" id="portfolio">
             <div className="protfolio-heading reveal" ref={headRef}>
                 <div className="section-tag">
-                    <i className="fa-solid fa-layer-group"></i> Portfolio
+                    <i className="fa-solid fa-layer-group"></i> {p.tag}
                 </div>
-                <h1 className="section-title">Selected <span>Projects</span></h1>
-                <p className="section-subtitle">Full-stack applications I've designed, engineered, and shipped</p>
+                <h1 className="section-title">{p.titleMain} <span>{p.titleSpan}</span></h1>
+                <p className="section-subtitle">{p.subtitle}</p>
             </div>
 
             <div className="portfolio-filter reveal" ref={filterRef}>
@@ -175,12 +178,12 @@ function Protfolio() {
                             <h3 className="p-row__title">{project.title}</h3>
                             <p className="p-row__desc">{project.description}</p>
                             <div className="p-row__tech">
-                                {project.technologies.map((t, i) => (
-                                    <span key={i}>{t}</span>
+                                {project.technologies.map((tech, i) => (
+                                    <span key={i}>{tech}</span>
                                 ))}
                             </div>
                             <button onClick={() => openModal(project)} className="p-row__btn">
-                                View Project
+                                {p.viewProject}
                                 <i className="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
@@ -202,15 +205,15 @@ function Protfolio() {
                             <h2>{selectedProject.title}</h2>
                             <p className="modal-description">{selectedProject.description}</p>
                             <div className="modal-section">
-                                <h4><i className="fa-solid fa-code"></i> Technologies</h4>
+                                <h4><i className="fa-solid fa-code"></i> {p.technologies}</h4>
                                 <div className="tech-tags">
-                                    {selectedProject.technologies.map((t, i) => (
-                                        <span key={i} className="tech-tag">{t}</span>
+                                    {selectedProject.technologies.map((tech, i) => (
+                                        <span key={i} className="tech-tag">{tech}</span>
                                     ))}
                                 </div>
                             </div>
                             <div className="modal-section">
-                                <h4><i className="fa-solid fa-star"></i> Key Features</h4>
+                                <h4><i className="fa-solid fa-star"></i> {p.keyFeatures}</h4>
                                 <ul className="features-list">
                                     {selectedProject.features.map((f, i) => (
                                         <li key={i}><i className="fa-solid fa-check"></i> {f}</li>
@@ -223,7 +226,7 @@ function Protfolio() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                <i className="fa-solid fa-arrow-up-right-from-square"></i> View Live
+                                <i className="fa-solid fa-arrow-up-right-from-square"></i> {p.viewLive}
                             </a>
                         </div>
                     </div>

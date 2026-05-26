@@ -1,11 +1,16 @@
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import { useReveal, applyRipple } from './hooks';
+import { useLanguage } from './context/LanguageContext';
 
 function Contact() {
     const formRef = useRef();
     const leftRef = useReveal();
     const rightRef = useReveal();
+    const { t } = useLanguage();
+    const c = t.contact;
+    const f = c.form;
+
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +23,7 @@ function Contact() {
     const handleSubmit = async e => {
         e.preventDefault();
         if (!formData.name || !formData.email || !formData.message) {
-            setStatus('Please fill in all required fields');
+            setStatus('validation');
             return;
         }
         setIsLoading(true);
@@ -35,29 +40,20 @@ function Contact() {
         }
     };
 
-    const contactInfo = [
-        { icon: 'fa-envelope', label: 'Email', value: 'doiznahidhusain1234@gmail.com' },
-        { icon: 'fa-location-dot', label: 'Location', value: 'Himatnagar, Gujarat' },
-        { icon: 'fa-briefcase', label: 'Status', value: 'Open to opportunities' },
-    ];
-
     return (
         <section className="contact" id="contact">
             <div className="contact-inner">
                 <div className="contact-grid">
                     <div className="contact-left reveal-left" ref={leftRef}>
                         <div className="section-tag">
-                            <i className="fa-solid fa-envelope"></i> Contact
+                            <i className="fa-solid fa-envelope"></i> {c.tag}
                         </div>
                         <h2>
-                            Let's Work<br /><span>Together</span>
+                            {c.titleLine1}<br /><span>{c.titleSpan}</span>
                         </h2>
-                        <p>
-                            Have a project in mind or want to collaborate? I'm always open to
-                            discussing new opportunities and interesting projects.
-                        </p>
+                        <p>{c.para}</p>
 
-                        {contactInfo.map((item, i) => (
+                        {c.info.map((item, i) => (
                             <div className="contact-info-item" key={i}>
                                 <div className="contact-info-icon">
                                     <i className={`fa-solid ${item.icon}`}></i>
@@ -74,35 +70,35 @@ function Contact() {
                         <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label>Name *</label>
-                                    <input type="text" name="name" placeholder="John Doe" value={formData.name} onChange={handleChange} />
+                                    <label>{f.nameLbl}</label>
+                                    <input type="text" name="name" placeholder={f.namePh} value={formData.name} onChange={handleChange} />
                                 </div>
                                 <div className="form-group">
-                                    <label>Email *</label>
-                                    <input type="email" name="email" placeholder="john@email.com" value={formData.email} onChange={handleChange} />
+                                    <label>{f.emailLbl}</label>
+                                    <input type="email" name="email" placeholder={f.emailPh} value={formData.email} onChange={handleChange} />
                                 </div>
                             </div>
                             <div className="form-group full">
-                                <label>Subject</label>
-                                <input type="text" name="subject" placeholder="Project Discussion" value={formData.subject} onChange={handleChange} />
+                                <label>{f.subjectLbl}</label>
+                                <input type="text" name="subject" placeholder={f.subjectPh} value={formData.subject} onChange={handleChange} />
                             </div>
                             <div className="form-group full">
-                                <label>Message *</label>
-                                <textarea name="message" placeholder="Tell me about your project..." value={formData.message} onChange={handleChange} rows="6"></textarea>
+                                <label>{f.messageLbl}</label>
+                                <textarea name="message" placeholder={f.messagePh} value={formData.message} onChange={handleChange} rows="6"></textarea>
                             </div>
 
                             {status && (
                                 <p className={`form-status ${status === 'success' ? 'success' : 'error'}`}>
-                                    {status === 'success'
-                                        ? '✅ Message sent! I\'ll get back to you soon.'
-                                        : '❌ Failed to send. Please try again.'}
+                                    {status === 'success' ? f.success
+                                     : status === 'validation' ? f.validation
+                                     : f.error}
                                 </p>
                             )}
 
                             <button type="submit" className="submit-btn ripple" disabled={isLoading} onClick={applyRipple}>
                                 {isLoading
-                                    ? <><i className="fa-solid fa-spinner fa-spin"></i> Sending...</>
-                                    : <><i className="fa-solid fa-paper-plane"></i> Send Message</>
+                                    ? <><i className="fa-solid fa-spinner fa-spin"></i> {f.sending}</>
+                                    : <><i className="fa-solid fa-paper-plane"></i> {f.sendBtn}</>
                                 }
                             </button>
                         </form>

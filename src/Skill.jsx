@@ -1,37 +1,56 @@
 import { useReveal } from './hooks';
+import { useLanguage } from './context/LanguageContext';
 
 function Skill() {
     const headingRef = useReveal();
     const leftRef = useReveal();
     const rightRef = useReveal();
+    const { t } = useLanguage();
+    const s = t.skill;
 
     const skills = [
         { name: 'HTML / CSS', level: 95 },
         { name: 'JavaScript', level: 82 },
+        { name: 'TypeScript', level: 78 },
         { name: 'React.js', level: 85 },
+        { name: 'Tailwind CSS', level: 90 },
         { name: 'Node.js', level: 70 },
+        { name: 'Express.js', level: 72 },
         { name: 'Next.js', level: 68 },
         { name: 'SQL / MongoDB', level: 75 },
+        { name: 'Supabase', level: 70 },
+        { name: 'REST APIs', level: 82 },
+        { name: 'Framer Motion', level: 75 },
         { name: 'Flutter', level: 72 },
         { name: 'Git / GitHub', level: 85 },
+        { name: 'Figma', level: 65 },
     ];
 
     const techs = [
         { icon: '⚛️', name: 'React' },
+        { icon: '🔷', name: 'TypeScript' },
         { icon: '🟢', name: 'Node.js' },
         { icon: '▲', name: 'Next.js' },
+        { icon: '🎨', name: 'Tailwind' },
+        { icon: '⚡', name: 'Express.js' },
         { icon: '🐦', name: 'Flutter' },
         { icon: '🗄️', name: 'MySQL' },
         { icon: '🍃', name: 'MongoDB' },
+        { icon: '🔋', name: 'Supabase' },
+        { icon: '🔗', name: 'REST APIs' },
+        { icon: '🎭', name: 'Framer Motion' },
         { icon: '🐙', name: 'Git' },
         { icon: '🤖', name: 'AI/LLM' },
         { icon: '⚡', name: 'Vite' },
+        { icon: '🎨', name: 'Figma' },
+        { icon: '☁️', name: 'Vercel' },
     ];
 
     const marqueeItems = [
         'React', 'Next.js', 'Node.js', 'Flutter', 'JavaScript',
         'TypeScript', 'MongoDB', 'MySQL', 'Tailwind', 'Express',
-        'AI / LLM', 'Prompt Engineering', 'Git', 'Vite',
+        'AI / LLM', 'Prompt Engineering', 'Git', 'Vite', 'Supabase',
+        'Framer Motion', 'REST APIs', 'Figma', 'Vercel',
     ];
 
     const handlePillMove = (e) => {
@@ -46,15 +65,15 @@ function Skill() {
             <div className="skill-inner">
                 <div className="skill-heading reveal" ref={headingRef}>
                     <div className="section-tag">
-                        <i className="fa-solid fa-code"></i> My Skills
+                        <i className="fa-solid fa-code"></i> {s.tag}
                     </div>
-                    <h1 className="section-title">Technologies I Work With</h1>
-                    <p className="section-subtitle">Proficiency levels based on real project experience</p>
+                    <h1 className="section-title">{s.title}</h1>
+                    <p className="section-subtitle">{s.subtitle}</p>
                 </div>
 
                 <div className="skills-container">
                     <div className="skills-left reveal-left" ref={leftRef}>
-                        <h3>Proficiency</h3>
+                        <h3>{s.proficiency}</h3>
                         {skills.map((skill, i) => (
                             <div className="skill-item" key={i}>
                                 <div className="skill-info">

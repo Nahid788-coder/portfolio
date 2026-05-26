@@ -1,10 +1,16 @@
 import { useEffect } from 'react';
 import { useTyped, useTilt, useMagnetic, useCounter, applyRipple } from './hooks';
+import { useLanguage } from './context/LanguageContext';
 
-const ROLE_WORDS = ['Full Stack Developer', 'AI Enthusiast', 'React.js Engineer', 'Mobile App Builder'];
+/* Sub-component so key={lang} remounts only the typing animation */
+function RoleTyper({ words, lang }) {
+    const role = useTyped(words, { typeSpeed: 80, deleteSpeed: 40, pause: 1500 });
+    return <span className="role-type">{role}</span>;
+}
 
 function Header() {
-    const role = useTyped(ROLE_WORDS, { typeSpeed: 80, deleteSpeed: 40, pause: 1500 });
+    const { lang, t } = useLanguage();
+    const h = t.header;
 
     const cardTilt = useTilt(14);
     const hireRef = useMagnetic(0.3);
@@ -13,8 +19,6 @@ function Header() {
     const [yearRef, yearVal] = useCounter(1, { suffix: '+' });
     const [projRef, projVal] = useCounter(8, { suffix: '+' });
     const [techRef, techVal] = useCounter(5, { suffix: '+' });
-
-    // canvas not used in this theme
 
     useEffect(() => {
         if (window.matchMedia('(hover: none)').matches) return;
@@ -65,47 +69,44 @@ function Header() {
                     <div className="header-left">
                         <div className="header-badge">
                             <span className="dot"></span>
-                            Available for freelance work
+                            {h.badge}
                         </div>
                         <h1>
-                            <span className="line1">Hi, I'm Nahid</span>
-                            <span className="line2 shine-text">Husain.</span>
+                            <span className="line1">{h.line1}</span>
+                            <span className="line2 shine-text">{h.line2}</span>
                         </h1>
                         <h3>
-                            I'm a <span className="role-type">{role}</span>
+                            {h.rolePrefix} <RoleTyper words={h.roles} key={lang} />
                         </h3>
-                        <p>
-                            I build high-performance web applications with modern technologies.
-                            Passionate about clean code, great UX, and leveraging AI to ship faster.
-                        </p>
+                        <p>{h.para}</p>
                         <div className="header-btns">
                             <button
                                 ref={hireRef}
                                 className="btn-primary magnetic ripple"
                                 onClick={(e) => { applyRipple(e); scrollTo('contact'); }}
                             >
-                                <i className="fa-solid fa-paper-plane"></i> Hire Me
+                                <i className="fa-solid fa-paper-plane"></i> {h.hireBtn}
                             </button>
                             <button
                                 ref={viewRef}
                                 className="btn-secondary magnetic ripple"
                                 onClick={(e) => { applyRipple(e); scrollTo('portfolio'); }}
                             >
-                                <i className="fa-solid fa-eye"></i> View Work
+                                <i className="fa-solid fa-eye"></i> {h.viewBtn}
                             </button>
                         </div>
                         <div className="header-stats">
                             <div className="stat-item" ref={yearRef}>
                                 <div className="stat-num">{yearVal}</div>
-                                <div className="stat-label">Year Exp.</div>
+                                <div className="stat-label">{h.statYear}</div>
                             </div>
                             <div className="stat-item" ref={projRef}>
                                 <div className="stat-num">{projVal}</div>
-                                <div className="stat-label">Projects</div>
+                                <div className="stat-label">{h.statProjects}</div>
                             </div>
                             <div className="stat-item" ref={techRef}>
                                 <div className="stat-num">{techVal}</div>
-                                <div className="stat-label">Tech Stack</div>
+                                <div className="stat-label">{h.statTech}</div>
                             </div>
                         </div>
                     </div>
@@ -136,7 +137,7 @@ function Header() {
                 </div>
 
                 <div className="scroll-indicator" onClick={() => scrollTo('about')}>
-                    <span>Scroll</span>
+                    <span>{h.scroll}</span>
                     <div className="mouse"></div>
                 </div>
             </header>

@@ -1,8 +1,11 @@
 import { useReveal, applyRipple } from './hooks';
+import { useLanguage } from './context/LanguageContext';
 
 function About() {
     const leftRef = useReveal();
     const rightRef = useReveal();
+    const { t } = useLanguage();
+    const a = t.about;
 
     const handleDownload = () => {
         const link = document.createElement("a");
@@ -13,44 +16,29 @@ function About() {
         document.body.removeChild(link);
     };
 
-    const cards = [
-        { icon: '🎓', title: 'Education', desc: 'Computer Engineering student with a strong foundation in software development.' },
-        { icon: '💼', title: 'Experience', desc: 'Full Stack Developer Intern at Junkies Coder, building real-world applications.' },
-        { icon: '🤖', title: 'AI Integration', desc: 'Leveraging AI & Prompt Engineering to accelerate development workflows.' },
-        { icon: '📱', title: 'Mobile Dev', desc: 'Building cross-platform mobile apps using Flutter framework.' },
-    ];
-
     return (
         <section className="about" id="about">
             <div className="about-grid">
                 <div className="about-left reveal-left" ref={leftRef}>
                     <div className="section-tag">
-                        <i className="fa-solid fa-user"></i> About Me
+                        <i className="fa-solid fa-user"></i> {a.tag}
                     </div>
                     <h1 className="section-title">
-                        Crafting <span>Digital</span><br />Experiences
+                        {a.titleParts[0]} <span>{a.titleParts[1]}</span><br />{a.titleParts[2]}
                     </h1>
-                    <p>
-                        Hey! I'm Nahid — an enthusiastic Full Stack Developer who loves turning ideas
-                        into clean, functional web applications. I'm currently interning at Junkies Coder,
-                        where I work with React.js, Node.js, Next.js, SQL, and Flutter.
-                    </p>
-                    <p>
-                        What sets me apart is my honest approach — I believe in accurately representing
-                        my skills and continuously growing. I actively incorporate AI-assisted development
-                        and Prompt Engineering into my workflow to build smarter and faster.
-                    </p>
+                    <p>{a.para1}</p>
+                    <p>{a.para2}</p>
                     <button
                         onClick={(e) => { applyRipple(e); handleDownload(); }}
                         className="btn-primary ripple"
                         style={{ marginTop: '30px', border: 'none' }}
                     >
-                        <i className="fa-solid fa-download"></i> Download CV
+                        <i className="fa-solid fa-download"></i> {a.downloadBtn}
                     </button>
                 </div>
 
                 <div className="about-right reveal-stagger" ref={rightRef}>
-                    {cards.map((card, i) => (
+                    {a.cards.map((card, i) => (
                         <div className="about-card glow-border" key={i}>
                             <span className="about-card-icon">{card.icon}</span>
                             <h4>{card.title}</h4>

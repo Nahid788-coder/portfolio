@@ -11,6 +11,7 @@ import Contact from './Contact'
 import Footer from './Footer'
 import { useScrollProgress } from './hooks'
 import Assistant from './Assistant'
+import { LanguageProvider } from './context/LanguageContext'
 
 function App() {
   const progress = useScrollProgress()
@@ -131,18 +132,19 @@ function App() {
         <div className="gm-blob gm-blob3"></div>
       </div>
 
-      <div className='main'>
-        <Menu />
-        <Header />
-        <About />
-        <Skill />
-        <Work />
-        <Protfolio />
-        <Contact />
-        <Footer />
-      </div>
-
-      <Assistant />
+      <LanguageProvider>
+        <div className='main'>
+          <Menu />
+          <Header />
+          <About />
+          <Skill />
+          <Work />
+          <Protfolio />
+          <Contact />
+          <Footer />
+        </div>
+        <Assistant />
+      </LanguageProvider>
     </>
   )
 }

@@ -1,5 +1,9 @@
+import { useLanguage } from './context/LanguageContext';
+
 function Footer() {
     const year = new Date().getFullYear();
+    const { lang, t } = useLanguage();
+    const f = t.footer;
 
     const scrollTo = (id) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -11,10 +15,7 @@ function Footer() {
                 <div className="footer-top">
                     <div className="footer-brand">
                         <h2>NH.</h2>
-                        <p>
-                            Full Stack Developer passionate about building clean, modern web applications.
-                            Always learning, always building.
-                        </p>
+                        <p>{f.brandPara}</p>
                         <div className="footer-social">
                             <a href="https://github.com/Nahid788-coder" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                 <i className="fa-brands fa-github"></i>
@@ -29,24 +30,24 @@ function Footer() {
                     </div>
 
                     <div className="footer-col">
-                        <h4>Navigation</h4>
-                        {[['home','Home'],['about','About'],['skills','Skills'],['portfolio','Portfolio']].map(([id, label]) => (
+                        <h4>{f.navigation}</h4>
+                        {f.navLinks.map(([id, label]) => (
                             <a key={id} href={`#${id}`} onClick={e => { e.preventDefault(); scrollTo(id); }}>{label}</a>
                         ))}
                     </div>
 
                     <div className="footer-col">
-                        <h4>Services</h4>
-                        <a href="#work" onClick={e => { e.preventDefault(); scrollTo('work'); }}>Front-End Dev</a>
-                        <a href="#work" onClick={e => { e.preventDefault(); scrollTo('work'); }}>Back-End Dev</a>
-                        <a href="#work" onClick={e => { e.preventDefault(); scrollTo('work'); }}>Mobile Apps</a>
-                        <a href="#contact" onClick={e => { e.preventDefault(); scrollTo('contact'); }}>Consultancy</a>
+                        <h4>{f.services}</h4>
+                        <a href="#work" onClick={e => { e.preventDefault(); scrollTo('work'); }}>{f.serviceLinks[0]}</a>
+                        <a href="#work" onClick={e => { e.preventDefault(); scrollTo('work'); }}>{f.serviceLinks[1]}</a>
+                        <a href="#work" onClick={e => { e.preventDefault(); scrollTo('work'); }}>{f.serviceLinks[2]}</a>
+                        <a href="#contact" onClick={e => { e.preventDefault(); scrollTo('contact'); }}>{f.serviceLinks[3]}</a>
                     </div>
                 </div>
 
                 <div className="footer-bottom">
-                    <p>© {year} Nahid Husain. All rights reserved.</p>
-                    <p>Made with <span>♥</span> using React + Vite</p>
+                    <p>© {year} Nahid Husain. {lang === 'de' ? 'Alle Rechte vorbehalten.' : lang === 'fr' ? 'Tous droits réservés.' : lang === 'es' ? 'Todos los derechos reservados.' : lang === 'hi' ? 'सर्वाधिकार सुरक्षित।' : lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}</p>
+                    <p>{f.madeWith.split('♥')[0]}<span>♥</span>{f.madeWith.split('♥')[1]}</p>
                 </div>
             </div>
         </footer>

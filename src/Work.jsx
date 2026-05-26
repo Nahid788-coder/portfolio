@@ -1,29 +1,11 @@
 import { useReveal } from './hooks';
+import { useLanguage } from './context/LanguageContext';
 
 function Work() {
     const headRef = useReveal();
     const gridRef = useReveal();
-
-    const services = [
-        {
-            icon: '🖥️',
-            title: 'Front-End Development',
-            description: 'Building responsive, interactive UIs with React.js and Next.js. Pixel-perfect designs with smooth animations and great UX.',
-            tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'],
-        },
-        {
-            icon: '⚙️',
-            title: 'Back-End Development',
-            description: 'Robust server-side applications using Node.js and Express, with REST API design and SQL/MongoDB database integration.',
-            tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'],
-        },
-        {
-            icon: '📱',
-            title: 'Mobile & Consultancy',
-            description: 'Cross-platform mobile apps with Flutter and technical consultation to help you make informed decisions for your projects.',
-            tags: ['Flutter', 'Dart', 'Strategy', 'AI Tools'],
-        },
-    ];
+    const { t } = useLanguage();
+    const w = t.work;
 
     const handleTilt = (e) => {
         const el = e.currentTarget;
@@ -41,14 +23,14 @@ function Work() {
             <div className="work-inner">
                 <div className="work-heading reveal" ref={headRef}>
                     <div className="section-tag">
-                        <i className="fa-solid fa-briefcase"></i> Services
+                        <i className="fa-solid fa-briefcase"></i> {w.tag}
                     </div>
-                    <h1 className="section-title">What I <span>Do</span></h1>
-                    <p className="section-subtitle">End-to-end development from concept to deployment</p>
+                    <h1 className="section-title">{w.titleMain} <span>{w.titleSpan}</span></h1>
+                    <p className="section-subtitle">{w.subtitle}</p>
                 </div>
 
                 <div className="services-grid reveal-stagger" ref={gridRef}>
-                    {services.map((s, i) => (
+                    {w.services.map((s, i) => (
                         <div
                             className="service-card glow-border"
                             key={i}
@@ -59,10 +41,10 @@ function Work() {
                                 <span>{s.icon}</span>
                             </div>
                             <h2>{s.title}</h2>
-                            <p>{s.description}</p>
+                            <p>{s.desc}</p>
                             <div className="service-tags">
-                                {s.tags.map((t, j) => (
-                                    <span className="service-tag" key={j}>{t}</span>
+                                {s.tags.map((tag, j) => (
+                                    <span className="service-tag" key={j}>{tag}</span>
                                 ))}
                             </div>
                         </div>
