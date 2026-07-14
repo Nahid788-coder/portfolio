@@ -1,6 +1,26 @@
 import { useReveal } from './hooks';
 import { useLanguage } from './context/LanguageContext';
 
+const TECHS = [
+    { icon: 'fa-brands fa-react', name: 'React' },
+    { icon: 'fa-solid fa-file-code', name: 'TypeScript' },
+    { icon: 'fa-brands fa-node-js', name: 'Node.js' },
+    { icon: 'fa-solid fa-layer-group', name: 'Next.js' },
+    { icon: 'fa-solid fa-wind', name: 'Tailwind' },
+    { icon: 'fa-solid fa-server', name: 'Express.js' },
+    { icon: 'fa-solid fa-mobile-screen-button', name: 'Flutter' },
+    { icon: 'fa-solid fa-database', name: 'MySQL' },
+    { icon: 'fa-solid fa-leaf', name: 'MongoDB' },
+    { icon: 'fa-solid fa-bolt-lightning', name: 'Supabase' },
+    { icon: 'fa-solid fa-link', name: 'REST APIs' },
+    { icon: 'fa-solid fa-wand-magic-sparkles', name: 'Framer Motion' },
+    { icon: 'fa-brands fa-git-alt', name: 'Git' },
+    { icon: 'fa-solid fa-robot', name: 'AI/LLM' },
+    { icon: 'fa-solid fa-bolt', name: 'Vite' },
+    { icon: 'fa-brands fa-figma', name: 'Figma' },
+    { icon: 'fa-solid fa-cloud', name: 'Vercel' },
+];
+
 function Skill() {
     const headingRef = useReveal();
     const leftRef = useReveal();
@@ -24,26 +44,6 @@ function Skill() {
         { name: 'Flutter', level: 72 },
         { name: 'Git / GitHub', level: 85 },
         { name: 'Figma', level: 65 },
-    ];
-
-    const techs = [
-        { icon: '⚛️', name: 'React' },
-        { icon: '🔷', name: 'TypeScript' },
-        { icon: '🟢', name: 'Node.js' },
-        { icon: '▲', name: 'Next.js' },
-        { icon: '🎨', name: 'Tailwind' },
-        { icon: '⚡', name: 'Express.js' },
-        { icon: '🐦', name: 'Flutter' },
-        { icon: '🗄️', name: 'MySQL' },
-        { icon: '🍃', name: 'MongoDB' },
-        { icon: '🔋', name: 'Supabase' },
-        { icon: '🔗', name: 'REST APIs' },
-        { icon: '🎭', name: 'Framer Motion' },
-        { icon: '🐙', name: 'Git' },
-        { icon: '🤖', name: 'AI/LLM' },
-        { icon: '⚡', name: 'Vite' },
-        { icon: '🎨', name: 'Figma' },
-        { icon: '☁️', name: 'Vercel' },
     ];
 
     const marqueeItems = [
@@ -91,9 +91,9 @@ function Skill() {
                     </div>
 
                     <div className="skills-right reveal-stagger" ref={rightRef}>
-                        {techs.map((tech, i) => (
+                        {TECHS.map((tech, i) => (
                             <div className="tech-pill" key={i} onMouseMove={handlePillMove}>
-                                <span className="tech-pill-icon">{tech.icon}</span>
+                                <i className={`${tech.icon} tech-pill-icon`}></i>
                                 <span className="tech-pill-name">{tech.name}</span>
                             </div>
                         ))}

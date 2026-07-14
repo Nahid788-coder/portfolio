@@ -11,6 +11,7 @@ import Contact from './Contact'
 import Footer from './Footer'
 import { useScrollProgress } from './hooks'
 import Assistant from './Assistant'
+import ScrollVideoBackground from './ScrollVideoBackground'
 import { LanguageProvider } from './context/LanguageContext'
 
 function App() {
@@ -125,6 +126,7 @@ function App() {
       )}
 
       {/* ── PAGE CONTENT ───────────────────────────── */}
+      <ScrollVideoBackground />
       <div className="scroll-progress" style={{ width: `${progress}%` }}></div>
       <div className="gradient-mesh">
         <div className="gm-blob gm-blob1"></div>

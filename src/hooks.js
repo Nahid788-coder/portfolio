@@ -172,6 +172,48 @@ export function useScrollProgress() {
     return pct;
 }
 
+/* ---------- SCROLL-SCRUBBED VIDEO (whole-page scroll range, eased) ---------- */
+export function useScrollScrubVideo() {
+    const videoRef = useRef(null);
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const targetProgress = () => {
+            const h = document.documentElement;
+            const total = h.scrollHeight - h.clientHeight;
+            return Math.min(1, Math.max(0, total > 0 ? h.scrollTop / total : 0));
+        };
+
+        let raf;
+        let current = 0;
+        let ready = false;
+
+        const tick = () => {
+            if (ready && video.duration) {
+                const target = targetProgress();
+                current += (target - current) * 0.08;
+                if (Math.abs(target - current) < 0.0005) current = target;
+                video.currentTime = current * video.duration;
+            }
+            raf = requestAnimationFrame(tick);
+        };
+
+        const onReady = () => {
+            ready = true;
+            current = targetProgress();
+        };
+
+        video.pause();
+        if (video.readyState >= 1) onReady();
+        else video.addEventListener('loadedmetadata', onReady, { once: true });
+
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
+    }, []);
+    return videoRef;
+}
+
 /* ---------- RIPPLE HANDLER ---------- */
 export function applyRipple(e) {
     const el = e.currentTarget;

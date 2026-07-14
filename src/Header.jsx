@@ -60,7 +60,7 @@ function Header() {
     return (
         <>
             <canvas id="bg-canvas"></canvas>
-            <header className="header">
+            <header className="header" id="home">
                 <div className="header-bg-orb orb1"></div>
                 <div className="header-bg-orb orb2"></div>
                 <div className="header-bg-orb orb3"></div>

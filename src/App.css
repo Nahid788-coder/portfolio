@@ -64,6 +64,25 @@ h1, h2, h3, h4 {
 }
 .main { position: relative; z-index: 1; }
 
+.scroll-video-bg {
+  position: fixed; inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.scroll-video-bg video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+.scroll-video-bg-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(7,7,7,0.35) 0%, rgba(7,7,7,0.45) 60%, rgba(7,7,7,0.35) 100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-video-bg { display: none; }
+}
+
 .main::before {
   content: '';
   position: fixed; top: 0; left: 50%;
@@ -139,7 +158,8 @@ h1, h2, h3, h4 {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   padding: 120px 70px 80px;
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden; isolation: isolate;
 }
 
 .header-bg-orb { position: absolute; border-radius: 50%; filter: blur(110px); pointer-events: none; }
@@ -286,6 +306,8 @@ h1, h2, h3, h4 {
 }
 
 .hero-3d-wrapper { position: relative; width: 360px; height: 360px; }
+.hero-scene { position: absolute; inset: -60px; }
+.hero-scene canvas { display: block; width: 100% !important; height: 100% !important; }
 
 .hero-3d-card {
   width: 100%; height: 100%;
@@ -415,7 +437,7 @@ h1, h2, h3, h4 {
 .about-card {
   background: var(--bg-card);
   padding: 32px 24px;
-  transition: all 0.4s ease;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), background 0.35s ease, box-shadow 0.35s ease;
   position: relative;
 }
 .about-card::before {
@@ -426,9 +448,18 @@ h1, h2, h3, h4 {
   transition: transform 0.4s ease;
 }
 .about-card:hover::before { transform: scaleX(1); }
-.about-card:hover { background: rgba(201,169,110,0.03); }
+.about-card:hover {
+  background: rgba(201,169,110,0.03);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
 
-.about-card-icon { font-size: 26px; margin-bottom: 16px; display: block; }
+.about-card-icon {
+  font-size: 22px; margin-bottom: 16px; display: block;
+  color: var(--accent);
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.about-card:hover .about-card-icon { transform: scale(1.12) translateY(-2px); }
 .about-card h4 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #fff; }
 .about-card p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
 
@@ -440,7 +471,7 @@ h1, h2, h3, h4 {
 }
 
 /* ============ SKILLS ============ */
-.skill { padding: 140px 70px; position: relative; }
+.skill { padding: 140px 70px; position: relative; isolation: isolate; }
 .skill-bg {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%,-50%);
@@ -490,17 +521,20 @@ h1, h2, h3, h4 {
   background: var(--bg-card);
   padding: 22px 13px;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), background 0.3s ease, box-shadow 0.3s ease;
   cursor: default;
 }
 .tech-pill:hover {
   background: rgba(201,169,110,0.05);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  position: relative; z-index: 1;
 }
-.tech-pill-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+.tech-pill-icon { font-size: 22px; margin-bottom: 10px; display: block; color: var(--accent); }
 .tech-pill-name { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
 
 /* ============ WORK / SERVICES ============ */
-.work { padding: 140px 70px; position: relative; overflow: hidden; }
+.work { padding: 140px 70px; position: relative; overflow: hidden; isolation: isolate; }
 .work-inner { max-width: 1200px; margin: 0 auto; }
 .work-heading { text-align: center; margin-bottom: 80px; }
 .work-heading .section-title span { font-style: italic; color: var(--accent); }
@@ -526,7 +560,8 @@ h1, h2, h3, h4 {
   width: 52px; height: 52px;
   border: 1px solid var(--border-gold);
   display: flex; align-items: center; justify-content: center;
-  font-size: 24px; margin-bottom: 28px;
+  font-size: 22px; margin-bottom: 28px;
+  color: var(--accent);
 }
 .service-card h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; margin-bottom: 16px; color: #fff; }
 .service-card p { font-size: 14px; color: var(--text-muted); line-height: 1.8; font-weight: 300; }
@@ -780,7 +815,7 @@ h1, h2, h3, h4 {
 }
 
 /* ============ CONTACT ============ */
-.contact { padding: 140px 70px; position: relative; }
+.contact { padding: 140px 70px; position: relative; isolation: isolate; }
 .contact-inner { max-width: 1100px; margin: 0 auto; }
 .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 70px; align-items: start; }
 
@@ -913,9 +948,32 @@ h1, h2, h3, h4 {
   .about-grid { grid-template-columns: 1fr; gap: 50px; }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; }
+
+  /* Tablet: ease tight 3-column grids to 2 columns */
+  .skills-container { grid-template-columns: 1fr; gap: 40px; }
+  .skills-right { grid-template-columns: repeat(4,1fr); }
+  .services-grid { grid-template-columns: repeat(2,1fr); }
+  .about-right { grid-template-columns: 1fr 1fr; }
+  .p-row, .p-row--reverse { grid-template-columns: 1fr; min-height: auto; }
+  .p-row__img { height: 260px; order: 0 !important; }
+  .p-row--reverse .p-row__img { order: 0 !important; }
+  .p-row__body { order: 1 !important; }
+
+  /* Tone the scroll video down so it doesn't overpower the tighter tablet layout */
+  .scroll-video-bg video { opacity: 0.4; }
+  .scroll-video-bg-overlay {
+    background: linear-gradient(180deg, rgba(7,7,7,0.5) 0%, rgba(7,7,7,0.6) 60%, rgba(7,7,7,0.5) 100%);
+  }
 }
 
 @media (max-width: 768px) {
+  /* Landscape video on a portrait phone screen crops/zooms heavily with
+     object-fit:cover — soften it instead of fighting the aspect mismatch */
+  .scroll-video-bg video { opacity: 0.28; filter: blur(1.5px); }
+  .scroll-video-bg-overlay {
+    background: linear-gradient(180deg, rgba(7,7,7,0.6) 0%, rgba(7,7,7,0.7) 60%, rgba(7,7,7,0.6) 100%);
+  }
+
   /* ── Mobile performance: kill heavy blur/filter effects ── */
   .header-bg-orb { display: none; }
   .cursor, .cursor-follower { display: none; }

@@ -40,7 +40,7 @@ function About() {
                 <div className="about-right reveal-stagger" ref={rightRef}>
                     {a.cards.map((card, i) => (
                         <div className="about-card glow-border" key={i}>
-                            <span className="about-card-icon">{card.icon}</span>
+                            <i className={`fa-solid ${card.icon} about-card-icon`}></i>
                             <h4>{card.title}</h4>
                             <p>{card.desc}</p>
                         </div>

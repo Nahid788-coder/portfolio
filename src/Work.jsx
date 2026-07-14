@@ -38,7 +38,7 @@ function Work() {
                             onMouseLeave={resetTilt}
                         >
                             <div className="service-icon-wrap">
-                                <span>{s.icon}</span>
+                                <i className={`fa-solid ${s.icon}`}></i>
                             </div>
                             <h2>{s.title}</h2>
                             <p>{s.desc}</p>

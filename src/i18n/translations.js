@@ -36,10 +36,10 @@ export const translations = {
       para2: "What sets me apart is my honest approach — I believe in accurately representing my skills and continuously growing. I actively incorporate AI-assisted development and Prompt Engineering into my workflow to build smarter and faster.",
       downloadBtn: 'Download CV',
       cards: [
-        { icon: '🎓', title: 'Education', desc: 'Computer Engineering student with a strong foundation in software development.' },
-        { icon: '💼', title: 'Experience', desc: 'Full Stack Developer Intern at Junkies Coder, building real-world applications.' },
-        { icon: '🤖', title: 'AI Integration', desc: 'Leveraging AI & Prompt Engineering to accelerate development workflows.' },
-        { icon: '📱', title: 'Mobile Dev', desc: 'Building cross-platform mobile apps using Flutter framework.' },
+        { icon: 'fa-graduation-cap', title: 'Education', desc: 'Computer Engineering student with a strong foundation in software development.' },
+        { icon: 'fa-briefcase', title: 'Experience', desc: 'Full Stack Developer Intern at Junkies Coder, building real-world applications.' },
+        { icon: 'fa-robot', title: 'AI Integration', desc: 'Leveraging AI & Prompt Engineering to accelerate development workflows.' },
+        { icon: 'fa-mobile-screen-button', title: 'Mobile Dev', desc: 'Building cross-platform mobile apps using Flutter framework.' },
       ],
     },
     skill: {
@@ -54,9 +54,9 @@ export const translations = {
       titleSpan: 'Do',
       subtitle: 'End-to-end development from concept to deployment',
       services: [
-        { icon: '🖥️', title: 'Front-End Development', desc: 'Building responsive, interactive UIs with React.js and Next.js. Pixel-perfect designs with smooth animations and great UX.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
-        { icon: '⚙️', title: 'Back-End Development', desc: 'Robust server-side applications using Node.js and Express, with REST API design and SQL/MongoDB database integration.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
-        { icon: '📱', title: 'Mobile & Consultancy', desc: 'Cross-platform mobile apps with Flutter and technical consultation to help you make informed decisions for your projects.', tags: ['Flutter', 'Dart', 'Strategy', 'AI Tools'] },
+        { icon: 'fa-display', title: 'Front-End Development', desc: 'Building responsive, interactive UIs with React.js and Next.js. Pixel-perfect designs with smooth animations and great UX.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
+        { icon: 'fa-gears', title: 'Back-End Development', desc: 'Robust server-side applications using Node.js and Express, with REST API design and SQL/MongoDB database integration.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
+        { icon: 'fa-mobile-screen-button', title: 'Mobile & Consultancy', desc: 'Cross-platform mobile apps with Flutter and technical consultation to help you make informed decisions for your projects.', tags: ['Flutter', 'Dart', 'Strategy', 'AI Tools'] },
       ],
     },
     portfolio: {
@@ -128,10 +128,10 @@ export const translations = {
       para2: 'Was mich auszeichnet, ist mein ehrlicher Ansatz — ich glaube daran, meine Fähigkeiten korrekt darzustellen und mich kontinuierlich weiterzuentwickeln. Ich setze aktiv KI-gestützte Entwicklung und Prompt Engineering ein, um schneller und intelligenter zu arbeiten.',
       downloadBtn: 'Lebenslauf herunterladen',
       cards: [
-        { icon: '🎓', title: 'Ausbildung', desc: 'Informatikstudent mit einer starken Grundlage in der Softwareentwicklung.' },
-        { icon: '💼', title: 'Erfahrung', desc: 'Full Stack Entwickler Praktikant bei Junkies Coder, entwickelt reale Anwendungen.' },
-        { icon: '🤖', title: 'KI-Integration', desc: 'Einsatz von KI & Prompt Engineering zur Beschleunigung von Entwicklungsworkflows.' },
-        { icon: '📱', title: 'Mobile-Entwicklung', desc: 'Plattformübergreifende mobile Apps mit dem Flutter-Framework.' },
+        { icon: 'fa-graduation-cap', title: 'Ausbildung', desc: 'Informatikstudent mit einer starken Grundlage in der Softwareentwicklung.' },
+        { icon: 'fa-briefcase', title: 'Erfahrung', desc: 'Full Stack Entwickler Praktikant bei Junkies Coder, entwickelt reale Anwendungen.' },
+        { icon: 'fa-robot', title: 'KI-Integration', desc: 'Einsatz von KI & Prompt Engineering zur Beschleunigung von Entwicklungsworkflows.' },
+        { icon: 'fa-mobile-screen-button', title: 'Mobile-Entwicklung', desc: 'Plattformübergreifende mobile Apps mit dem Flutter-Framework.' },
       ],
     },
     skill: {
@@ -146,9 +146,9 @@ export const translations = {
       titleSpan: 'tue',
       subtitle: 'Komplette Entwicklung von der Idee bis zur Bereitstellung',
       services: [
-        { icon: '🖥️', title: 'Frontend-Entwicklung', desc: 'Entwicklung responsiver, interaktiver Benutzeroberflächen mit React.js und Next.js. Pixelgenaue Designs mit flüssigen Animationen.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
-        { icon: '⚙️', title: 'Backend-Entwicklung', desc: 'Robuste serverseitige Anwendungen mit Node.js und Express, REST API Design und SQL/MongoDB Datenbankintegration.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
-        { icon: '📱', title: 'Mobil & Beratung', desc: 'Plattformübergreifende mobile Apps mit Flutter und technische Beratung für fundierte Entscheidungen bei Ihren Projekten.', tags: ['Flutter', 'Dart', 'Strategie', 'KI-Tools'] },
+        { icon: 'fa-display', title: 'Frontend-Entwicklung', desc: 'Entwicklung responsiver, interaktiver Benutzeroberflächen mit React.js und Next.js. Pixelgenaue Designs mit flüssigen Animationen.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
+        { icon: 'fa-gears', title: 'Backend-Entwicklung', desc: 'Robuste serverseitige Anwendungen mit Node.js und Express, REST API Design und SQL/MongoDB Datenbankintegration.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
+        { icon: 'fa-mobile-screen-button', title: 'Mobil & Beratung', desc: 'Plattformübergreifende mobile Apps mit Flutter und technische Beratung für fundierte Entscheidungen bei Ihren Projekten.', tags: ['Flutter', 'Dart', 'Strategie', 'KI-Tools'] },
       ],
     },
     portfolio: {
@@ -220,10 +220,10 @@ export const translations = {
       para2: "Ce qui me distingue, c'est mon approche honnête — je crois en la représentation précise de mes compétences et en la croissance continue. J'intègre activement le développement assisté par IA dans mon flux de travail.",
       downloadBtn: 'Télécharger CV',
       cards: [
-        { icon: '🎓', title: 'Formation', desc: 'Étudiant en ingénierie informatique avec une solide base en développement logiciel.' },
-        { icon: '💼', title: 'Expérience', desc: "Développeur Full Stack stagiaire chez Junkies Coder, construisant des applications réelles." },
-        { icon: '🤖', title: "Intégration IA", desc: "Utilisation de l'IA & du Prompt Engineering pour accélérer les workflows de développement." },
-        { icon: '📱', title: 'Dev Mobile', desc: 'Création d\'applications mobiles multiplateforme avec le framework Flutter.' },
+        { icon: 'fa-graduation-cap', title: 'Formation', desc: 'Étudiant en ingénierie informatique avec une solide base en développement logiciel.' },
+        { icon: 'fa-briefcase', title: 'Expérience', desc: "Développeur Full Stack stagiaire chez Junkies Coder, construisant des applications réelles." },
+        { icon: 'fa-robot', title: "Intégration IA", desc: "Utilisation de l'IA & du Prompt Engineering pour accélérer les workflows de développement." },
+        { icon: 'fa-mobile-screen-button', title: 'Dev Mobile', desc: 'Création d\'applications mobiles multiplateforme avec le framework Flutter.' },
       ],
     },
     skill: {
@@ -238,9 +238,9 @@ export const translations = {
       titleSpan: 'fais',
       subtitle: 'Développement complet du concept au déploiement',
       services: [
-        { icon: '🖥️', title: 'Développement Front-End', desc: 'Construction d\'interfaces responsives et interactives avec React.js et Next.js. Designs pixel-perfect avec des animations fluides.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
-        { icon: '⚙️', title: 'Développement Back-End', desc: "Applications robustes côté serveur avec Node.js et Express, conception d'API REST et intégration SQL/MongoDB.", tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
-        { icon: '📱', title: 'Mobile & Conseil', desc: 'Applications mobiles multiplateformes avec Flutter et consultation technique pour vous aider à prendre des décisions éclairées.', tags: ['Flutter', 'Dart', 'Stratégie', 'IA'] },
+        { icon: 'fa-display', title: 'Développement Front-End', desc: 'Construction d\'interfaces responsives et interactives avec React.js et Next.js. Designs pixel-perfect avec des animations fluides.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
+        { icon: 'fa-gears', title: 'Développement Back-End', desc: "Applications robustes côté serveur avec Node.js et Express, conception d'API REST et intégration SQL/MongoDB.", tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
+        { icon: 'fa-mobile-screen-button', title: 'Mobile & Conseil', desc: 'Applications mobiles multiplateformes avec Flutter et consultation technique pour vous aider à prendre des décisions éclairées.', tags: ['Flutter', 'Dart', 'Stratégie', 'IA'] },
       ],
     },
     portfolio: {
@@ -312,10 +312,10 @@ export const translations = {
       para2: 'Lo que me distingue es mi enfoque honesto — creo en representar con precisión mis habilidades y seguir creciendo. Incorporo activamente el desarrollo asistido por IA y el Prompt Engineering para trabajar de forma más inteligente y rápida.',
       downloadBtn: 'Descargar CV',
       cards: [
-        { icon: '🎓', title: 'Educación', desc: 'Estudiante de Ingeniería Informática con una sólida base en desarrollo de software.' },
-        { icon: '💼', title: 'Experiencia', desc: 'Desarrollador Full Stack en prácticas en Junkies Coder, construyendo aplicaciones reales.' },
-        { icon: '🤖', title: 'Integración IA', desc: 'Uso de IA & Prompt Engineering para acelerar los flujos de trabajo de desarrollo.' },
-        { icon: '📱', title: 'Dev Móvil', desc: 'Creación de apps móviles multiplataforma usando el framework Flutter.' },
+        { icon: 'fa-graduation-cap', title: 'Educación', desc: 'Estudiante de Ingeniería Informática con una sólida base en desarrollo de software.' },
+        { icon: 'fa-briefcase', title: 'Experiencia', desc: 'Desarrollador Full Stack en prácticas en Junkies Coder, construyendo aplicaciones reales.' },
+        { icon: 'fa-robot', title: 'Integración IA', desc: 'Uso de IA & Prompt Engineering para acelerar los flujos de trabajo de desarrollo.' },
+        { icon: 'fa-mobile-screen-button', title: 'Dev Móvil', desc: 'Creación de apps móviles multiplataforma usando el framework Flutter.' },
       ],
     },
     skill: {
@@ -330,9 +330,9 @@ export const translations = {
       titleSpan: 'hago',
       subtitle: 'Desarrollo completo desde el concepto hasta el despliegue',
       services: [
-        { icon: '🖥️', title: 'Desarrollo Front-End', desc: 'Creación de interfaces responsivas e interactivas con React.js y Next.js. Diseños pixel-perfect con animaciones suaves.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
-        { icon: '⚙️', title: 'Desarrollo Back-End', desc: 'Aplicaciones robustas del lado del servidor con Node.js y Express, diseño de API REST e integración de bases de datos.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
-        { icon: '📱', title: 'Móvil & Consultoría', desc: 'Apps móviles multiplataforma con Flutter y consultoría técnica para tomar decisiones informadas en tus proyectos.', tags: ['Flutter', 'Dart', 'Estrategia', 'IA'] },
+        { icon: 'fa-display', title: 'Desarrollo Front-End', desc: 'Creación de interfaces responsivas e interactivas con React.js y Next.js. Diseños pixel-perfect con animaciones suaves.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
+        { icon: 'fa-gears', title: 'Desarrollo Back-End', desc: 'Aplicaciones robustas del lado del servidor con Node.js y Express, diseño de API REST e integración de bases de datos.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
+        { icon: 'fa-mobile-screen-button', title: 'Móvil & Consultoría', desc: 'Apps móviles multiplataforma con Flutter y consultoría técnica para tomar decisiones informadas en tus proyectos.', tags: ['Flutter', 'Dart', 'Estrategia', 'IA'] },
       ],
     },
     portfolio: {
@@ -404,10 +404,10 @@ export const translations = {
       para2: 'जो मुझे अलग बनाता है वह है मेरा ईमानदार दृष्टिकोण — मैं अपने कौशल को सटीक रूप से प्रस्तुत करने और लगातार बढ़ते रहने में विश्वास करता हूँ। मैं अपने workflow में AI-assisted development और Prompt Engineering को सक्रिय रूप से शामिल करता हूँ।',
       downloadBtn: 'CV डाउनलोड करें',
       cards: [
-        { icon: '🎓', title: 'शिक्षा', desc: 'सॉफ्टवेयर डेवलपमेंट में मजबूत आधार के साथ कंप्यूटर इंजीनियरिंग छात्र।' },
-        { icon: '💼', title: 'अनुभव', desc: 'Junkies Coder में Full Stack Developer इंटर्न, वास्तविक एप्लिकेशन बना रहा हूँ।' },
-        { icon: '🤖', title: 'AI एकीकरण', desc: 'विकास workflows को गति देने के लिए AI & Prompt Engineering का उपयोग।' },
-        { icon: '📱', title: 'मोबाइल Dev', desc: 'Flutter framework का उपयोग करके क्रॉस-प्लेटफॉर्म मोबाइल ऐप्स बनाना।' },
+        { icon: 'fa-graduation-cap', title: 'शिक्षा', desc: 'सॉफ्टवेयर डेवलपमेंट में मजबूत आधार के साथ कंप्यूटर इंजीनियरिंग छात्र।' },
+        { icon: 'fa-briefcase', title: 'अनुभव', desc: 'Junkies Coder में Full Stack Developer इंटर्न, वास्तविक एप्लिकेशन बना रहा हूँ।' },
+        { icon: 'fa-robot', title: 'AI एकीकरण', desc: 'विकास workflows को गति देने के लिए AI & Prompt Engineering का उपयोग।' },
+        { icon: 'fa-mobile-screen-button', title: 'मोबाइल Dev', desc: 'Flutter framework का उपयोग करके क्रॉस-प्लेटफॉर्म मोबाइल ऐप्स बनाना।' },
       ],
     },
     skill: {
@@ -422,9 +422,9 @@ export const translations = {
       titleSpan: 'करता हूँ',
       subtitle: 'अवधारणा से तैनाती तक पूर्ण विकास',
       services: [
-        { icon: '🖥️', title: 'Front-End विकास', desc: 'React.js और Next.js के साथ responsive, interactive UI बनाना। स्मूथ animations के साथ pixel-perfect designs।', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
-        { icon: '⚙️', title: 'Back-End विकास', desc: 'Node.js और Express का उपयोग करके मजबूत server-side applications, REST API design और SQL/MongoDB integration।', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
-        { icon: '📱', title: 'मोबाइल & परामर्श', desc: 'Flutter के साथ क्रॉस-प्लेटफॉर्म mobile apps और आपके projects के लिए तकनीकी परामर्श।', tags: ['Flutter', 'Dart', 'Strategy', 'AI Tools'] },
+        { icon: 'fa-display', title: 'Front-End विकास', desc: 'React.js और Next.js के साथ responsive, interactive UI बनाना। स्मूथ animations के साथ pixel-perfect designs।', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
+        { icon: 'fa-gears', title: 'Back-End विकास', desc: 'Node.js और Express का उपयोग करके मजबूत server-side applications, REST API design और SQL/MongoDB integration।', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
+        { icon: 'fa-mobile-screen-button', title: 'मोबाइल & परामर्श', desc: 'Flutter के साथ क्रॉस-प्लेटफॉर्म mobile apps और आपके projects के लिए तकनीकी परामर्श।', tags: ['Flutter', 'Dart', 'Strategy', 'AI Tools'] },
       ],
     },
     portfolio: {
@@ -496,10 +496,10 @@ export const translations = {
       para2: 'ما يميزني هو نهجي الصادق — أؤمن بتمثيل مهاراتي بدقة والنمو المستمر. أدمج بنشاط التطوير بمساعدة الذكاء الاصطناعي وهندسة الـ Prompt في سير عملي.',
       downloadBtn: 'تحميل السيرة الذاتية',
       cards: [
-        { icon: '🎓', title: 'التعليم', desc: 'طالب هندسة حاسوبية بأساس قوي في تطوير البرمجيات.' },
-        { icon: '💼', title: 'الخبرة', desc: 'متدرب مطور Full Stack في Junkies Coder، يبني تطبيقات واقعية.' },
-        { icon: '🤖', title: 'تكامل الذكاء الاصطناعي', desc: 'الاستفادة من الذكاء الاصطناعي وهندسة الـ Prompt لتسريع سير عمل التطوير.' },
-        { icon: '📱', title: 'تطوير الموبايل', desc: 'بناء تطبيقات موبايل متعددة المنصات باستخدام إطار عمل Flutter.' },
+        { icon: 'fa-graduation-cap', title: 'التعليم', desc: 'طالب هندسة حاسوبية بأساس قوي في تطوير البرمجيات.' },
+        { icon: 'fa-briefcase', title: 'الخبرة', desc: 'متدرب مطور Full Stack في Junkies Coder، يبني تطبيقات واقعية.' },
+        { icon: 'fa-robot', title: 'تكامل الذكاء الاصطناعي', desc: 'الاستفادة من الذكاء الاصطناعي وهندسة الـ Prompt لتسريع سير عمل التطوير.' },
+        { icon: 'fa-mobile-screen-button', title: 'تطوير الموبايل', desc: 'بناء تطبيقات موبايل متعددة المنصات باستخدام إطار عمل Flutter.' },
       ],
     },
     skill: {
@@ -514,9 +514,9 @@ export const translations = {
       titleSpan: 'أفعله',
       subtitle: 'تطوير متكامل من المفهوم إلى النشر',
       services: [
-        { icon: '🖥️', title: 'تطوير الواجهة الأمامية', desc: 'بناء واجهات مستخدم تفاعلية ومتجاوبة مع React.js و Next.js. تصاميم دقيقة بدقة البكسل مع رسوم متحركة سلسة.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
-        { icon: '⚙️', title: 'تطوير الواجهة الخلفية', desc: 'تطبيقات خادم قوية باستخدام Node.js و Express، مع تصميم REST API وتكامل قواعد البيانات.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
-        { icon: '📱', title: 'الموبايل والاستشارات', desc: 'تطبيقات موبايل متعددة المنصات مع Flutter واستشارات تقنية لمساعدتك في اتخاذ قرارات مستنيرة.', tags: ['Flutter', 'Dart', 'استراتيجية', 'أدوات AI'] },
+        { icon: 'fa-display', title: 'تطوير الواجهة الأمامية', desc: 'بناء واجهات مستخدم تفاعلية ومتجاوبة مع React.js و Next.js. تصاميم دقيقة بدقة البكسل مع رسوم متحركة سلسة.', tags: ['React.js', 'Next.js', 'CSS3', 'Tailwind'] },
+        { icon: 'fa-gears', title: 'تطوير الواجهة الخلفية', desc: 'تطبيقات خادم قوية باستخدام Node.js و Express، مع تصميم REST API وتكامل قواعد البيانات.', tags: ['Node.js', 'Express', 'MySQL', 'MongoDB'] },
+        { icon: 'fa-mobile-screen-button', title: 'الموبايل والاستشارات', desc: 'تطبيقات موبايل متعددة المنصات مع Flutter واستشارات تقنية لمساعدتك في اتخاذ قرارات مستنيرة.', tags: ['Flutter', 'Dart', 'استراتيجية', 'أدوات AI'] },
       ],
     },
     portfolio: {

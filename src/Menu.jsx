@@ -42,7 +42,7 @@ function Menu() {
     const currentLang = LANGUAGES.find(l => l.code === lang) || LANGUAGES[0];
 
     return (
-        <nav className={`menu ${scrolled ? 'scrolled' : ''}`} id="home">
+        <nav className={`menu ${scrolled ? 'scrolled' : ''}`}>
             <div className="menu-logo glitch" data-text="NH.">
                 NH<span>.</span>
             </div>
