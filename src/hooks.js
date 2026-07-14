@@ -172,8 +172,8 @@ export function useScrollProgress() {
     return pct;
 }
 
-/* ---------- SCROLL-SCRUBBED VIDEO (whole-page scroll range, throttled seeks) ---------- */
-export function useScrollScrubVideo(seekIntervalMs = 80) {
+/* ---------- SCROLL-SCRUBBED VIDEO (whole-page scroll range, eased) ---------- */
+export function useScrollScrubVideo() {
     const videoRef = useRef(null);
     useEffect(() => {
         const video = videoRef.current;
@@ -186,21 +186,23 @@ export function useScrollScrubVideo(seekIntervalMs = 80) {
         };
 
         let raf;
+        let current = 0;
         let ready = false;
-        let lastSeek = 0;
 
-        // Always reads the live scroll position — never a stale queued value —
-        // so throttling only reduces how often we seek, never how accurate
-        // the target frame is relative to where the page actually is right now.
-        const tick = (now) => {
-            if (ready && video.duration && now - lastSeek >= seekIntervalMs) {
-                lastSeek = now;
-                video.currentTime = targetProgress() * video.duration;
+        const tick = () => {
+            if (ready && video.duration) {
+                const target = targetProgress();
+                current += (target - current) * 0.08;
+                if (Math.abs(target - current) < 0.0005) current = target;
+                video.currentTime = current * video.duration;
             }
             raf = requestAnimationFrame(tick);
         };
 
-        const onReady = () => { ready = true; };
+        const onReady = () => {
+            ready = true;
+            current = targetProgress();
+        };
 
         video.pause();
         if (video.readyState >= 1) onReady();
@@ -208,7 +210,7 @@ export function useScrollScrubVideo(seekIntervalMs = 80) {
 
         raf = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(raf);
-    }, [seekIntervalMs]);
+    }, []);
     return videoRef;
 }
 
