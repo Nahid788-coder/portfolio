@@ -204,9 +204,20 @@ export function useScrollScrubVideo() {
             current = targetProgress();
         };
 
-        video.pause();
-        if (video.readyState >= 1) onReady();
-        else video.addEventListener('loadedmetadata', onReady, { once: true });
+        // iOS Safari (and some mobile Chrome) won't decode/paint any frame
+        // for a video that is only ever seeked, never played — kick off a
+        // silent play+immediate-pause so the first frame actually renders.
+        const kickstart = () => {
+            const p = video.play();
+            if (p && typeof p.then === 'function') {
+                p.then(() => video.pause()).catch(() => {});
+            } else {
+                video.pause();
+            }
+        };
+
+        if (video.readyState >= 1) { kickstart(); onReady(); }
+        else video.addEventListener('loadedmetadata', () => { kickstart(); onReady(); }, { once: true });
 
         raf = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(raf);
