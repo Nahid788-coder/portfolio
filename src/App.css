@@ -118,6 +118,8 @@ h1, h2, h3, h4 {
   letter-spacing: 0px;
 }
 
+.menu-rightbar { display: flex; align-items: center; gap: 22px; }
+
 .menubar ul { display: flex; gap: 2px; list-style: none; }
 
 .menubar ul li a {
