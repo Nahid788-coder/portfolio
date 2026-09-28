@@ -817,3 +817,18 @@ h1, h2, h3, h4, h5,
 @media (prefers-reduced-motion: reduce) {
   .menu, .menu::before { transition: none; }
 }
+
+/* nav links: hover uses the same dark violet pill as the active project filter */
+.menubar ul li a { z-index: 0; transition: color 0.25s ease; }
+.menubar ul li a::before {
+  z-index: -1;
+  background: linear-gradient(180deg, var(--btn-top), var(--ink));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 18px -10px rgba(var(--ink-rgb), 0.7);
+  transform: scale(0.85);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.menubar ul li a:hover,
+.menubar ul li a:focus-visible { color: var(--on-dark); }
+.menubar ul li a:hover::before,
+.menubar ul li a:focus-visible::before { opacity: 1; transform: scale(1); }
+.menubar ul li a::after { display: none; }
