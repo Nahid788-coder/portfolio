@@ -113,14 +113,17 @@ function Protfolio() {
         const observers = [];
         rowRefs.current.forEach((el, i) => {
             if (!el) return;
-            el.classList.remove('row-visible');
+            // rows swing in from their image side, like cards turning toward you
+            const side = i % 2 ? 1 : -1;
+            el.classList.remove('row-visible', 'row-in');
             el.style.opacity = '0';
-            el.style.transform = 'translateY(50px)';
-            el.style.transition = `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.09}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${i * 0.09}s`;
+            el.style.transform = `perspective(1400px) translateX(${side * 110}px) rotateY(${-side * 16}deg) scale(0.96)`;
+            el.style.transition = 'opacity 0.8s cubic-bezier(0.22,1,0.36,1) 0.05s, transform 1s cubic-bezier(0.22,1,0.36,1) 0.05s';
             const obs = new IntersectionObserver(([entry]) => {
                 if (entry.isIntersecting) {
+                    el.classList.add('row-in');
                     el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
+                    el.style.transform = 'perspective(1400px) translateX(0) rotateY(0) scale(1)';
                     el.addEventListener('transitionend', () => {
                         el.style.opacity = '';
                         el.style.transform = '';

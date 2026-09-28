@@ -1,0 +1,141 @@
+/* =====================================================================
+   SECTION MOTION
+   Each section enters in its own way, so scrolling feels like moving
+   through different rooms rather than the same fade repeated.
+     Hero      the name pours in like liquid after the loader
+     About     text sharpens out of a blur, cards flip up in 3D
+     Skills    heading zooms in, bars fill one by one, tech pills pop
+     Services  cards are dealt from a stack into place
+     Projects  rows swing in from their image side (see Protfolio.jsx)
+     Contact   details slide in one after another, the form condenses from mist
+   ===================================================================== */
+
+:root { --ease-out: cubic-bezier(0.22, 1, 0.36, 1); --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ---------- HERO: one orchestrated moment right after the loader ---------- */
+.header-badge   { animation: heroRise 0.9s var(--ease-out) 2.25s both; }
+.header-left h1 .line1 { animation: heroRise 0.9s var(--ease-out) 2.35s both; }
+.header-left h1 .line2 {
+  animation:
+    liquidPour 1.3s var(--ease-out) 2.45s both,
+    liquidFlow 7s cubic-bezier(0.45, 0, 0.25, 1) 3.8s infinite;
+}
+.header-left h1 { animation: none; }
+.header-left h3 { animation: heroRise 0.9s var(--ease-out) 2.75s both; }
+.header-left p  { animation: heroRise 0.9s var(--ease-out) 2.85s both; }
+.header-btns    { animation: heroRise 0.9s var(--ease-out) 2.95s both; }
+.header-stats   { animation: heroRise 0.9s var(--ease-out) 3.05s both; }
+.header-right   { animation: heroFade 1.2s var(--ease-out) 2.6s both; }
+.hero-floating-chip.chip1 { animation: chipIn 0.8s var(--ease-spring) 3.0s both, chipFloat 4s ease-in-out 3.8s infinite; }
+.hero-floating-chip.chip2 { animation: chipIn 0.8s var(--ease-spring) 3.15s both, chipFloat 4s ease-in-out 4.8s infinite; }
+.hero-floating-chip.chip3 { animation: chipIn3 0.8s var(--ease-spring) 3.3s both, chipFloat3 4s ease-in-out 5.8s infinite; }
+
+@keyframes heroRise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes liquidPour {
+  from { clip-path: inset(-30% 100% -40% -10%); transform: translateY(0.12em) skewX(-6deg); }
+  to   { clip-path: inset(-30% -30% -40% -10%); transform: none; }
+}
+@keyframes chipIn  { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes chipIn3 { from { opacity: 0; transform: translateY(-50%) scale(0.4); } to { opacity: 1; transform: translateY(-50%) scale(1); } }
+
+/* ---------- ABOUT: blur to sharp, cards flip up ---------- */
+#about .reveal-left {
+  transform: translateY(24px);
+  filter: blur(14px);
+  transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out), filter 1.1s var(--ease-out);
+}
+#about .reveal-left.in-view { transform: none; filter: blur(0); }
+#about .about-right { perspective: 1200px; }
+#about .reveal-stagger > * {
+  transform: rotateX(-78deg) translateY(30px);
+  transform-origin: 50% 0%;
+  transition: opacity 0.7s ease, transform 1s var(--ease-spring);
+}
+#about .reveal-stagger.in-view > * { transform: none; }
+
+/* ---------- SKILLS: zoom heading, bars fill in sequence, pills pop ---------- */
+#skills .skill-heading.reveal {
+  transform: scale(0.9);
+  letter-spacing: 0.02em;
+  transition: opacity 1s var(--ease-out), transform 1.2s var(--ease-out), letter-spacing 1.2s var(--ease-out);
+}
+#skills .skill-heading.reveal.in-view { transform: none; letter-spacing: normal; }
+#skills .skill-progress { transition: width 1.4s var(--ease-out) !important; }
+#skills .skill-item:nth-child(2) .skill-progress { transition-delay: 0.08s !important; }
+#skills .skill-item:nth-child(3) .skill-progress { transition-delay: 0.16s !important; }
+#skills .skill-item:nth-child(4) .skill-progress { transition-delay: 0.24s !important; }
+#skills .skill-item:nth-child(5) .skill-progress { transition-delay: 0.32s !important; }
+#skills .skill-item:nth-child(6) .skill-progress { transition-delay: 0.40s !important; }
+#skills .skill-item:nth-child(7) .skill-progress { transition-delay: 0.48s !important; }
+#skills .skill-item:nth-child(8) .skill-progress { transition-delay: 0.56s !important; }
+#skills .skill-item:nth-child(n+9) .skill-progress { transition-delay: 0.64s !important; }
+
+#skills .reveal-stagger > * {
+  transform: scale(0.35) rotate(-10deg);
+  transition: opacity 0.5s ease, transform 0.75s var(--ease-spring);
+}
+#skills .reveal-stagger.in-view > * { transform: none; }
+/* a scattered order so the grid "bubbles up" instead of filling row by row */
+#skills .reveal-stagger.in-view > *:nth-child(3n+1) { transition-delay: 0.05s; }
+#skills .reveal-stagger.in-view > *:nth-child(3n+2) { transition-delay: 0.22s; }
+#skills .reveal-stagger.in-view > *:nth-child(3n)   { transition-delay: 0.12s; }
+#skills .reveal-stagger.in-view > *:nth-child(4n)   { transition-delay: 0.3s; }
+#skills .reveal-stagger.in-view > *:nth-child(5n)   { transition-delay: 0.38s; }
+
+/* ---------- SERVICES: dealt from a stack ---------- */
+#work .work-heading.reveal { transform: translateY(-24px); }
+#work .work-heading.reveal.in-view { transform: none; }
+#work .reveal-stagger > * {
+  transition: opacity 0.6s ease, transform 1.05s var(--ease-out);
+}
+#work .reveal-stagger > *:nth-child(1) { transform: translate(104%, 50px) rotate(-7deg); }
+#work .reveal-stagger > *:nth-child(2) { transform: translate(0, 70px) scale(0.94); }
+#work .reveal-stagger > *:nth-child(3) { transform: translate(-104%, 50px) rotate(7deg); }
+#work .reveal-stagger.in-view > * { transform: none; }
+#work .reveal-stagger.in-view > *:nth-child(2) { transition-delay: 0.05s; }
+#work .reveal-stagger.in-view > *:nth-child(1),
+#work .reveal-stagger.in-view > *:nth-child(3) { transition-delay: 0.18s; }
+
+/* ---------- PROJECTS: heading drops in, images settle from a zoom ---------- */
+#portfolio .protfolio-heading.reveal { transform: translateY(-30px) scale(1.04); }
+#portfolio .protfolio-heading.reveal.in-view { transform: none; }
+.p-row .p-row__img img { transform: scale(1.22); transition: transform 1.6s var(--ease-out); }
+.p-row.row-in .p-row__img img { transform: scale(1); }
+
+/* ---------- CONTACT: details slide in one by one, form condenses from mist ---------- */
+#contact .reveal-left { transform: none; }
+#contact .reveal-left > * {
+  opacity: 0; transform: translateX(-40px);
+  transition: opacity 0.7s ease, transform 0.9s var(--ease-out);
+}
+#contact .reveal-left.in-view > * { opacity: 1; transform: none; }
+#contact .reveal-left.in-view > *:nth-child(2) { transition-delay: 0.08s; }
+#contact .reveal-left.in-view > *:nth-child(3) { transition-delay: 0.16s; }
+#contact .reveal-left.in-view > *:nth-child(4) { transition-delay: 0.26s; }
+#contact .reveal-left.in-view > *:nth-child(5) { transition-delay: 0.36s; }
+#contact .reveal-left.in-view > *:nth-child(6) { transition-delay: 0.46s; }
+#contact .reveal-right {
+  transform: scale(0.94);
+  filter: blur(18px);
+  transition: opacity 1.2s ease, transform 1.3s var(--ease-out), filter 1.3s var(--ease-out);
+}
+#contact .reveal-right.in-view { transform: none; filter: blur(0); }
+
+/* ---------- phones: shorter distances, no sideways dealing ---------- */
+@media (max-width: 768px) {
+  #work .reveal-stagger > *:nth-child(n) { transform: translateY(60px) scale(0.95); }
+  #work .reveal-stagger.in-view > *:nth-child(n) { transform: none; }
+  #about .reveal-left, #contact .reveal-right { filter: blur(8px); }
+}
+
+/* ---------- respect reduced motion: everything simply appears ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .header-badge, .header-left h1 .line1, .header-left h1 .line2, .header-left h3, .header-left p,
+  .header-btns, .header-stats, .header-right, .hero-floating-chip { animation: none !important; }
+  #about .reveal-left, #about .reveal-stagger > *, #skills .skill-heading.reveal, #skills .reveal-stagger > *,
+  #work .reveal-stagger > *, #contact .reveal-left > *, #contact .reveal-right,
+  #portfolio .protfolio-heading.reveal, .p-row .p-row__img img {
+    opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important;
+  }
+}

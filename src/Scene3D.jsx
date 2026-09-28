@@ -1,13 +1,20 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { getTheme } from './themes';
 
 /*
   Liquid Glass 3D scene
-  - One morphing "liquid glass" blob that refracts a warm, slowly moving backdrop.
-  - A few glass pebbles and a glass ring orbit around it.
-  - The blob travels across the page as you scroll and leans toward the cursor.
-  - Lighter geometry on phones, a single still frame for reduced-motion users.
+  Every section of the page has its own glass object, each with its own motion:
+    Home      liquid blob that wobbles like water, with a ring and orbiting pebbles
+    About     glass knot that slowly ties and turns
+    Skills    an atom: a glass core with electrons racing around three orbits
+    Services  three glass blocks that assemble into a stack as you scroll
+    Projects  glass "screens" that fan open like a deck of cards
+    Contact   the liquid blob returns, calmer
+  The object travels between sections and swaps shape while it is off-screen.
+  Phones get lighter geometry; reduced-motion users get a still frame.
 */
 
 const NOISE = /* glsl */ `
@@ -35,29 +42,30 @@ float snoise(vec3 v){
   return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
 }`;
 
-/* Warm backdrop the glass refracts: latte base with drifting caramel and cocoa pools */
-const backdropMaterial = () =>
+/* Soft backdrop the glass refracts: theme base colour with slowly drifting colour pools */
+const backdropMaterial = (sc) =>
   new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 }, uScroll: { value: 0 }, uAspect: { value: 1 } },
+    uniforms: {
+      uTime: { value: 0 }, uScroll: { value: 0 }, uAspect: { value: 1 },
+      uBase: { value: new THREE.Color(sc.base) }, uC1: { value: new THREE.Color(sc.c1) },
+      uC2: { value: new THREE.Color(sc.c2) }, uC3: { value: new THREE.Color(sc.c3) },
+    },
     vertexShader: /* glsl */ `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} `,
     fragmentShader: /* glsl */ `
       precision highp float;
       varying vec2 vUv; uniform float uTime; uniform float uScroll; uniform float uAspect;
+      uniform vec3 uBase; uniform vec3 uC1; uniform vec3 uC2; uniform vec3 uC3;
       ${NOISE}
       float pool(vec2 p, vec2 c, float r){ return smoothstep(r, 0.0, length(p-c)); }
       void main(){
         vec2 p = vUv - 0.5; p.x *= uAspect;
         float t = uTime*0.05; float s = uScroll;
-        vec3 latte   = vec3(0.925,0.886,0.831);
-        vec3 sand    = vec3(0.914,0.800,0.667);
-        vec3 caramel = vec3(0.788,0.604,0.439);
-        vec3 cinnamon= vec3(0.620,0.420,0.290);
-        vec3 col = latte;
+        vec3 col = uBase;
         float w = snoise(vec3(p*1.4, t))*0.08;
-        col = mix(col, sand,    0.85*pool(p+w, vec2(-0.55+sin(t*2.)*0.08, 0.28-s*0.35), 0.55));
-        col = mix(col, caramel, 0.70*pool(p-w, vec2( 0.62+cos(t*1.7)*0.1,-0.18+s*0.25), 0.42));
-        col = mix(col, cinnamon,0.45*pool(p+w, vec2( 0.10+sin(t*1.3)*0.15,-0.46+s*0.2), 0.30));
-        col = mix(col, sand,    0.55*pool(p, vec2(0.85, 0.45), 0.40));
+        col = mix(col, uC1, 0.85*pool(p+w, vec2(-0.55+sin(t*2.)*0.08, 0.28-s*0.35), 0.55));
+        col = mix(col, uC2, 0.70*pool(p-w, vec2( 0.62+cos(t*1.7)*0.1,-0.18+s*0.25), 0.42));
+        col = mix(col, uC3, 0.40*pool(p+w, vec2( 0.10+sin(t*1.3)*0.15,-0.46+s*0.2), 0.30));
+        col = mix(col, uC1, 0.55*pool(p, vec2(0.85, 0.45), 0.40));
         float grain = fract(sin(dot(vUv*vec2(1280.,720.)+uTime, vec2(12.9898,78.233)))*43758.5453);
         col += (grain-0.5)*0.018;
         gl_FragColor = vec4(col,1.0);
@@ -65,14 +73,13 @@ const backdropMaterial = () =>
     depthWrite: false,
   });
 
-/* Glass material. When `liquid` is true, the vertex shader turns the sphere into a slow, wobbling liquid. */
-function glassMaterial({ liquid = false, tint = '#b8845a', mobile = false } = {}) {
+function glassMaterial({ sc, tint, liquid = false, mobile = false, thickness = 0.8 }) {
   const mat = new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color('#fffaf3'),
+    color: new THREE.Color(sc.glass),
     metalness: 0,
     roughness: 0.06,
     transmission: 1,
-    thickness: liquid ? 1.6 : 0.8,
+    thickness: liquid ? 1.6 : thickness,
     ior: 1.32,
     attenuationColor: new THREE.Color(tint),
     attenuationDistance: liquid ? 2.4 : 1.8,
@@ -128,44 +135,182 @@ function glassMaterial({ liquid = false, tint = '#b8845a', mobile = false } = {}
   return { mat, uniforms };
 }
 
-/* Where the blob sits at each point of the page (0 = top, 1 = bottom). */
-const DESKTOP_PATH = [
-  { p: 0.0, x: 1.95, y: 0.0, s: 0.9, amp: 0.17 },
-  { p: 0.16, x: -2.7, y: 0.25, s: 0.72, amp: 0.22 },
-  { p: 0.34, x: 2.85, y: -0.2, s: 0.62, amp: 0.15 },
-  { p: 0.52, x: -2.9, y: 0.0, s: 0.66, amp: 0.24 },
-  { p: 0.74, x: 2.9, y: 0.15, s: 0.68, amp: 0.18 },
-  { p: 1.0, x: -2.6, y: -0.25, s: 0.8, amp: 0.22 },
-];
-DESKTOP_PATH.arc = 3.6; // big enough that the blob leaves the screen while it switches sides
-// Phones: the blob stays tucked into the top corner so it never sits on top of text.
-const MOBILE_PATH = [
-  { p: 0.0, x: 0.5, y: 1.78, s: 0.4, amp: 0.15 },
-  { p: 0.3, x: 0.62, y: 1.95, s: 0.34, amp: 0.2 },
-  { p: 0.6, x: 0.55, y: 1.85, s: 0.37, amp: 0.15 },
-  { p: 1.0, x: 0.6, y: 1.95, s: 0.35, amp: 0.2 },
-];
+/* ---------------------------------------------------------------
+   Shapes. Each returns { group, update(time, localProgress, mouse) }
+   --------------------------------------------------------------- */
 
-function samplePath(path, p) {
-  if (p <= path[0].p) return path[0];
-  for (let i = 1; i < path.length; i++) {
-    const a = path[i - 1], b = path[i];
-    if (p <= b.p) {
-      let t = (p - a.p) / (b.p - a.p);
-      t = t * t * (3 - 2 * t);
-      // swoop above/below the content while crossing sides, instead of cutting through the text
-      const bump = Math.sin(Math.PI * t);
-      const arc = (path.arc || 0) * (i % 2 ? 1 : -1) * bump;
-      return {
-        x: a.x + (b.x - a.x) * t,
-        y: a.y + (b.y - a.y) * t + arc,
-        s: (a.s + (b.s - a.s) * t) * (1 - 0.35 * bump * (path.arc ? 1 : 0)),
-        amp: a.amp + (b.amp - a.amp) * t + 0.08 * bump,
-      };
-    }
+function makeLiquid({ sc, mobile, withPebbles }) {
+  const group = new THREE.Group();
+  const { mat, uniforms } = glassMaterial({ sc, tint: sc.tintA, liquid: true, mobile });
+  const blob = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, mobile ? 28 : 72), mat);
+  group.add(blob);
+  const ringMat = glassMaterial({ sc, tint: sc.tintB, mobile }).mat;
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.04, 24, mobile ? 90 : 180), ringMat);
+  ring.rotation.set(1.15, 0.35, 0);
+  group.add(ring);
+
+  const pebbles = [];
+  if (withPebbles) {
+    const pm = glassMaterial({ sc, tint: sc.tintA, mobile }).mat;
+    [
+      { geo: new THREE.SphereGeometry(0.22, 48, 48), r: 2.35, speed: 0.32, phase: 0.0, tilt: 0.5, y: 0.2 },
+      { geo: new THREE.CapsuleGeometry(0.1, 0.34, 12, 24), r: 2.6, speed: -0.24, phase: 2.1, tilt: -0.35, y: -0.3 },
+      { geo: new THREE.TorusGeometry(0.16, 0.06, 20, 48), r: 2.2, speed: 0.4, phase: 4.0, tilt: 0.2, y: 0.55 },
+      { geo: new THREE.SphereGeometry(0.12, 32, 32), r: 2.9, speed: 0.2, phase: 5.2, tilt: -0.6, y: -0.6 },
+      { geo: new THREE.IcosahedronGeometry(0.16, 0), r: 2.45, speed: -0.3, phase: 1.1, tilt: 0.8, y: 0.0 },
+    ].slice(0, mobile ? 2 : 5).forEach((d) => {
+      const m = new THREE.Mesh(d.geo, pm);
+      group.add(m);
+      pebbles.push({ mesh: m, ...d });
+    });
   }
-  return path[path.length - 1];
+
+  return {
+    group,
+    uniforms,
+    update(t, lt, mouse, calm) {
+      blob.rotation.y = t * 0.12 + lt * 1.5;
+      blob.rotation.x = Math.sin(t * 0.2) * 0.25 + mouse.y * 0.3;
+      ring.rotation.z = t * 0.15 + lt * 2.0;
+      ring.rotation.x = 1.15 + mouse.y * 0.25;
+      ring.rotation.y = 0.35 + mouse.x * 0.25;
+      pebbles.forEach((pb) => {
+        const a = pb.phase + t * pb.speed + lt * 3.0;
+        pb.mesh.position.set(Math.cos(a) * pb.r, pb.y + Math.sin(a * 1.3) * 0.25 + Math.sin(a) * pb.tilt, Math.sin(a) * pb.r * 0.6);
+        pb.mesh.rotation.set(t * 0.4 + pb.phase, t * 0.3, 0);
+      });
+      uniforms.uTime.value = t;
+      uniforms.uAmp.value = calm ? 0.12 : 0.17;
+    },
+  };
 }
+
+function makeKnot({ sc, mobile }) {
+  const group = new THREE.Group();
+  const mat = glassMaterial({ sc, tint: sc.tintA, mobile, thickness: 1.1 }).mat;
+  const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(0.85, 0.27, mobile ? 140 : 280, mobile ? 18 : 40, 2, 3), mat);
+  group.add(knot);
+  return {
+    group,
+    update(t, lt, mouse) {
+      knot.rotation.set(0.4 + t * 0.18 + mouse.y * 0.3, t * 0.25 + lt * Math.PI * 1.5 + mouse.x * 0.3, t * 0.08);
+      const breathe = 1 + Math.sin(t * 1.1) * 0.035;
+      knot.scale.setScalar(breathe);
+    },
+  };
+}
+
+function makeAtom({ sc, mobile }) {
+  const group = new THREE.Group();
+  const coreMat = glassMaterial({ sc, tint: sc.tintA, mobile, thickness: 1.2 }).mat;
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55, mobile ? 6 : 12), coreMat);
+  group.add(core);
+  const ringMat = glassMaterial({ sc, tint: sc.tintB, mobile }).mat;
+  const eMat = glassMaterial({ sc, tint: sc.tintA, mobile }).mat;
+  const orbits = [0, 1, 2].map((i) => {
+    const pivot = new THREE.Group();
+    pivot.rotation.set(Math.PI / 2 + (i - 1) * 0.9, i * 1.05, 0);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.35, 0.02, 12, mobile ? 80 : 160), ringMat);
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.14, 32, 32), eMat);
+    pivot.add(ring);
+    pivot.add(e);
+    group.add(pivot);
+    return { pivot, e, speed: 0.9 + i * 0.35, phase: i * 2.1 };
+  });
+  return {
+    group,
+    update(t, lt, mouse) {
+      group.rotation.y = t * 0.15 + lt * 2 + mouse.x * 0.3;
+      group.rotation.x = mouse.y * 0.3;
+      core.rotation.set(t * 0.3, t * 0.2, 0);
+      orbits.forEach((o) => {
+        const a = o.phase + t * o.speed;
+        o.e.position.set(Math.cos(a) * 1.35, Math.sin(a) * 1.35, 0);
+      });
+    },
+  };
+}
+
+function makeBlocks({ sc, mobile }) {
+  const group = new THREE.Group();
+  const mats = [sc.tintA, sc.tintB, sc.tintA].map((c) => glassMaterial({ sc, tint: c, mobile, thickness: 1 }).mat);
+  const blocks = [0, 1, 2].map((i) => {
+    const m = new THREE.Mesh(new RoundedBoxGeometry(0.95, 0.95, 0.95, mobile ? 3 : 6, 0.18), mats[i]);
+    group.add(m);
+    return {
+      mesh: m,
+      scatter: new THREE.Vector3((i - 1) * 1.6, (i - 1) * -0.9 + 0.3, (i % 2 ? -0.6 : 0.5)),
+      stack: new THREE.Vector3((i - 1) * 0.12, (i - 1) * 1.02, 0),
+      spin: i % 2 ? -1 : 1,
+    };
+  });
+  const tmp = new THREE.Vector3();
+  return {
+    group,
+    update(t, lt, mouse) {
+      // scattered when the section arrives, stacked by the middle of it
+      const k = THREE.MathUtils.smoothstep(lt, 0.05, 0.55);
+      blocks.forEach((b, i) => {
+        tmp.lerpVectors(b.scatter, b.stack, k);
+        tmp.y += Math.sin(t * 1.2 + i) * 0.06 * (1 - k * 0.6);
+        b.mesh.position.copy(tmp);
+        b.mesh.rotation.set(
+          (1 - k) * (t * 0.5 + i) + k * 0.12,
+          b.spin * t * (0.35 + (1 - k) * 0.4) + i * 0.6,
+          (1 - k) * t * 0.3
+        );
+      });
+      group.rotation.y = mouse.x * 0.35;
+      group.rotation.x = mouse.y * 0.2;
+    },
+  };
+}
+
+function makeScreens({ sc, mobile }) {
+  const group = new THREE.Group();
+  const mat = glassMaterial({ sc, tint: sc.tintB, mobile, thickness: 0.4 }).mat;
+  const geo = new RoundedBoxGeometry(1.7, 1.1, 0.07, mobile ? 2 : 4, 0.09);
+  const cards = [0, 1, 2, 3].map(() => {
+    const m = new THREE.Mesh(geo, mat);
+    group.add(m);
+    return m;
+  });
+  return {
+    group,
+    update(t, lt, mouse) {
+      // cards fan open, then keep slowly cycling like a deck being shuffled
+      const open = THREE.MathUtils.smoothstep(lt, 0.0, 0.35);
+      cards.forEach((c, i) => {
+        const f = i - 1.5;
+        const cyc = (t * 0.25 + i / 4) % 1;
+        c.position.set(f * 0.42 * open, Math.sin(cyc * Math.PI * 2) * 0.12, f * -0.28);
+        c.rotation.set(-0.18 + mouse.y * 0.2, f * 0.32 * open + mouse.x * 0.3 + Math.sin(t * 0.4) * 0.08, f * -0.06 * open);
+      });
+    },
+  };
+}
+
+/* ---------------------------------------------------------------
+   Where the object sits in each section (world units, camera at z=8)
+   --------------------------------------------------------------- */
+const SECTION_IDS = ['home', 'about', 'skills', 'work', 'portfolio', 'contact'];
+const SHAPE_FOR_SECTION = [0, 1, 2, 3, 4, 0]; // contact reuses the liquid blob
+const DESKTOP_SPOTS = [
+  { x: 1.95, y: 0.0, s: 0.9 },   // home: right of the headline
+  { x: 2.3, y: -1.7, s: 0.64 },  // about: peeking out below the glass cards
+  { x: -2.75, y: -0.1, s: 0.8 }, // skills: behind the proficiency card
+  { x: 2.7, y: -0.35, s: 0.8 },  // services
+  { x: -2.85, y: 0.15, s: 0.72 },// projects
+  { x: 2.55, y: 0.0, s: 0.82 },  // contact: behind the form
+];
+const MOBILE_SPOTS = [
+  { x: 0.0, y: 1.48, s: 0.34 },  // home: centred above the headline
+  { x: -0.72, y: -2.0, s: 0.2 }, // other sections: a small gem in the lower-left corner
+  { x: -0.72, y: -2.0, s: 0.2 },
+  { x: -0.72, y: -2.0, s: 0.2 },
+  { x: -0.72, y: -2.0, s: 0.2 },
+  { x: -0.72, y: -2.0, s: 0.2 },
+];
 
 export default function Scene3D() {
   const mountRef = useRef(null);
@@ -178,6 +323,7 @@ export default function Scene3D() {
       return;
     }
 
+    const sc = getTheme().scene;
     const mobile = window.matchMedia('(max-width: 768px), (hover: none)').matches;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -203,16 +349,15 @@ export default function Scene3D() {
     const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment = envTex;
 
-    scene.add(new THREE.HemisphereLight('#fff4e6', '#8a5a3b', 0.9));
-    const key = new THREE.DirectionalLight('#fff1dc', 2.2);
+    scene.add(new THREE.HemisphereLight(sc.sky, sc.ground, 0.9));
+    const key = new THREE.DirectionalLight('#ffffff', 2.1);
     key.position.set(3, 4, 5);
     scene.add(key);
-    const rim = new THREE.DirectionalLight('#e9b98a', 1.4);
+    const rim = new THREE.DirectionalLight(sc.rim, 1.4);
     rim.position.set(-4, -2, -3);
     scene.add(rim);
 
-    // Backdrop plane (what the glass refracts)
-    const bgMat = backdropMaterial();
+    const bgMat = backdropMaterial(sc);
     const bg = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), bgMat);
     bg.position.z = -6;
     scene.add(bg);
@@ -224,37 +369,39 @@ export default function Scene3D() {
     };
     fitBackdrop();
 
-    // Liquid blob
+    // Carrier that travels between sections; shapes live inside it
     const world = new THREE.Group();
     scene.add(world);
-    const blobGroup = new THREE.Group();
-    world.add(blobGroup);
-    const { mat: blobMat, uniforms: blobU } = glassMaterial({ liquid: true, mobile });
-    const blob = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, mobile ? 28 : 72), blobMat);
-    blobGroup.add(blob);
+    const carrier = new THREE.Group();
+    world.add(carrier);
 
-    // Glass ring around the blob
-    const ringMat = glassMaterial({ tint: '#c99a6e', mobile }).mat;
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.04, 24, mobile ? 90 : 180), ringMat);
-    ring.rotation.set(1.15, 0.35, 0);
-    blobGroup.add(ring);
-
-    // Orbiting pebbles
-    const pebbleDefs = [
-      { geo: new THREE.SphereGeometry(0.22, 48, 48), r: 2.35, speed: 0.32, phase: 0.0, tilt: 0.5, y: 0.2 },
-      { geo: new THREE.CapsuleGeometry(0.1, 0.34, 12, 24), r: 2.6, speed: -0.24, phase: 2.1, tilt: -0.35, y: -0.3 },
-      { geo: new THREE.TorusGeometry(0.16, 0.06, 20, 48), r: 2.2, speed: 0.4, phase: 4.0, tilt: 0.2, y: 0.55 },
-      { geo: new THREE.SphereGeometry(0.12, 32, 32), r: 2.9, speed: 0.2, phase: 5.2, tilt: -0.6, y: -0.6 },
-      { geo: new THREE.IcosahedronGeometry(0.16, 0), r: 2.45, speed: -0.3, phase: 1.1, tilt: 0.8, y: 0.0 },
-    ].slice(0, mobile ? 3 : 5);
-    const pebbleMat = glassMaterial({ tint: '#a8744f', mobile }).mat;
-    const pebbles = pebbleDefs.map((d) => {
-      const m = new THREE.Mesh(d.geo, pebbleMat);
-      blobGroup.add(m);
-      return { mesh: m, ...d };
+    const shapes = [
+      makeLiquid({ sc, mobile, withPebbles: true }),
+      makeKnot({ sc, mobile }),
+      makeAtom({ sc, mobile }),
+      makeBlocks({ sc, mobile }),
+      makeScreens({ sc, mobile }),
+    ];
+    shapes.forEach((s, i) => {
+      s.vis = i === 0 ? 1 : 0;
+      s.group.visible = i === 0;
+      carrier.add(s.group);
     });
 
-    // Input
+    // Section geometry, re-measured when the page changes size
+    let sections = [];
+    const measure = () => {
+      sections = SECTION_IDS.map((id) => {
+        const el = document.getElementById(id);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return { top: r.top + window.scrollY, height: Math.max(r.height, 1) };
+      }).filter(Boolean);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
+
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
     const onMove = (e) => {
       mouse.tx = (e.clientX / window.innerWidth) * 2 - 1;
@@ -262,83 +409,103 @@ export default function Scene3D() {
     };
     window.addEventListener('pointermove', onMove, { passive: true });
 
-    const scrollState = { p: 0, target: 0 };
-    const readScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      scrollState.target = max > 0 ? window.scrollY / max : 0;
-    };
-    readScroll();
-    window.addEventListener('scroll', readScroll, { passive: true });
-
-    const cur = { x: 0, y: 0, s: 1, amp: 0.24 };
-    const pathFor = () => (camera.aspect < 0.9 ? MOBILE_PATH : DESKTOP_PATH);
-    const aspectFactor = () => THREE.MathUtils.clamp(camera.aspect / 1.6, 0.6, 1.25);
-    const init = samplePath(pathFor(), scrollState.target);
-    Object.assign(cur, init);
+    const scroll = { y: window.scrollY, target: window.scrollY };
+    const onScroll = () => { scroll.target = window.scrollY; };
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
       fitBackdrop();
+      measure();
     };
     window.addEventListener('resize', onResize);
 
-    // Loop
+    /* Which section are we in, how far through it, and where should the object be? */
+    const placement = (y) => {
+      const spots = camera.aspect < 0.9 ? MOBILE_SPOTS : DESKTOP_SPOTS;
+      const center = y + window.innerHeight * 0.5;
+      let i = 0;
+      sections.forEach((s, k) => { if (s.top <= center) i = k; });
+      const sec = sections[i] || { top: 0, height: 1 };
+      const lt = THREE.MathUtils.clamp((center - sec.top) / sec.height, 0, 1);
+      const last = i >= sections.length - 1;
+      const b = last ? 0 : THREE.MathUtils.smoothstep(lt, 0.62, 1.0);
+      const a = spots[i] || spots[0];
+      const n = spots[i + 1] || a;
+      const af = spots === DESKTOP_SPOTS ? THREE.MathUtils.clamp(camera.aspect / 1.6, 0.6, 1.25) : 1;
+      const crosses = Math.sign(a.x) !== Math.sign(n.x) && a.x !== 0 && n.x !== 0;
+      const bump = Math.sin(Math.PI * b);
+      // when switching sides, swoop off the top/bottom of the screen instead of crossing the text
+      const arc = crosses ? (i % 2 ? -1 : 1) * 3.6 * bump : 0;
+      return {
+        x: THREE.MathUtils.lerp(a.x, n.x, b) * af,
+        y: THREE.MathUtils.lerp(a.y, n.y, b) + arc,
+        s: THREE.MathUtils.lerp(a.s, n.s, b) * Math.min(af, 1) * (crosses ? 1 - 0.35 * bump : 1),
+        active: SHAPE_FOR_SECTION[b < 0.5 ? i : Math.min(i + 1, SHAPE_FOR_SECTION.length - 1)],
+        section: b < 0.5 ? i : i + 1,
+        lt: b < 0.5 ? lt : 0,
+      };
+    };
+
+    const cur = { x: 0, y: 0, s: 0.9 };
+    Object.assign(cur, placement(scroll.y));
+
     const timer = new THREE.Timer();
     timer.connect(document);
     let raf = 0;
     let running = true;
     const intro = { v: reduced ? 1 : 0 };
+    const dir = new THREE.Vector3();
 
-    const frame = () => {
+    const frame = (instant = false) => {
       timer.update();
       const dt = Math.min(timer.getDelta(), 0.05);
       const t = timer.getElapsed();
-      const k = 1 - Math.pow(0.001, dt); // frame-rate independent easing
+      const k = instant ? 1 : 1 - Math.pow(0.001, dt);
 
-      scrollState.p += (scrollState.target - scrollState.p) * k * 1.4;
+      scroll.y += (scroll.target - scroll.y) * Math.min(1, k * 1.6);
       mouse.x += (mouse.tx - mouse.x) * k;
       mouse.y += (mouse.ty - mouse.y) * k;
       intro.v += (1 - intro.v) * k * 0.9;
 
-      const path = pathFor();
-      const goal = samplePath(path, scrollState.p);
-      const af = path === DESKTOP_PATH ? aspectFactor() : 1;
-      cur.x += (goal.x * af - cur.x) * k;
+      const goal = placement(scroll.y);
+      cur.x += (goal.x - cur.x) * k;
       cur.y += (goal.y - cur.y) * k;
-      cur.s += (goal.s * (path === DESKTOP_PATH ? Math.min(af, 1) : 1) - cur.s) * k;
-      cur.amp += (goal.amp - cur.amp) * k;
+      cur.s += (goal.s - cur.s) * k;
 
       const introEase = 1 - Math.pow(1 - intro.v, 3);
-      blobGroup.position.set(cur.x, cur.y + (1 - introEase) * -1.2, 0);
-      blobGroup.scale.setScalar(cur.s * (0.6 + 0.4 * introEase));
+      carrier.position.set(cur.x, cur.y + (1 - introEase) * -1.2, 0);
+      carrier.scale.setScalar(cur.s * (0.6 + 0.4 * introEase));
 
-      blob.rotation.y = t * 0.12 + scrollState.p * Math.PI * 2;
-      blob.rotation.x = Math.sin(t * 0.2) * 0.25 + mouse.y * 0.3;
-      ring.rotation.z = t * 0.15 + scrollState.p * 3.0;
-      ring.rotation.x = 1.15 + mouse.y * 0.25;
-      ring.rotation.y = 0.35 + mouse.x * 0.25;
-
-      pebbles.forEach((pb) => {
-        const a = pb.phase + t * pb.speed + scrollState.p * 4.0;
-        pb.mesh.position.set(Math.cos(a) * pb.r, pb.y + Math.sin(a * 1.3) * 0.25 + Math.sin(a) * pb.tilt, Math.sin(a) * pb.r * 0.6);
-        pb.mesh.rotation.set(t * 0.4 + pb.phase, t * 0.3, 0);
+      shapes.forEach((sh, i) => {
+        const target = i === goal.active ? 1 : 0;
+        sh.vis += (target - sh.vis) * (instant ? 1 : Math.min(1, k * 1.8));
+        if (sh.vis < 0.002 && target === 0) {
+          sh.vis = 0;
+          sh.group.visible = false;
+          return;
+        }
+        sh.group.visible = true;
+        const e = sh.vis * sh.vis * (3 - 2 * sh.vis);
+        sh.group.scale.setScalar(e);
+        sh.group.rotation.z = (1 - e) * 1.2;
+        sh.update(t, goal.lt, mouse, goal.section === 5);
       });
 
       world.rotation.y = mouse.x * 0.12;
       world.rotation.x = -mouse.y * 0.08;
 
-      if (blobU) {
-        blobU.uTime.value = t;
-        blobU.uAmp.value = cur.amp;
-        // make the blob bulge toward the cursor
-        const dir = new THREE.Vector3(mouse.x - cur.x / 4, mouse.y - cur.y / 3, 0.8).normalize();
-        blobU.uMouseDir.value.lerp(dir, k);
-        blobU.uMouseAmt.value += ((mobile ? 0 : 0.18) - blobU.uMouseAmt.value) * k;
+      const liquid = shapes[0].uniforms;
+      if (liquid) {
+        dir.set(mouse.x - cur.x / 4, mouse.y - cur.y / 3, 0.8).normalize();
+        liquid.uMouseDir.value.lerp(dir, k);
+        liquid.uMouseAmt.value += ((mobile ? 0 : 0.18) - liquid.uMouseAmt.value) * k;
       }
       bgMat.uniforms.uTime.value = t;
-      bgMat.uniforms.uScroll.value = scrollState.p;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bgMat.uniforms.uScroll.value = max > 0 ? scroll.y / max : 0;
 
       renderer.render(scene, camera);
     };
@@ -349,9 +516,10 @@ export default function Scene3D() {
       raf = requestAnimationFrame(loop);
     };
 
+    let still = null;
     if (reduced) {
-      frame();
-      const still = () => { readScroll(); scrollState.p = scrollState.target; frame(); };
+      frame(true);
+      still = () => { scroll.target = scroll.y = window.scrollY; frame(true); };
       window.addEventListener('scroll', still, { passive: true });
       window.addEventListener('resize', still);
     } else {
@@ -373,9 +541,14 @@ export default function Scene3D() {
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      ro.disconnect();
       window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('scroll', readScroll);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      if (still) {
+        window.removeEventListener('scroll', still);
+        window.removeEventListener('resize', still);
+      }
       document.removeEventListener('visibilitychange', onVisibility);
       scene.traverse((o) => {
         if (o.geometry) o.geometry.dispose();
