@@ -587,8 +587,3 @@ h1, h2, h3, h4, h5,
 .cursor-follower { -webkit-backdrop-filter: none; backdrop-filter: none; }
 .project-modal-overlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 
-/* chat window sits over busy content: keep it solid enough to read */
-.ai-chat-window {
-  background: linear-gradient(160deg, rgba(var(--glass-hi-rgb), 0.97) 0%, rgba(var(--glass-lo-rgb), 0.95) 100%) !important;
-}
-.ai-chat-header, .ai-input-wrap { background: rgba(var(--glass-lo-rgb), 0.9); }
