@@ -50,6 +50,7 @@ export default function StackCard({ title }) {
   const [pill, setPill] = useState({ left: 0, width: 0 });
   const touched = useRef(false);
   const rootRef = useRef(null);
+  const listRef = useRef(null);
 
   // slide the glass pill under the active tab
   useEffect(() => {
@@ -74,6 +75,15 @@ export default function StackCard({ title }) {
     }, 5000);
     return () => { clearInterval(id); io.disconnect(); };
   }, []);
+
+  // hide the bottom fade once the list is scrolled to the end (or has nothing to scroll)
+  const markEnd = () => {
+    const el = listRef.current;
+    if (!el) return;
+    el.classList.toggle('is-end', el.scrollTop + el.clientHeight >= el.scrollHeight - 4);
+    el.classList.toggle('is-scrolled', el.scrollTop > 2);
+  };
+  useEffect(() => { if (listRef.current) listRef.current.scrollTop = 0; markEnd(); }, [tab]);
 
   const pick = (i) => { touched.current = true; setTab(i); };
   const group = GROUPS[tab];
@@ -103,7 +113,7 @@ export default function StackCard({ title }) {
         ))}
       </div>
 
-      <ul className="stack-list" role="tabpanel" id="stack-panel" aria-labelledby={`stack-tab-${group.id}`} key={group.id}>
+      <ul className="stack-list" ref={listRef} onScroll={markEnd} onWheel={() => { touched.current = true; }} onTouchStart={() => { touched.current = true; }} role="tabpanel" id="stack-panel" aria-labelledby={`stack-tab-${group.id}`} key={group.id}>
         {group.items.map((it, i) => {
           const d = dotsFor(it.level);
           return (
