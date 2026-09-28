@@ -62,7 +62,8 @@ export default function SkillsGlobe({ techs }) {
         const depth = (z2 + 1) / 2;
         p.el.style.transform = `translate(${x1 * Rx * sc - p.w / 2}px, ${y2 * Ry * sc - p.h / 2}px) scale(${0.6 + 0.5 * depth})`;
         p.el.style.opacity = (0.2 + 0.8 * depth).toFixed(3);
-        p.el.style.zIndex = String(Math.round(depth * 100));
+        const z = Math.round(depth * 20);
+        if (p.z0 !== z) { p.el.style.zIndex = String(z); p.z0 = z; }
         if (z2 > bestZ) { bestZ = z2; best = p; }
       });
       if (best !== front) {

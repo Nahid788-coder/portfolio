@@ -839,3 +839,29 @@ h1, h2, h3, h4, h5,
 /* hovering a different link softens the active one so only one pill reads as "strong" */
 .menubar ul:hover li a.is-active:not(:hover)::before { opacity: 0.35; }
 .menubar ul:hover li a.is-active:not(:hover) { color: var(--ink); }
+
+/* ---------- performance pass ---------- */
+/* cursor + progress bar move with transforms only (no layout) */
+.cursor, .cursor-follower { left: 0 !important; top: 0 !important; transition: none !important; will-change: transform; }
+.scroll-progress { width: 100% !important; transform: scaleX(0); transform-origin: 0 50%; transition: none !important; will-change: transform; }
+
+/* the name's light sweep repaints big blurred text every frame: run it twice, then rest */
+.header-left h1 .line2 {
+  animation:
+    liquidPour 1.3s var(--ease-out) 2.75s both,
+    liquidFlow 7s cubic-bezier(0.45, 0, 0.25, 1) 4.10s 2 both;
+}
+
+/* smaller blur radius over the live 3D canvas (blur cost grows with radius) */
+.menu::before,
+.hero-floating-chip, .header-badge, .lang-current-btn {
+  -webkit-backdrop-filter: blur(12px) saturate(150%) !important;
+  backdrop-filter: blur(12px) saturate(150%) !important;
+}
+
+/* reveal elements only need a compositor layer while they animate in */
+.reveal.in-view, .reveal-left.in-view, .reveal-right.in-view { will-change: auto; }
+
+/* the marquee and hint animations idle when the tab is in the background anyway;
+   keep them off for people who asked for less motion */
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }

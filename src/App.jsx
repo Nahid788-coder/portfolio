@@ -19,7 +19,7 @@ const LoaderN = lazy(() => import('./LoaderN'))
 import { LanguageProvider } from './context/LanguageContext'
 
 function App() {
-  const progress = useScrollProgress()
+  const progressRef = useScrollProgress()
   const [loaderGone, setLoaderGone] = useState(false)
   const [loaderPhase, setLoaderPhase] = useState('symbol') // symbol | cover | hold | reveal
   const [symbolVisible, setSymbolVisible] = useState(false)
@@ -88,7 +88,7 @@ function App() {
       <Suspense fallback={<div className="scene3d scene3d--fallback" aria-hidden="true" />}>
         <Scene3D />
       </Suspense>
-      <div className="scroll-progress" style={{ width: `${progress}%` }}></div>
+      <div className="scroll-progress" ref={progressRef}></div>
 
       <LanguageProvider>
         <div className='main'>

@@ -29,24 +29,22 @@ function Header() {
         document.body.appendChild(cursor);
         document.body.appendChild(follower);
 
-        let fx = 0, fy = 0, animating = false;
-        const move = e => {
-            cursor.style.left = e.clientX - 6 + 'px';
-            cursor.style.top = e.clientY - 6 + 'px';
-            if (!animating) {
-                animating = true;
-                const tick = () => {
-                    fx += (parseFloat(cursor.style.left) - 14 - fx) * 0.12;
-                    fy += (parseFloat(cursor.style.top) - 14 - fy) * 0.12;
-                    follower.style.left = fx + 'px';
-                    follower.style.top = fy + 'px';
-                    requestAnimationFrame(tick);
-                };
-                tick();
-            }
+        let fx = 0, fy = 0, tx = 0, ty = 0, raf = 0;
+        const tick = () => {
+            fx += (tx - fx) * 0.18;
+            fy += (ty - fy) * 0.18;
+            follower.style.transform = `translate3d(${fx}px, ${fy}px, 0)`;
+            // stop the loop once the ring has caught up with the cursor
+            raf = Math.abs(tx - fx) + Math.abs(ty - fy) > 0.3 ? requestAnimationFrame(tick) : 0;
         };
-        window.addEventListener('mousemove', move);
+        const move = e => {
+            cursor.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+            tx = e.clientX - 16; ty = e.clientY - 16;
+            if (!raf) raf = requestAnimationFrame(tick);
+        };
+        window.addEventListener('mousemove', move, { passive: true });
         return () => {
+            cancelAnimationFrame(raf);
             window.removeEventListener('mousemove', move);
             cursor.remove();
             follower.remove();

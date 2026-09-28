@@ -158,18 +158,28 @@ export function useTyped(words, { typeSpeed = 90, deleteSpeed = 45, pause = 1400
 
 /* ---------- SCROLL PROGRESS ---------- */
 export function useScrollProgress() {
-    const [pct, setPct] = useState(0);
+    // updates the bar directly (once per frame) so scrolling never re-renders the app
+    const ref = useRef(null);
     useEffect(() => {
-        const onScroll = () => {
+        let raf = 0;
+        const paint = () => {
+            raf = 0;
             const h = document.documentElement;
             const total = h.scrollHeight - h.clientHeight;
-            setPct(total > 0 ? (h.scrollTop / total) * 100 : 0);
+            const pct = total > 0 ? h.scrollTop / total : 0;
+            if (ref.current) ref.current.style.transform = `scaleX(${pct})`;
         };
-        onScroll();
+        const onScroll = () => { if (!raf) raf = requestAnimationFrame(paint); };
+        paint();
         window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
+        window.addEventListener('resize', onScroll);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
+            cancelAnimationFrame(raf);
+        };
     }, []);
-    return pct;
+    return ref;
 }
 
 /* ---------- SCROLL-SCRUBBED VIDEO (whole-page scroll range, eased) ---------- */

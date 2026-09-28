@@ -532,12 +532,13 @@ export default function Scene3D() {
 
     // adaptive quality: if frames stay slow, render at a lower resolution
     const perf = { sum: 0, n: 0 };
+    let idleNow = false;
     const adapt = (rawDt) => {
       perf.sum += rawDt; perf.n += 1;
-      if (perf.n < 90) return;
+      if (perf.n < 60) return;
       const avg = perf.sum / perf.n;
       perf.sum = 0; perf.n = 0;
-      if (avg > 0.024 && dpr > 0.7) {
+      if (avg > 0.022 && dpr > 0.7) {
         dpr = Math.max(0.7, dpr - 0.2);
         renderer.setPixelRatio(dpr);
         renderer.transmissionResolutionScale = Math.max(0.3, renderer.transmissionResolutionScale - 0.1);
@@ -547,7 +548,8 @@ export default function Scene3D() {
     const frame = (instant = false) => {
       timer.update();
       const rawDt = timer.getDelta();
-      if (!instant) adapt(rawDt);
+      // half-rate idle frames would look 'slow' to the quality check, so skip them
+      if (!instant && !idleNow) adapt(rawDt);
       const dt = Math.min(rawDt, 0.05);
       const t = timer.getElapsed();
       const k = instant ? 1 : 1 - Math.pow(0.001, dt);
@@ -614,10 +616,21 @@ export default function Scene3D() {
       renderer.render(scene, camera);
     };
 
+    // full frame rate while the visitor scrolls or moves the mouse; half rate when idle
+    let lastInput = performance.now();
+    let skip = false;
+    const poke = () => { lastInput = performance.now(); };
+    window.addEventListener('scroll', poke, { passive: true });
+    window.addEventListener('pointermove', poke, { passive: true });
     const loop = () => {
       if (!running) return;
-      frame();
       raf = requestAnimationFrame(loop);
+      const idle = performance.now() - lastInput > 1500;
+      if (idle !== idleNow) { perf.sum = 0; perf.n = 0; }
+      idleNow = idle;
+      skip = idle ? !skip : false;
+      if (skip) return;
+      frame();
     };
 
     let still = null;
@@ -648,6 +661,8 @@ export default function Scene3D() {
       ro.disconnect();
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', poke);
+      window.removeEventListener('pointermove', poke);
       window.removeEventListener('pointermove', onBubbleMove);
       window.removeEventListener('pointerdown', onTap);
       window.removeEventListener('resize', onResize);
