@@ -679,3 +679,12 @@ h1, h2, h3, h4, h5,
   .p-face--front .p-row__img { height: auto !important; min-height: 200px; }
   .p-face--front .p-row__img img { position: absolute; inset: 0; }
 }
+
+/* front text sits centred in its half, with equal space on both sides, on every card */
+@media (min-width: 1025px) {
+  .p-face--front .p-row__body {
+    align-items: center; text-align: center;
+    padding-left: 40px; padding-right: 40px;
+  }
+  .p-face--front .p-row__actions { justify-content: center; }
+}
