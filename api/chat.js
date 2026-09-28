@@ -47,12 +47,17 @@ const LANGS = ['English', 'हिंदी', 'Deutsch', 'العربية', 'Fran�
 const MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
 
 export default async function handler(req, res) {
+  const key = process.env.GROQ_API_KEY || process.env.VITE_GROQ_KEY;
+
+  // GET /api/chat: a health check that says whether a key is set (never the key itself)
+  if (req.method === 'GET') {
+    return res.status(200).json({ ok: true, keyConfigured: Boolean(key), keyName: process.env.GROQ_API_KEY ? 'GROQ_API_KEY' : (key ? 'VITE_GROQ_KEY' : null) });
+  }
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
+    res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'method_not_allowed' });
   }
 
-  const key = process.env.GROQ_API_KEY || process.env.VITE_GROQ_KEY;
   if (!key) return res.status(503).json({ error: 'not_configured' });
 
   let body = req.body;
