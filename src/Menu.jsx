@@ -6,6 +6,7 @@ function Menu() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
+    const [active, setActive] = useState('home');
     const { lang, setLang, t } = useLanguage();
 
     useEffect(() => {
@@ -13,6 +14,33 @@ function Menu() {
         const handleScroll = () => setScrolled(prev => (prev ? window.scrollY > 24 : window.scrollY > 64));
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // scroll spy: highlight the link of the section in view
+    useEffect(() => {
+        const ids = ['home', 'about', 'skills', 'work', 'portfolio', 'contact'];
+        let raf = 0;
+        const update = () => {
+            raf = 0;
+            const line = window.innerHeight * 0.4;
+            let current = ids[0];
+            for (const id of ids) {
+                const el = document.getElementById(id);
+                if (el && el.getBoundingClientRect().top <= line) current = id;
+            }
+            // at the very bottom the last section wins even if it is short
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = ids[ids.length - 1];
+            setActive(current);
+        };
+        const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
+            cancelAnimationFrame(raf);
+        };
     }, []);
 
     // Close lang dropdown on outside click
@@ -55,7 +83,12 @@ function Menu() {
                     <ul>
                         {navItems.map(([id, label]) => (
                             <li key={id}>
-                                <a href={`#${id}`} onClick={e => scrollToSection(e, id)}>{label}</a>
+                                <a
+                                    href={`#${id}`}
+                                    className={active === id ? 'is-active' : undefined}
+                                    aria-current={active === id ? 'location' : undefined}
+                                    onClick={e => scrollToSection(e, id)}
+                                >{label}</a>
                             </li>
                         ))}
                     </ul>

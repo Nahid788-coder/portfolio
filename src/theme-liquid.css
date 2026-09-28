@@ -832,3 +832,10 @@ h1, h2, h3, h4, h5,
 .menubar ul li a:hover::before,
 .menubar ul li a:focus-visible::before { opacity: 1; transform: scale(1); }
 .menubar ul li a::after { display: none; }
+
+/* nav: the link for the section in view stays lit with the same pill */
+.menubar ul li a.is-active { color: var(--on-dark); }
+.menubar ul li a.is-active::before { opacity: 1; transform: scale(1); }
+/* hovering a different link softens the active one so only one pill reads as "strong" */
+.menubar ul:hover li a.is-active:not(:hover)::before { opacity: 0.35; }
+.menubar ul:hover li a.is-active:not(:hover) { color: var(--ink); }
