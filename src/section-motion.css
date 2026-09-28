@@ -139,3 +139,15 @@
     opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important;
   }
 }
+
+/* hero animations hold until the loader's timeline starts (html.hero-go), since
+   the loader now waits for the 3D N and its start time varies */
+html:not(.hero-go) .header-badge,
+html:not(.hero-go) .header-left h1 .line1,
+html:not(.hero-go) .header-left h1 .line2,
+html:not(.hero-go) .header-left h3,
+html:not(.hero-go) .header-left p,
+html:not(.hero-go) .header-btns,
+html:not(.hero-go) .header-stats,
+html:not(.hero-go) .header-right,
+html:not(.hero-go) .hero-floating-chip { animation-play-state: paused; }

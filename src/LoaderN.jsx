@@ -10,7 +10,7 @@ import { getTheme } from './themes';
 */
 const N_OUTLINE = [[17, 83], [17, 17], [29, 17], [71, 62], [71, 17], [83, 17], [83, 83], [71, 83], [29, 38], [29, 83]];
 
-export default function LoaderN() {
+export default function LoaderN({ onReady }) {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -25,7 +25,8 @@ export default function LoaderN() {
     try {
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     } catch {
-      return; // the SVG fallback stays
+      onReady?.();
+      return;
     }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(size, size);
@@ -113,6 +114,7 @@ export default function LoaderN() {
       if (!reduced && t < 6) raf = requestAnimationFrame(frame);
     };
     frame();
+    onReady?.();
 
     return () => {
       cancelAnimationFrame(raf);
@@ -126,7 +128,7 @@ export default function LoaderN() {
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <div ref={mountRef} className="lp-n-3d" aria-hidden="true" />;
 }
