@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useReveal } from './hooks';
 import { useLanguage } from './context/LanguageContext';
+import FlipCard from './FlipCard';
 
 function Protfolio() {
-    const [selectedProject, setSelectedProject] = useState(null);
     const [activeFilter, setActiveFilter] = useState('All');
     const headRef = useReveal();
     const filterRef = useReveal();
@@ -139,26 +139,6 @@ function Protfolio() {
         return () => observers.forEach(o => o.disconnect());
     }, [filtered.length]);
 
-    // 3D depth tilt: the row leans toward the cursor, its layers sit at different depths
-    const tiltMove = (e) => {
-        const el = e.currentTarget;
-        if (e.pointerType !== 'mouse' || !el.classList.contains('row-visible')) return;
-        const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-        el.classList.add('tilting');
-        el.style.transform = `perspective(1600px) rotateY(${(px - 0.5) * 9}deg) rotateX(${(0.5 - py) * 7}deg) translateY(-4px)`;
-        el.style.setProperty('--gx', `${px * 100}%`);
-        el.style.setProperty('--gy', `${py * 100}%`);
-    };
-    const tiltLeave = (e) => {
-        const el = e.currentTarget;
-        if (!el.classList.contains('tilting')) return;
-        el.classList.remove('tilting');
-        el.style.transform = '';
-    };
-
-    const openModal = (proj) => { setSelectedProject(proj); document.body.style.overflow = 'hidden'; };
-    const closeModal = () => { setSelectedProject(null); document.body.style.overflow = 'auto'; };
 
     return (
         <section className="protfolio" id="portfolio">
@@ -184,78 +164,16 @@ function Protfolio() {
 
             <div className="portfolio-list">
                 {filtered.map((project, index) => (
-                    <div
-                        className={`p-row ${index % 2 !== 0 ? 'p-row--reverse' : ''}`}
+                    <FlipCard
                         key={project.title}
-                        ref={el => rowRefs.current[index] = el}
-                        onPointerMove={tiltMove}
-                        onPointerLeave={tiltLeave}
-                    >
-                        <span className="p-row__glare" aria-hidden="true"></span>
-                        <div className="p-row__img">
-                            <img src={project.image} alt={project.title} loading="lazy" />
-                            <span className="p-row__num">{String(index + 1).padStart(2, '0')}</span>
-                        </div>
-
-                        <div className="p-row__body">
-                            <span className="p-row__cat">{project.category}</span>
-                            <h3 className="p-row__title">{project.title}</h3>
-                            <p className="p-row__desc">{project.description}</p>
-                            <div className="p-row__tech">
-                                {project.technologies.map((tech, i) => (
-                                    <span key={i}>{tech}</span>
-                                ))}
-                            </div>
-                            <button onClick={() => openModal(project)} className="p-row__btn">
-                                {p.viewProject}
-                                <i className="fa-solid fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
+                        project={project}
+                        index={index}
+                        p={p}
+                        cardRef={el => rowRefs.current[index] = el}
+                    />
                 ))}
             </div>
 
-            {selectedProject && (
-                <div className="project-modal-overlay" onClick={closeModal}>
-                    <div className="project-modal" onClick={e => e.stopPropagation()}>
-                        <button className="modal-close" onClick={closeModal}>
-                            <i className="fa-solid fa-xmark"></i>
-                        </button>
-                        <div className="modal-image">
-                            <img src={selectedProject.image} alt={selectedProject.title} />
-                        </div>
-                        <div className="modal-content">
-                            <span className="modal-category">{selectedProject.category}</span>
-                            <h2>{selectedProject.title}</h2>
-                            <p className="modal-description">{selectedProject.description}</p>
-                            <div className="modal-section">
-                                <h4><i className="fa-solid fa-code"></i> {p.technologies}</h4>
-                                <div className="tech-tags">
-                                    {selectedProject.technologies.map((tech, i) => (
-                                        <span key={i} className="tech-tag">{tech}</span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="modal-section">
-                                <h4><i className="fa-solid fa-star"></i> {p.keyFeatures}</h4>
-                                <ul className="features-list">
-                                    {selectedProject.features.map((f, i) => (
-                                        <li key={i}><i className="fa-solid fa-check"></i> {f}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <a
-                                className="modal-btn"
-                                href={selectedProject.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <i className="fa-solid fa-arrow-up-right-from-square"></i> {p.viewLive}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            )}
         </section>
     );
 }
