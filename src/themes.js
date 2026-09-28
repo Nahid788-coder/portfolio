@@ -3,7 +3,7 @@
   Pick a theme by changing DEFAULT_THEME, or preview any theme with ?theme=<name> in the URL.
 */
 
-export const DEFAULT_THEME = 'mocha';
+export const DEFAULT_THEME = 'iris';
 
 const hexToRgb = (hex) => {
   const n = parseInt(hex.replace('#', ''), 16);
