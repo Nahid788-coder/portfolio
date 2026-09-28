@@ -50,7 +50,7 @@ export default async function handler(req, res) {
   const key = process.env.GROQ_API_KEY || process.env.VITE_GROQ_KEY;
 
   // GET /api/chat: a health check that says whether a key is set (never the key itself)
-  if (req.method === 'GET') {
+  if (req.method === 'GET' || req.method === 'HEAD') {
     return res.status(200).json({ ok: true, keyConfigured: Boolean(key), keyName: process.env.GROQ_API_KEY ? 'GROQ_API_KEY' : (key ? 'VITE_GROQ_KEY' : null) });
   }
   if (req.method !== 'POST') {
