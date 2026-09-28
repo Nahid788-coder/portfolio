@@ -588,84 +588,14 @@ h1, h2, h3, h4, h5,
 .project-modal-overlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 
 
-/* ---------- proficiency: liquid glass orbs ----------
-   Each skill is a glass bubble filled to its level; the surface is two slowly
-   turning rounded squares (the classic CSS liquid trick), transform-only so it
-   stays on the compositor. Waves pause while the card is off-screen. */
-.skills-container { align-items: stretch; }
-.skills-left.skills-orbs {
-  height: 540px; padding: 32px 30px 26px; border-radius: 32px;
-  display: flex; flex-direction: column; gap: 18px;
-}
-.skills-orbs h3 { margin: 0; }
-.orb-grid {
-  list-style: none; margin: 0; padding: 0; flex: 1;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-content: space-evenly; gap: 14px 8px;
-}
-.orb-item { display: grid; justify-items: center; gap: 8px; text-align: center; }
-.orb {
-  position: relative; width: min(74px, 100%); aspect-ratio: 1; border-radius: 50%; overflow: hidden;
-  isolation: isolate;
-  background: linear-gradient(180deg, rgba(var(--glass-hi-rgb), 0.95), rgba(var(--glass-lo-rgb), 0.85));
-  box-shadow:
-    inset 0 2px 3px rgba(255, 255, 255, 0.95),
-    inset 0 -6px 14px rgba(var(--accent-rgb), 0.18),
-    0 14px 24px -14px rgba(var(--shadow-rgb), 0.55);
-  transition: transform 0.4s var(--ease-spring, ease);
-}
-.orb::after { /* glass highlight on top of the liquid */
-  content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; z-index: 3;
-  background:
-    radial-gradient(40% 28% at 32% 20%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%),
-    radial-gradient(60% 40% at 70% 95%, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0) 70%);
-  border: 1px solid rgba(255, 255, 255, 0.8); box-sizing: border-box;
-}
-.orb-fill {
-  position: absolute; inset: 0; z-index: 1;
-  transform: translateY(100%);
-  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--i) * 60ms + 150ms);
-}
-.in-view .orb-fill { transform: translateY(calc((100 - var(--lv)) * 1%)); }
-.orb-wave {
-  position: absolute; left: -50%; top: -8%; width: 200%; height: 200%;
-  border-radius: 42%;
-  background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 45%, var(--btn-top) 100%);
-  animation: orbSpin 7s linear infinite;
-  animation-delay: calc(var(--i) * -0.7s);
-}
-.orb-wave--2 {
-  top: -12%; border-radius: 38%; opacity: 0.45;
-  background: linear-gradient(180deg, var(--glint2), var(--accent-light));
-  animation-duration: 11s; animation-direction: reverse;
-}
-@keyframes orbSpin { to { transform: rotate(360deg); } }
-.orb-num {
-  position: absolute; left: 0; right: 0; bottom: 18%; z-index: 4;
-  font-size: 13px; font-weight: 700; letter-spacing: -0.02em; color: var(--on-dark);
-  text-shadow: 0 1px 4px rgba(var(--ink-rgb), 0.35);
-  font-variant-numeric: tabular-nums;
-  opacity: 0; transition: opacity 0.6s ease calc(var(--i) * 60ms + 900ms);
-}
-.in-view .orb-num { opacity: 1; }
-.orb-name { font-size: 13px; font-weight: 550; color: var(--ink); line-height: 1.2; letter-spacing: -0.01em; }
-.orb-item:hover .orb { transform: translateY(-4px) scale(1.07); }
-.skills-orbs:not(.orbs-live) .orb-wave { animation-play-state: paused; }
-
-/* the old bar entrance is replaced by the fill */
-#skills .skills-orbs.reveal-left { transform: translateY(24px); }
-#skills .skills-orbs.reveal-left.in-view { transform: none; }
-
-@media (max-width: 1024px) {
-  .skills-left.skills-orbs { height: auto; }
-  .orb-grid { gap: 22px 10px; }
-}
-@media (max-width: 560px) {
-  .orb-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .orb { width: 70px; }
-  .skills-left.skills-orbs { padding: 24px 16px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .orb-wave { animation: none; }
-  .orb-fill { transition: none; }
+/* ---------- skills: one wide, centred globe ---------- */
+.skills-container--globe { display: block; max-width: 980px; margin: 0 auto; }
+.skills-container--globe .skills-right-globe { position: static; }
+.skills-container--globe .skills-globe { height: 620px; border-radius: 36px; }
+.skills-container--globe .globe-chip { font-size: 15px; padding: 8px 15px; }
+.skills-container--globe .globe-core { width: 190px; height: 190px; margin: -95px 0 0 -95px; }
+@media (max-width: 768px) {
+  .skills-container--globe .skills-globe { height: 440px; border-radius: 28px; }
+  .skills-container--globe .globe-chip { font-size: 12px; padding: 5px 10px; }
+  .skills-container--globe .globe-core { width: 110px; height: 110px; margin: -55px 0 0 -55px; }
 }

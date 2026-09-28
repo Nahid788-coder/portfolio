@@ -45,7 +45,7 @@ export const translations = {
     skill: {
       tag: 'My Skills',
       title: 'Technologies I Work With',
-      subtitle: 'Proficiency levels based on real project experience',
+      subtitle: 'The tools I build with. Drag the globe to spin it.',
       proficiency: 'Proficiency',
     },
     work: {
@@ -137,7 +137,7 @@ export const translations = {
     skill: {
       tag: 'Meine Fähigkeiten',
       title: 'Technologien, mit denen ich arbeite',
-      subtitle: 'Kenntnisstufen basierend auf realer Projekterfahrung',
+      subtitle: 'Die Werkzeuge, mit denen ich baue. Zieh den Globus, um ihn zu drehen.',
       proficiency: 'Kenntnisse',
     },
     work: {
@@ -229,7 +229,7 @@ export const translations = {
     skill: {
       tag: 'Mes Compétences',
       title: 'Technologies avec lesquelles je travaille',
-      subtitle: 'Niveaux de maîtrise basés sur une expérience réelle de projet',
+      subtitle: 'Les outils avec lesquels je construis. Faites glisser le globe pour le tourner.',
       proficiency: 'Maîtrise',
     },
     work: {
@@ -321,7 +321,7 @@ export const translations = {
     skill: {
       tag: 'Mis Habilidades',
       title: 'Tecnologías con las que trabajo',
-      subtitle: 'Niveles de competencia basados en experiencia real de proyectos',
+      subtitle: 'Las herramientas con las que construyo. Arrastra el globo para girarlo.',
       proficiency: 'Competencia',
     },
     work: {
@@ -413,7 +413,7 @@ export const translations = {
     skill: {
       tag: 'मेरे कौशल',
       title: 'जिन तकनीकों के साथ मैं काम करता हूँ',
-      subtitle: 'वास्तविक परियोजना अनुभव पर आधारित दक्षता स्तर',
+      subtitle: 'जिन टूल्स से मैं बनाता हूँ। ग्लोब को घुमाने के लिए खींचें।',
       proficiency: 'दक्षता',
     },
     work: {
@@ -505,7 +505,7 @@ export const translations = {
     skill: {
       tag: 'مهاراتي',
       title: 'التقنيات التي أعمل بها',
-      subtitle: 'مستويات الكفاءة بناءً على تجربة المشاريع الفعلية',
+      subtitle: 'الأدوات التي أبني بها. اسحب الكرة لتدويرها.',
       proficiency: 'الكفاءة',
     },
     work: {

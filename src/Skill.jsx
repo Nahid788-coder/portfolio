@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useReveal } from './hooks';
 import { useLanguage } from './context/LanguageContext';
 import SkillsGlobe from './SkillsGlobe';
@@ -30,37 +29,11 @@ const TECHS = [
 
 function Skill() {
     const headingRef = useReveal();
-    const leftRef = useReveal();
     const rightRef = useReveal();
     const { t } = useLanguage();
 
-    // run the orb waves only while the card is on screen
-    useEffect(() => {
-        const el = leftRef.current;
-        if (!el) return;
-        const io = new IntersectionObserver(([e]) => el.classList.toggle('orbs-live', e.isIntersecting));
-        io.observe(el);
-        return () => io.disconnect();
-    }, [leftRef]);
     const s = t.skill;
 
-    const skills = [
-        { name: 'HTML / CSS', level: 95 },
-        { name: 'JavaScript', level: 82 },
-        { name: 'TypeScript', level: 78 },
-        { name: 'React.js', level: 85 },
-        { name: 'Tailwind CSS', level: 90 },
-        { name: 'Node.js', level: 70 },
-        { name: 'Express.js', level: 72 },
-        { name: 'Next.js', level: 68 },
-        { name: 'SQL / MongoDB', level: 75 },
-        { name: 'Supabase', level: 70 },
-        { name: 'REST APIs', level: 82 },
-        { name: 'Framer Motion', level: 75 },
-        { name: 'Flutter', level: 72 },
-        { name: 'Git / GitHub', level: 85 },
-        { name: 'Figma', level: 65 },
-    ];
 
     const marqueeItems = [
         'React', 'Next.js', 'Node.js', 'Flutter', 'JavaScript',
@@ -82,22 +55,7 @@ function Skill() {
                     <p className="section-subtitle">{s.subtitle}</p>
                 </div>
 
-                <div className="skills-container">
-                    <div className="skills-left skills-orbs reveal-left" ref={leftRef}>
-                        <h3>{s.proficiency}</h3>
-                        <ul className="orb-grid">
-                            {skills.map((skill, i) => (
-                                <li className="orb-item" key={skill.name} style={{ '--lv': skill.level, '--i': i }}>
-                                    <div className="orb" role="img" aria-label={`${skill.name}: ${skill.level}%`}>
-                                        <div className="orb-fill"><span className="orb-wave"></span><span className="orb-wave orb-wave--2"></span></div>
-                                        <span className="orb-num">{skill.level}%</span>
-                                    </div>
-                                    <span className="orb-name">{skill.name}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
+                <div className="skills-container skills-container--globe">
                     <div className="skills-right-globe reveal" ref={rightRef}>
                         <SkillsGlobe techs={TECHS} />
                     </div>

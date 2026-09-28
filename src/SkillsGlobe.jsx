@@ -48,7 +48,10 @@ export default function SkillsGlobe({ techs }) {
     let front = null;
     const draw = () => {
       const W = stage.clientWidth, H = stage.clientHeight;
-      const R = Math.min(W * 0.44, H * 0.42);
+      // stretch into an oval on wide boxes so the chips use the full width
+      const Ry = H * 0.38;
+      const Rx = Math.min(W * 0.42, Ry * 1.9, W / 2 - 64);
+      const R = Ry;
       const f = R * 2.6;
       const cx = Math.cos(rx), sx = Math.sin(rx), cy = Math.cos(ry), sy = Math.sin(ry);
       let best = null, bestZ = -9;
@@ -57,7 +60,7 @@ export default function SkillsGlobe({ techs }) {
         const y2 = p.y * cx - z1 * sx, z2 = p.y * sx + z1 * cx;
         const sc = f / (f - z2 * R);
         const depth = (z2 + 1) / 2;
-        p.el.style.transform = `translate(${x1 * R * sc - p.w / 2}px, ${y2 * R * sc - p.h / 2}px) scale(${0.6 + 0.5 * depth})`;
+        p.el.style.transform = `translate(${x1 * Rx * sc - p.w / 2}px, ${y2 * Ry * sc - p.h / 2}px) scale(${0.6 + 0.5 * depth})`;
         p.el.style.opacity = (0.2 + 0.8 * depth).toFixed(3);
         p.el.style.zIndex = String(Math.round(depth * 100));
         if (z2 > bestZ) { bestZ = z2; best = p; }
