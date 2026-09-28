@@ -55,13 +55,12 @@ const backdropMaterial = (sc) =>
       precision highp float;
       varying vec2 vUv; uniform float uTime; uniform float uScroll; uniform float uAspect;
       uniform vec3 uBase; uniform vec3 uC1; uniform vec3 uC2; uniform vec3 uC3;
-      ${NOISE}
       float pool(vec2 p, vec2 c, float r){ return smoothstep(r, 0.0, length(p-c)); }
       void main(){
         vec2 p = vUv - 0.5; p.x *= uAspect;
         float t = uTime*0.05; float s = uScroll;
         vec3 col = uBase;
-        float w = snoise(vec3(p*1.4, t))*0.08;
+        float w = (sin(p.x*2.3 + t*3.0) + sin(p.y*1.9 - t*2.4)) * 0.035;
         col = mix(col, uC1, 0.85*pool(p+w, vec2(-0.55+sin(t*2.)*0.08, 0.28-s*0.35), 0.55));
         col = mix(col, uC2, 0.70*pool(p-w, vec2( 0.62+cos(t*1.7)*0.1,-0.18+s*0.25), 0.42));
         col = mix(col, uC3, 0.40*pool(p+w, vec2( 0.10+sin(t*1.3)*0.15,-0.46+s*0.2), 0.30));
@@ -73,7 +72,17 @@ const backdropMaterial = (sc) =>
     depthWrite: false,
   });
 
-function glassMaterial({ sc, tint, liquid = false, mobile = false, thickness = 0.8 }) {
+function glassMaterial({ sc, tint, liquid = false, mobile = false, thickness = 0.8, shell = false }) {
+  if (shell) {
+    // looks like glass (reflections + tint) but skips the expensive refraction pass
+    return {
+      mat: new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(tint), metalness: 0, roughness: 0.08, transparent: true, opacity: 0.38,
+        clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.6, depthWrite: false,
+      }),
+      uniforms: null,
+    };
+  }
   const mat = new THREE.MeshPhysicalMaterial({
     color: new THREE.Color(sc.glass),
     metalness: 0,
@@ -85,7 +94,7 @@ function glassMaterial({ sc, tint, liquid = false, mobile = false, thickness = 0
     attenuationDistance: liquid ? 2.4 : 1.8,
     clearcoat: 1,
     clearcoatRoughness: 0.04,
-    iridescence: mobile ? 0 : 0.35,
+    iridescence: liquid && !mobile ? 0.3 : 0,
     iridescenceIOR: 1.25,
     specularIntensity: 1,
     envMapIntensity: 1.15,
@@ -142,23 +151,23 @@ function glassMaterial({ sc, tint, liquid = false, mobile = false, thickness = 0
 function makeLiquid({ sc, mobile, withPebbles }) {
   const group = new THREE.Group();
   const { mat, uniforms } = glassMaterial({ sc, tint: sc.tintA, liquid: true, mobile });
-  const blob = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, mobile ? 28 : 72), mat);
+  const blob = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, mobile ? 22 : 44), mat);
   group.add(blob);
-  const ringMat = glassMaterial({ sc, tint: sc.tintB, mobile }).mat;
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.04, 24, mobile ? 90 : 180), ringMat);
+  const ringMat = glassMaterial({ sc, tint: sc.tintB, mobile, shell: true }).mat;
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.04, 16, mobile ? 80 : 140), ringMat);
   ring.rotation.set(1.15, 0.35, 0);
   group.add(ring);
 
   const pebbles = [];
   if (withPebbles) {
-    const pm = glassMaterial({ sc, tint: sc.tintA, mobile }).mat;
+    const pm = glassMaterial({ sc, tint: sc.tintA, mobile, shell: true }).mat;
     [
       { geo: new THREE.SphereGeometry(0.22, 48, 48), r: 2.35, speed: 0.32, phase: 0.0, tilt: 0.5, y: 0.2 },
       { geo: new THREE.CapsuleGeometry(0.1, 0.34, 12, 24), r: 2.6, speed: -0.24, phase: 2.1, tilt: -0.35, y: -0.3 },
       { geo: new THREE.TorusGeometry(0.16, 0.06, 20, 48), r: 2.2, speed: 0.4, phase: 4.0, tilt: 0.2, y: 0.55 },
       { geo: new THREE.SphereGeometry(0.12, 32, 32), r: 2.9, speed: 0.2, phase: 5.2, tilt: -0.6, y: -0.6 },
       { geo: new THREE.IcosahedronGeometry(0.16, 0), r: 2.45, speed: -0.3, phase: 1.1, tilt: 0.8, y: 0.0 },
-    ].slice(0, mobile ? 2 : 5).forEach((d) => {
+    ].slice(0, mobile ? 2 : 4).forEach((d) => {
       const m = new THREE.Mesh(d.geo, pm);
       group.add(m);
       pebbles.push({ mesh: m, ...d });
@@ -189,7 +198,7 @@ function makeLiquid({ sc, mobile, withPebbles }) {
 function makeKnot({ sc, mobile }) {
   const group = new THREE.Group();
   const mat = glassMaterial({ sc, tint: sc.tintA, mobile, thickness: 1.1 }).mat;
-  const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(0.85, 0.27, mobile ? 140 : 280, mobile ? 18 : 40, 2, 3), mat);
+  const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(0.85, 0.27, mobile ? 120 : 200, mobile ? 16 : 28, 2, 3), mat);
   group.add(knot);
   return {
     group,
@@ -206,8 +215,8 @@ function makeAtom({ sc, mobile }) {
   const coreMat = glassMaterial({ sc, tint: sc.tintA, mobile, thickness: 1.2 }).mat;
   const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55, mobile ? 6 : 12), coreMat);
   group.add(core);
-  const ringMat = glassMaterial({ sc, tint: sc.tintB, mobile }).mat;
-  const eMat = glassMaterial({ sc, tint: sc.tintA, mobile }).mat;
+  const ringMat = glassMaterial({ sc, tint: sc.tintB, mobile, shell: true }).mat;
+  const eMat = glassMaterial({ sc, tint: sc.tintA, mobile, shell: true }).mat;
   const orbits = [0, 1, 2].map((i) => {
     const pivot = new THREE.Group();
     pivot.rotation.set(Math.PI / 2 + (i - 1) * 0.9, i * 1.05, 0);
@@ -236,7 +245,7 @@ function makeBlocks({ sc, mobile }) {
   const group = new THREE.Group();
   const mats = [sc.tintA, sc.tintB, sc.tintA].map((c) => glassMaterial({ sc, tint: c, mobile, thickness: 1 }).mat);
   const blocks = [0, 1, 2].map((i) => {
-    const m = new THREE.Mesh(new RoundedBoxGeometry(0.95, 0.95, 0.95, mobile ? 3 : 6, 0.18), mats[i]);
+    const m = new THREE.Mesh(new RoundedBoxGeometry(0.95, 0.95, 0.95, mobile ? 3 : 4, 0.18), mats[i]);
     group.add(m);
     return {
       mesh: m,
@@ -335,7 +344,9 @@ export default function Scene3D() {
       mount.classList.add('scene3d--fallback');
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.25 : 1.6));
+    let dpr = Math.min(window.devicePixelRatio, mobile ? 1 : 1.25);
+    renderer.setPixelRatio(dpr);
+    renderer.transmissionResolutionScale = mobile ? 0.4 : 0.5;
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
@@ -422,9 +433,9 @@ export default function Scene3D() {
     };
 
     // bubbles that trail the cursor (mouse only) and burst on click
-    const bubbleMat = glassMaterial({ sc, tint: sc.tintB, mobile, thickness: 0.4 }).mat;
-    const bubbleGeo = new THREE.SphereGeometry(1, 20, 20);
-    const bubbles = Array.from({ length: mobile ? 10 : 26 }, () => {
+    const bubbleMat = glassMaterial({ sc, tint: sc.tintB, mobile, shell: true }).mat;
+    const bubbleGeo = new THREE.SphereGeometry(1, 16, 16);
+    const bubbles = Array.from({ length: mobile ? 8 : 16 }, () => {
       const m = new THREE.Mesh(bubbleGeo, bubbleMat);
       m.visible = false;
       scene.add(m);
@@ -519,9 +530,25 @@ export default function Scene3D() {
     const intro = { v: reduced ? 1 : 0 };
     const dir = new THREE.Vector3();
 
+    // adaptive quality: if frames stay slow, render at a lower resolution
+    const perf = { sum: 0, n: 0 };
+    const adapt = (rawDt) => {
+      perf.sum += rawDt; perf.n += 1;
+      if (perf.n < 90) return;
+      const avg = perf.sum / perf.n;
+      perf.sum = 0; perf.n = 0;
+      if (avg > 0.024 && dpr > 0.7) {
+        dpr = Math.max(0.7, dpr - 0.2);
+        renderer.setPixelRatio(dpr);
+        renderer.transmissionResolutionScale = Math.max(0.3, renderer.transmissionResolutionScale - 0.1);
+      }
+    };
+
     const frame = (instant = false) => {
       timer.update();
-      const dt = Math.min(timer.getDelta(), 0.05);
+      const rawDt = timer.getDelta();
+      if (!instant) adapt(rawDt);
+      const dt = Math.min(rawDt, 0.05);
       const t = timer.getElapsed();
       const k = instant ? 1 : 1 - Math.pow(0.001, dt);
 

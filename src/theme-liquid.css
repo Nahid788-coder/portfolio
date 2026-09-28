@@ -546,3 +546,43 @@ h1, h2, h3, h4, h5,
 .lp-n-3d { display: grid; place-items: center; }
 .lp-n-canvas { display: block; width: 260px; height: 260px; }
 @media (max-width: 600px) { .lp-n-canvas { width: 200px; height: 200px; } }
+
+/* ---------- performance: live blur only where it is small ----------
+   A backdrop blur over the moving 3D scene is re-computed every frame.
+   Big panels use a denser glass fill instead; the nav, chips and badges
+   keep the real blur because they are small. */
+.about-card, .tech-pill, .service-card, .p-row, .contact-info-item,
+.contact-form-wrap, .skills-left, .skills-globe, .project-modal, .ai-chat-window, .footer-social a {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background:
+    radial-gradient(120% 80% at var(--mx, 25%) var(--my, 0%), rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(145deg, rgba(var(--glass-hi-rgb), 0.86) 0%, rgba(var(--glass-lo-rgb), 0.62) 100%);
+}
+.about-card.featured {
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.35) 0%, transparent 55%),
+    linear-gradient(160deg, rgba(var(--accent-rgb), 0.92), rgba(var(--ink-rgb), 0.94));
+}
+.cursor-follower { -webkit-backdrop-filter: none; backdrop-filter: none; }
+.project-modal-overlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+
+/* ---------- performance: live blur only where it is small ----------
+   A backdrop blur over the moving 3D scene is re-computed every frame.
+   Big panels use a denser glass fill instead; the nav, chips and badges
+   keep the real blur because they are small. */
+.about-card, .tech-pill, .service-card, .p-row, .contact-info-item,
+.contact-form-wrap, .skills-left, .skills-globe, .project-modal, .ai-chat-window, .footer-social a {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background:
+    radial-gradient(120% 80% at var(--mx, 25%) var(--my, 0%), rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 55%),
+    linear-gradient(145deg, rgba(var(--glass-hi-rgb), 0.86) 0%, rgba(var(--glass-lo-rgb), 0.62) 100%);
+}
+.about-card.featured {
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.35) 0%, transparent 55%),
+    linear-gradient(160deg, rgba(var(--accent-rgb), 0.92), rgba(var(--ink-rgb), 0.94));
+}
+.cursor-follower { -webkit-backdrop-filter: none; backdrop-filter: none; }
+.project-modal-overlay { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }

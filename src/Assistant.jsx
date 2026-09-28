@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 
-const GROQ_KEY = import.meta.env.VITE_GROQ_KEY;
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
@@ -11,41 +10,7 @@ const LANGUAGES = [
   { code: 'es', label: 'Español', flag: '🇪🇸' },
 ];
 
-const SYSTEM_PROMPT = (lang) => `You are Nahid's AI portfolio assistant. Answer ONLY in ${lang} language. Be friendly, professional and concise.
 
-About Nahid Husain:
-- Full Stack Developer (React, TypeScript, Node.js, MongoDB, Supabase)
-- Portfolio website: nahid788-coder.github.io/portfolio (or the current site you are on)
-- Looking for Frontend/Full Stack Developer jobs in Germany (visa sponsorship needed)
-- Available from June 2026
-- Location: India → Germany (ready to relocate)
-- Email: doiznahidhusain1234@gmail.com
-- GitHub: github.com/Nahid788-coder
-
-Skills:
-- Frontend: React.js, TypeScript, Next.js, Tailwind CSS, Framer Motion
-- Backend: Node.js, Express.js, REST APIs
-- Database: MongoDB, Supabase (PostgreSQL), MySQL
-- Tools: Git, GitHub, Vite, Vercel, Figma
-
-Projects (all have live demos):
-1. AI ChatBot — Multi-model chat app (Groq, Gemini APIs), Google login, Supabase auth & history, OTP verification. Live: https://ai-chatbot-one-bice-57.vercel.app
-2. GitHub Explorer — Search any GitHub user, view repos, stats, languages. Built with React + TypeScript. Live: https://github-explorer-ashen-two.vercel.app
-3. Harvest Co. — E-Commerce platform with Subscription Box Builder, React + Node + MongoDB. Live: https://nahid788-coder.github.io/live-designs/organick/
-4. Lyric Studio — Awwwards-tier creative agency with magnetic cursor, page transitions, CMS. Live: https://nahid788-coder.github.io/live-designs/andia/
-5. Catalyst Consulting — Financial advisory platform with live ROI calculator, booking system, blog CMS. Live: https://nahid788-coder.github.io/live-designs/babun/
-6. Vesper Journal — Editorial travel magazine with parallax storytelling, boutique hotel booking. Live: https://nahid788-coder.github.io/live-designs/elegance/
-7. Slice & Crust — Pizzeria app with Razorpay payments, Socket.io live order tracking, admin dashboard. Live: https://nahid788-coder.github.io/live-designs/pizza/
-8. Verde Living — Premium furniture store with 2D Room Visualizer, wishlist, full checkout. Live: https://nahid788-coder.github.io/live-designs/mfurniro/
-9. Helix Industrial — Industrial B2B platform with live RFQ calculator, product catalog. Live: https://nahid788-coder.github.io/live-designs/nisuka/
-10. Atelier 9 — Architecture studio with horizontal scroll showcase, case studies, inquiry system. Live: https://nahid788-coder.github.io/live-designs/studio-people/
-
-Experience: 2+ years building full-stack web applications
-English level: Professional (B2)
-Open to: Full-time, on-site Berlin/Germany
-
-If asked about hiring or contact, share email: doiznahidhusain1234@gmail.com
-Keep answers short (2-4 sentences). Do not answer anything unrelated to Nahid or his work.`;
 
 function Assistant() {
   const [open, setOpen] = useState(false);
@@ -96,27 +61,24 @@ function Assistant() {
     setLoading(true);
 
     try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${GROQ_KEY}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT(selectedLang.label) },
-            ...messages,
-            userMsg,
-          ],
-          max_tokens: 200,
+          lang: selectedLang.label,
+          messages: [...messages, userMsg].filter(m => m.role === 'user' || m.role === 'assistant'),
         }),
       });
-      const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || 'Sorry, try again!';
+      const data = await res.json().catch(() => ({}));
+      let reply = data.reply;
+      if (!reply) {
+        reply = data.error === 'rate_limited'
+          ? 'I am getting a lot of questions right now. Please try again in a minute.'
+          : `I can't answer right now. You can reach Nahid directly at doiznahidhusain1234@gmail.com.`;
+      }
       setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Something went wrong. Please try again!' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: `I can't connect right now. You can reach Nahid at doiznahidhusain1234@gmail.com.` }]);
     } finally {
       setLoading(false);
     }

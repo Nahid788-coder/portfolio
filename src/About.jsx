@@ -10,7 +10,7 @@ function About() {
     const handleDownload = () => {
         const link = document.createElement("a");
         link.href = "/Nahid_CV.pdf";
-        link.download = "Nahid_CV.pdf";
+        link.download = "Nahid_Husain_Doi_Resume.pdf";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
