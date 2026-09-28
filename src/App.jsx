@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import './App.css'
 import './animations.css'
+import '@fontsource-variable/geist'
+import './theme-liquid.css'
 import Menu from './Menu'
 import Header from './Header'
 import About from './About'
@@ -11,7 +13,7 @@ import Contact from './Contact'
 import Footer from './Footer'
 import { useScrollProgress } from './hooks'
 import Assistant from './Assistant'
-import ScrollVideoBackground from './ScrollVideoBackground'
+const Scene3D = lazy(() => import('./Scene3D'))
 import { LanguageProvider } from './context/LanguageContext'
 
 function App() {
@@ -75,45 +77,45 @@ function App() {
               </defs>
 
               {/* Faint fill inside circle */}
-              <circle cx="50" cy="50" r="45" fill="rgba(201,169,110,0.04)"/>
+              <circle cx="50" cy="50" r="45" fill="rgba(122,75,46,0.05)"/>
 
               {/* Outer circle — the Avengers-style ring */}
               <circle cx="50" cy="50" r="45"
-                fill="none" stroke="#c9a96e" strokeWidth="1.5"
+                fill="none" stroke="#7a4b2e" strokeWidth="1.5"
                 filter="url(#gA)"
               />
 
               {/* Inner ring — subtle depth */}
               <circle cx="50" cy="50" r="39.5"
-                fill="none" stroke="#c9a96e" strokeWidth="0.5" opacity="0.28"
+                fill="none" stroke="#7a4b2e" strokeWidth="0.5" opacity="0.28"
               />
 
               {/* 4 arc-gap indicators (like watch bezels) at compass points */}
               {/* Top arc gap */}
               <path d="M 41,5.5 A 45,45 0 0,1 59,5.5"
-                fill="none" stroke="#070707" strokeWidth="3.5"/>
+                fill="none" stroke="#eae0d2" strokeWidth="3.5"/>
               {/* Bottom arc gap */}
               <path d="M 59,94.5 A 45,45 0 0,1 41,94.5"
-                fill="none" stroke="#070707" strokeWidth="3.5"/>
+                fill="none" stroke="#eae0d2" strokeWidth="3.5"/>
               {/* Left arc gap */}
               <path d="M 5.5,41 A 45,45 0 0,0 5.5,59"
-                fill="none" stroke="#070707" strokeWidth="3.5"/>
+                fill="none" stroke="#eae0d2" strokeWidth="3.5"/>
               {/* Right arc gap */}
               <path d="M 94.5,59 A 45,45 0 0,0 94.5,41"
-                fill="none" stroke="#070707" strokeWidth="3.5"/>
+                fill="none" stroke="#eae0d2" strokeWidth="3.5"/>
 
               {/* Diamond markers at the 4 gap positions */}
-              <polygon points="50,1  53.5,7  50,13  46.5,7"  fill="#c9a96e" filter="url(#gB)"/>
-              <polygon points="50,99 53.5,93 50,87  46.5,93" fill="#c9a96e" filter="url(#gB)"/>
-              <polygon points="1,50  7,46.5  13,50  7,53.5"  fill="#c9a96e" filter="url(#gB)"/>
-              <polygon points="99,50 93,46.5 87,50  93,53.5" fill="#c9a96e" filter="url(#gB)"/>
+              <polygon points="50,1  53.5,7  50,13  46.5,7"  fill="#7a4b2e" filter="url(#gB)"/>
+              <polygon points="50,99 53.5,93 50,87  46.5,93" fill="#7a4b2e" filter="url(#gB)"/>
+              <polygon points="1,50  7,46.5  13,50  7,53.5"  fill="#7a4b2e" filter="url(#gB)"/>
+              <polygon points="99,50 93,46.5 87,50  93,53.5" fill="#7a4b2e" filter="url(#gB)"/>
 
               {/* ── N LETTERFORM ── */}
               {/* Single clean stroke path: angular miter joins = Avengers sharpness */}
               <path
                 d="M 23,83 L 23,17 L 77,83 L 77,17"
                 fill="none"
-                stroke="#c9a96e"
+                stroke="#7a4b2e"
                 strokeWidth="11.5"
                 strokeLinejoin="miter"
                 strokeMiterlimit="28"
@@ -126,13 +128,10 @@ function App() {
       )}
 
       {/* ── PAGE CONTENT ───────────────────────────── */}
-      <ScrollVideoBackground />
+      <Suspense fallback={<div className="scene3d scene3d--fallback" aria-hidden="true" />}>
+        <Scene3D />
+      </Suspense>
       <div className="scroll-progress" style={{ width: `${progress}%` }}></div>
-      <div className="gradient-mesh">
-        <div className="gm-blob gm-blob1"></div>
-        <div className="gm-blob gm-blob2"></div>
-        <div className="gm-blob gm-blob3"></div>
-      </div>
 
       <LanguageProvider>
         <div className='main'>
