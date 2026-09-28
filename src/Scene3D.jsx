@@ -168,6 +168,7 @@ function makeLiquid({ sc, mobile, withPebbles }) {
   return {
     group,
     uniforms,
+    kick: 0,
     update(t, lt, mouse, calm) {
       blob.rotation.y = t * 0.12 + lt * 1.5;
       blob.rotation.x = Math.sin(t * 0.2) * 0.25 + mouse.y * 0.3;
@@ -180,7 +181,7 @@ function makeLiquid({ sc, mobile, withPebbles }) {
         pb.mesh.rotation.set(t * 0.4 + pb.phase, t * 0.3, 0);
       });
       uniforms.uTime.value = t;
-      uniforms.uAmp.value = calm ? 0.12 : 0.17;
+      uniforms.uAmp.value = (calm ? 0.12 : 0.17) + (this.kick || 0);
     },
   };
 }
@@ -410,7 +411,66 @@ export default function Scene3D() {
     window.addEventListener('pointermove', onMove, { passive: true });
 
     const scroll = { y: window.scrollY, target: window.scrollY };
-    const onScroll = () => { scroll.target = window.scrollY; };
+    // jelly: fast scrolling stretches the object, a damped spring snaps it back
+    const jelly = { s: 0, v: 0, target: 0, lastY: window.scrollY, lastT: performance.now() };
+    const onScroll = () => {
+      scroll.target = window.scrollY;
+      const now = performance.now();
+      const v = (window.scrollY - jelly.lastY) / Math.max(16, now - jelly.lastT);
+      jelly.lastY = window.scrollY; jelly.lastT = now;
+      jelly.target = THREE.MathUtils.clamp(v * 0.14, -0.4, 0.4);
+    };
+
+    // bubbles that trail the cursor (mouse only) and burst on click
+    const bubbleMat = glassMaterial({ sc, tint: sc.tintB, mobile, thickness: 0.4 }).mat;
+    const bubbleGeo = new THREE.SphereGeometry(1, 20, 20);
+    const bubbles = Array.from({ length: mobile ? 10 : 26 }, () => {
+      const m = new THREE.Mesh(bubbleGeo, bubbleMat);
+      m.visible = false;
+      scene.add(m);
+      return { m, life: 0, max: 1, vx: 0, vy: 0, size: 0.1, seed: Math.random() * 6 };
+    });
+    let nextBubble = 0, lastSpawn = 0;
+    const tmpV = new THREE.Vector3();
+    const toWorld = (cx, cy, z = 1.4) => {
+      tmpV.set((cx / window.innerWidth) * 2 - 1, -((cy / window.innerHeight) * 2 - 1), 0.5).unproject(camera).sub(camera.position).normalize();
+      const d = (z - camera.position.z) / tmpV.z;
+      return camera.position.clone().add(tmpV.multiplyScalar(d));
+    };
+    const spawnBubble = (x, y, burst) => {
+      const b = bubbles[nextBubble++ % bubbles.length];
+      const p = toWorld(x, y, 1.2 + Math.random() * 0.8);
+      b.m.position.copy(p);
+      b.life = 0; b.max = 1.5 + Math.random() * 1.2;
+      b.vx = burst ? (Math.random() - 0.5) * 1.6 : (Math.random() - 0.5) * 0.2;
+      b.vy = burst ? 0.6 + Math.random() * 1.2 : 0.45 + Math.random() * 0.5;
+      b.size = 0.04 + Math.random() * (burst ? 0.1 : 0.07);
+      b.m.visible = true;
+    };
+    const onBubbleMove = (e) => {
+      if (reduced || e.pointerType !== 'mouse') return;
+      const now = performance.now();
+      if (now - lastSpawn < 55 || Math.random() > 0.6) return;
+      lastSpawn = now;
+      spawnBubble(e.clientX, e.clientY, false);
+    };
+    window.addEventListener('pointermove', onBubbleMove, { passive: true });
+
+    // tap / click: a water ripple on the page, a wobble in the liquid, a burst of bubbles
+    const onTap = (e) => {
+      if (e.target.closest('input, textarea, select, .project-modal, .ai-chat-window')) return;
+      const rp = document.createElement('span');
+      rp.className = 'tap-ripple';
+      rp.style.left = `${e.clientX}px`;
+      rp.style.top = `${e.clientY}px`;
+      document.body.appendChild(rp);
+      rp.addEventListener('animationend', () => rp.remove());
+      if (reduced) return;
+      shapes[0].kick = 0.28;
+      jelly.v -= 1.6;
+      for (let i = 0; i < (mobile ? 4 : 8); i++) spawnBubble(e.clientX, e.clientY, true);
+    };
+    window.addEventListener('pointerdown', onTap, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
 
     const onResize = () => {
@@ -477,7 +537,24 @@ export default function Scene3D() {
 
       const introEase = 1 - Math.pow(1 - intro.v, 3);
       carrier.position.set(cur.x, cur.y + (1 - introEase) * -1.2, 0);
-      carrier.scale.setScalar(cur.s * (0.6 + 0.4 * introEase));
+      const acc = (jelly.target - jelly.s) * 60 - jelly.v * 7;
+      jelly.v += acc * dt; jelly.s += jelly.v * dt;
+      jelly.target *= Math.pow(0.02, dt);
+      const js = reduced ? 0 : jelly.s;
+      const base = cur.s * (0.6 + 0.4 * introEase);
+      carrier.scale.set(base * (1 - js * 0.45), base * (1 + js), base * (1 - js * 0.45));
+      shapes[0].kick *= Math.pow(0.12, dt);
+
+      bubbles.forEach((b) => {
+        if (!b.m.visible) return;
+        b.life += dt;
+        const q = b.life / b.max;
+        if (q >= 1) { b.m.visible = false; return; }
+        b.m.position.x += (b.vx + Math.sin(t * 3 + b.seed) * 0.12) * dt;
+        b.m.position.y += b.vy * dt;
+        b.vx *= 0.985;
+        b.m.scale.setScalar(b.size * Math.min(1, q * 6) * (1 - Math.max(0, (q - 0.75) / 0.25)));
+      });
 
       shapes.forEach((sh, i) => {
         const target = i === goal.active ? 1 : 0;
@@ -544,6 +621,8 @@ export default function Scene3D() {
       ro.disconnect();
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('pointermove', onBubbleMove);
+      window.removeEventListener('pointerdown', onTap);
       window.removeEventListener('resize', onResize);
       if (still) {
         window.removeEventListener('scroll', still);

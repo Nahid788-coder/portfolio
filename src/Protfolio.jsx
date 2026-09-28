@@ -139,6 +139,24 @@ function Protfolio() {
         return () => observers.forEach(o => o.disconnect());
     }, [filtered.length]);
 
+    // 3D depth tilt: the row leans toward the cursor, its layers sit at different depths
+    const tiltMove = (e) => {
+        const el = e.currentTarget;
+        if (e.pointerType !== 'mouse' || !el.classList.contains('row-visible')) return;
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        el.classList.add('tilting');
+        el.style.transform = `perspective(1600px) rotateY(${(px - 0.5) * 9}deg) rotateX(${(0.5 - py) * 7}deg) translateY(-4px)`;
+        el.style.setProperty('--gx', `${px * 100}%`);
+        el.style.setProperty('--gy', `${py * 100}%`);
+    };
+    const tiltLeave = (e) => {
+        const el = e.currentTarget;
+        if (!el.classList.contains('tilting')) return;
+        el.classList.remove('tilting');
+        el.style.transform = '';
+    };
+
     const openModal = (proj) => { setSelectedProject(proj); document.body.style.overflow = 'hidden'; };
     const closeModal = () => { setSelectedProject(null); document.body.style.overflow = 'auto'; };
 
@@ -170,7 +188,10 @@ function Protfolio() {
                         className={`p-row ${index % 2 !== 0 ? 'p-row--reverse' : ''}`}
                         key={project.title}
                         ref={el => rowRefs.current[index] = el}
+                        onPointerMove={tiltMove}
+                        onPointerLeave={tiltLeave}
                     >
+                        <span className="p-row__glare" aria-hidden="true"></span>
                         <div className="p-row__img">
                             <img src={project.image} alt={project.title} loading="lazy" />
                             <span className="p-row__num">{String(index + 1).padStart(2, '0')}</span>

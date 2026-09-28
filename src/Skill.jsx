@@ -1,5 +1,6 @@
 import { useReveal } from './hooks';
 import { useLanguage } from './context/LanguageContext';
+import SkillsGlobe from './SkillsGlobe';
 
 const TECHS = [
     { icon: 'fa-brands fa-react', name: 'React' },
@@ -19,6 +20,11 @@ const TECHS = [
     { icon: 'fa-solid fa-bolt', name: 'Vite' },
     { icon: 'fa-brands fa-figma', name: 'Figma' },
     { icon: 'fa-solid fa-cloud', name: 'Vercel' },
+    { icon: 'fa-brands fa-python', name: 'Python' },
+    { icon: 'fa-solid fa-database', name: 'PostgreSQL' },
+    { icon: 'fa-solid fa-plug', name: 'Socket.io' },
+    { icon: 'fa-solid fa-key', name: 'JWT / OAuth' },
+    { icon: 'fa-solid fa-comment-dots', name: 'Prompt Engineering' },
 ];
 
 function Skill() {
@@ -53,11 +59,6 @@ function Skill() {
         'Framer Motion', 'REST APIs', 'Figma', 'Vercel',
     ];
 
-    const handlePillMove = (e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
-        e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
-    };
 
     return (
         <section className="skill" id="skills">
@@ -90,13 +91,8 @@ function Skill() {
                         ))}
                     </div>
 
-                    <div className="skills-right reveal-stagger" ref={rightRef}>
-                        {TECHS.map((tech, i) => (
-                            <div className="tech-pill" key={i} onMouseMove={handlePillMove}>
-                                <i className={`${tech.icon} tech-pill-icon`}></i>
-                                <span className="tech-pill-name">{tech.name}</span>
-                            </div>
-                        ))}
+                    <div className="skills-right-globe reveal" ref={rightRef}>
+                        <SkillsGlobe techs={TECHS} />
                     </div>
                 </div>
 

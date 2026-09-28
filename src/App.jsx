@@ -15,6 +15,7 @@ import Footer from './Footer'
 import { useScrollProgress } from './hooks'
 import Assistant from './Assistant'
 const Scene3D = lazy(() => import('./Scene3D'))
+const LoaderN = lazy(() => import('./LoaderN'))
 import { LanguageProvider } from './context/LanguageContext'
 
 function App() {
@@ -24,19 +25,84 @@ function App() {
   const [symbolVisible, setSymbolVisible] = useState(false)
 
   useEffect(() => {
-    // 80ms  → symbol fades IN
-    // 1000ms → panels slide IN (cover), symbol fades out
-    // 1700ms → hold
-    // 2100ms → panels slide OUT (reveal)
-    // 2900ms → loader removed
+    // 80ms   → symbol fades IN (3D glass N spins in)
+    // 1300ms → panels slide IN (cover), symbol fades out
+    // 2000ms → hold
+    // 2400ms → panels slide OUT (reveal)
+    // 3200ms → loader removed
     const t0 = setTimeout(() => setSymbolVisible(true),  80)
-    const t1 = setTimeout(() => setLoaderPhase('cover'), 1000)
-    const t2 = setTimeout(() => setLoaderPhase('hold'),  1700)
-    const t3 = setTimeout(() => setLoaderPhase('reveal'),2100)
-    const t4 = setTimeout(() => setLoaderGone(true),     2900)
+    const t1 = setTimeout(() => setLoaderPhase('cover'), 1300)
+    const t2 = setTimeout(() => setLoaderPhase('hold'),  2000)
+    const t3 = setTimeout(() => setLoaderPhase('reveal'),2400)
+    const t4 = setTimeout(() => setLoaderGone(true),     3200)
     return () => [t0, t1, t2, t3, t4].forEach(clearTimeout)
   }, [])
 
+
+  /* SVG N: shown instantly, replaced by the 3D glass N once it has loaded */
+  const nSvg = (
+    <svg className="lp-n-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        {/* Strong glow for N + circle */}
+        <filter id="gA" x="-55%" y="-55%" width="210%" height="210%">
+          <feGaussianBlur stdDeviation="2.8" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        {/* Soft glow for diamonds */}
+        <filter id="gB" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="1.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    
+      {/* Faint fill inside circle */}
+      <circle cx="50" cy="50" r="45" fill="currentColor" fillOpacity="0.05"/>
+    
+      {/* Outer circle — the Avengers-style ring */}
+      <circle cx="50" cy="50" r="45"
+        fill="none" stroke="currentColor" strokeWidth="1.5"
+        filter="url(#gA)"
+      />
+    
+      {/* Inner ring — subtle depth */}
+      <circle cx="50" cy="50" r="39.5"
+        fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.28"
+      />
+    
+      {/* 4 arc-gap indicators (like watch bezels) at compass points */}
+      {/* Top arc gap */}
+      <path d="M 41,5.5 A 45,45 0 0,1 59,5.5"
+        fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
+      {/* Bottom arc gap */}
+      <path d="M 59,94.5 A 45,45 0 0,1 41,94.5"
+        fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
+      {/* Left arc gap */}
+      <path d="M 5.5,41 A 45,45 0 0,0 5.5,59"
+        fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
+      {/* Right arc gap */}
+      <path d="M 94.5,59 A 45,45 0 0,0 94.5,41"
+        fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
+    
+      {/* Diamond markers at the 4 gap positions */}
+      <polygon points="50,1  53.5,7  50,13  46.5,7"  fill="currentColor" filter="url(#gB)"/>
+      <polygon points="50,99 53.5,93 50,87  46.5,93" fill="currentColor" filter="url(#gB)"/>
+      <polygon points="1,50  7,46.5  13,50  7,53.5"  fill="currentColor" filter="url(#gB)"/>
+      <polygon points="99,50 93,46.5 87,50  93,53.5" fill="currentColor" filter="url(#gB)"/>
+    
+      {/* ── N LETTERFORM ── */}
+      {/* Single clean stroke path: angular miter joins = Avengers sharpness */}
+      <path
+        d="M 23,83 L 23,17 L 77,83 L 77,17"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="11.5"
+        strokeLinejoin="miter"
+        strokeMiterlimit="28"
+        strokeLinecap="square"
+        filter="url(#gA)"
+      />
+    </svg>
+  )
 
   /* symbol class logic */
   let symbolCls = 'lp-symbol'
@@ -63,67 +129,9 @@ function App() {
 
           {/* N Symbol */}
           <div className={symbolCls}>
-            <svg className="lp-n-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                {/* Strong glow for N + circle */}
-                <filter id="gA" x="-55%" y="-55%" width="210%" height="210%">
-                  <feGaussianBlur stdDeviation="2.8" result="b"/>
-                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-                {/* Soft glow for diamonds */}
-                <filter id="gB" x="-80%" y="-80%" width="260%" height="260%">
-                  <feGaussianBlur stdDeviation="1.5" result="b"/>
-                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-              </defs>
-
-              {/* Faint fill inside circle */}
-              <circle cx="50" cy="50" r="45" fill="currentColor" fillOpacity="0.05"/>
-
-              {/* Outer circle — the Avengers-style ring */}
-              <circle cx="50" cy="50" r="45"
-                fill="none" stroke="currentColor" strokeWidth="1.5"
-                filter="url(#gA)"
-              />
-
-              {/* Inner ring — subtle depth */}
-              <circle cx="50" cy="50" r="39.5"
-                fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.28"
-              />
-
-              {/* 4 arc-gap indicators (like watch bezels) at compass points */}
-              {/* Top arc gap */}
-              <path d="M 41,5.5 A 45,45 0 0,1 59,5.5"
-                fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
-              {/* Bottom arc gap */}
-              <path d="M 59,94.5 A 45,45 0 0,1 41,94.5"
-                fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
-              {/* Left arc gap */}
-              <path d="M 5.5,41 A 45,45 0 0,0 5.5,59"
-                fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
-              {/* Right arc gap */}
-              <path d="M 94.5,59 A 45,45 0 0,0 94.5,41"
-                fill="none" style={{ stroke: 'var(--bg)' }} strokeWidth="3.5"/>
-
-              {/* Diamond markers at the 4 gap positions */}
-              <polygon points="50,1  53.5,7  50,13  46.5,7"  fill="currentColor" filter="url(#gB)"/>
-              <polygon points="50,99 53.5,93 50,87  46.5,93" fill="currentColor" filter="url(#gB)"/>
-              <polygon points="1,50  7,46.5  13,50  7,53.5"  fill="currentColor" filter="url(#gB)"/>
-              <polygon points="99,50 93,46.5 87,50  93,53.5" fill="currentColor" filter="url(#gB)"/>
-
-              {/* ── N LETTERFORM ── */}
-              {/* Single clean stroke path: angular miter joins = Avengers sharpness */}
-              <path
-                d="M 23,83 L 23,17 L 77,83 L 77,17"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="11.5"
-                strokeLinejoin="miter"
-                strokeMiterlimit="28"
-                strokeLinecap="square"
-                filter="url(#gA)"
-              />
-            </svg>
+            <Suspense fallback={nSvg}>
+              <LoaderN />
+            </Suspense>
           </div>
         </>
       )}
