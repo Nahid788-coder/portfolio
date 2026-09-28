@@ -44,14 +44,38 @@ If asked about hiring or contact, share email: doiznahidhusain1234@gmail.com
 Keep answers short (2-4 sentences). Do not answer anything unrelated to Nahid or his work.`;
 
 const LANGS = ['English', 'हिंदी', 'Deutsch', 'العربية', 'Français', 'Español'];
-const MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
+// Preferred chat models, best first. Groq retires models over time, so the list the
+// account can actually use is fetched from Groq and these are only a preference order.
+const PREFERRED = [/gpt-oss-120b/, /llama-4-maverick/, /llama-3\.3-70b/, /qwen3?-.*32b/, /kimi-k2/, /gpt-oss-20b/, /llama-4-scout/, /llama-3\.1-8b/, /llama/];
+const NOT_CHAT = /whisper|tts|guard|playai|orpheus|compound|prompt-guard|safeguard|embed|vision/;
+let cachedModels = null;
+let cachedAt = 0;
+
+async function pickModels(key) {
+  if (cachedModels && Date.now() - cachedAt < 10 * 60 * 1000) return cachedModels;
+  try {
+    const r = await fetch('https://api.groq.com/openai/v1/models', { headers: { Authorization: `Bearer ${key}` } });
+    const data = await r.json();
+    const ids = (data?.data || []).filter((m) => m.active !== false).map((m) => m.id).filter((id) => !NOT_CHAT.test(id));
+    const ranked = [];
+    PREFERRED.forEach((re) => ids.filter((id) => re.test(id) && !ranked.includes(id)).forEach((id) => ranked.push(id)));
+    ids.forEach((id) => { if (!ranked.includes(id)) ranked.push(id); });
+    if (ranked.length) {
+      cachedModels = ranked.slice(0, 3);
+      cachedAt = Date.now();
+      return cachedModels;
+    }
+  } catch { /* fall through */ }
+  return ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
+}
 
 export default async function handler(req, res) {
   const key = process.env.GROQ_API_KEY || process.env.VITE_GROQ_KEY;
 
   // GET /api/chat: a health check that says whether a key is set (never the key itself)
   if (req.method === 'GET' || req.method === 'HEAD') {
-    return res.status(200).json({ ok: true, keyConfigured: Boolean(key), keyName: process.env.GROQ_API_KEY ? 'GROQ_API_KEY' : (key ? 'VITE_GROQ_KEY' : null) });
+    const models = key ? await pickModels(key) : [];
+    return res.status(200).json({ ok: true, keyConfigured: Boolean(key), models });
   }
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST');
@@ -75,7 +99,7 @@ export default async function handler(req, res) {
   }
 
   let lastError = 'upstream_error';
-  for (const model of MODELS) {
+  for (const model of await pickModels(key)) {
     try {
       const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
@@ -83,13 +107,14 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model,
           messages: [{ role: 'system', content: SYSTEM_PROMPT(lang) }, ...messages],
-          max_tokens: 300,
+          max_tokens: 400,
           temperature: 0.6,
         }),
       });
       const data = await r.json().catch(() => ({}));
       const reply = data?.choices?.[0]?.message?.content;
-      if (r.ok && reply) return res.status(200).json({ reply });
+      if (r.ok && reply) return res.status(200).json({ reply: reply.replace(/<think>[\s\S]*?<\/think>/g, '').trim() });
+      if (r.status === 404) cachedModels = null;
       if (r.status === 401 || r.status === 403) return res.status(502).json({ error: 'bad_key' });
       lastError = r.status === 429 ? 'rate_limited' : `upstream_${r.status}`;
       // try the next model (for example if this one was retired or is overloaded)
