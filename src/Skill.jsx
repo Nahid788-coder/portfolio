@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useReveal } from './hooks';
 import { useLanguage } from './context/LanguageContext';
 import SkillsGlobe from './SkillsGlobe';
@@ -32,6 +33,15 @@ function Skill() {
     const leftRef = useReveal();
     const rightRef = useReveal();
     const { t } = useLanguage();
+
+    // run the orb waves only while the card is on screen
+    useEffect(() => {
+        const el = leftRef.current;
+        if (!el) return;
+        const io = new IntersectionObserver(([e]) => el.classList.toggle('orbs-live', e.isIntersecting));
+        io.observe(el);
+        return () => io.disconnect();
+    }, [leftRef]);
     const s = t.skill;
 
     const skills = [
@@ -73,22 +83,19 @@ function Skill() {
                 </div>
 
                 <div className="skills-container">
-                    <div className="skills-left reveal-left" ref={leftRef}>
+                    <div className="skills-left skills-orbs reveal-left" ref={leftRef}>
                         <h3>{s.proficiency}</h3>
-                        {skills.map((skill, i) => (
-                            <div className="skill-item" key={i}>
-                                <div className="skill-info">
-                                    <h4>{skill.name}</h4>
-                                    <span>{skill.level}%</span>
-                                </div>
-                                <div className="skill-bar">
-                                    <div
-                                        className="skill-progress"
-                                        style={{ '--target-width': `${skill.level}%` }}
-                                    ></div>
-                                </div>
-                            </div>
-                        ))}
+                        <ul className="orb-grid">
+                            {skills.map((skill, i) => (
+                                <li className="orb-item" key={skill.name} style={{ '--lv': skill.level, '--i': i }}>
+                                    <div className="orb" role="img" aria-label={`${skill.name}: ${skill.level}%`}>
+                                        <div className="orb-fill"><span className="orb-wave"></span><span className="orb-wave orb-wave--2"></span></div>
+                                        <span className="orb-num">{skill.level}%</span>
+                                    </div>
+                                    <span className="orb-name">{skill.name}</span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
 
                     <div className="skills-right-globe reveal" ref={rightRef}>
