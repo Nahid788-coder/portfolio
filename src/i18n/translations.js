@@ -66,7 +66,7 @@ export const translations = {
       subtitle: "Full-stack applications I've designed, engineered, and shipped",
       viewProject: 'View Project',
       viewLive: 'View Live',
-      swipeHint: 'Swipe to flip',
+      swipeHint: 'Swipe across to flip',
       flipBack: 'Back',
       aboutProject: 'About this project',
       technologies: 'Technologies',

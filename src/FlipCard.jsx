@@ -1,23 +1,82 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /*
   3D flip card for a project.
-  Drag or swipe sideways and the card turns over in that direction;
-  the back holds the full details and the live link.
-  Buttons do the same for keyboard and tap users.
+  Flip it over in the direction you move:
+    - mouse: just sweep the cursor across the card quickly (no click needed),
+    - touchpad: two-finger swipe sideways,
+    - phone: swipe sideways; click-drag also works.
+  The back holds the full details and the live link. Buttons do the same for keyboard users.
 */
 const FLIP_AT = 70;      // px of drag needed to flip
 const DRAG_TO_DEG = 0.6; // how far the card follows the finger while dragging
+const SWEEP_PX = 150;    // mouse sweep: horizontal travel needed...
+const SWEEP_MS = 320;    // ...within this time
+const COOLDOWN_MS = 1000;
 
 export default function FlipCard({ project, index, p, cardRef }) {
   const [angle, setAngle] = useState(0);   // always a multiple of 180 at rest
   const [drag, setDrag] = useState(null);  // live drag offset in degrees
   const start = useRef(null);
   const moved = useRef(false);
+  const rootRef = useRef(null);
+  const trail = useRef([]);
+  const lastFlip = useRef(0);
+  const [lean, setLean] = useState(0); // small hover lean that hints at the gesture
 
   const showingBack = Math.round(angle / 180) % 2 !== 0;
 
-  const flip = (dir) => setAngle((a) => a + dir * 180);
+  const flip = (dir) => {
+    lastFlip.current = performance.now();
+    trail.current = [];
+    setLean(0);
+    setAngle((a) => a + dir * 180);
+  };
+
+  // mouse sweep (no button pressed): fast sideways movement flips the card
+  const onMouseSweep = (e) => {
+    if (e.pointerType !== 'mouse' || e.buttons !== 0) return;
+    const now = performance.now();
+    const r = e.currentTarget.getBoundingClientRect();
+    setLean(((e.clientX - r.left) / r.width - 0.5) * 10);
+    if (now - lastFlip.current < COOLDOWN_MS) return;
+    const t = trail.current;
+    t.push({ x: e.clientX, y: e.clientY, t: now });
+    while (t.length && now - t[0].t > SWEEP_MS) t.shift();
+    const dx = e.clientX - t[0].x, dy = e.clientY - t[0].y;
+    if (Math.abs(dx) > SWEEP_PX && Math.abs(dx) > Math.abs(dy) * 2) flip(dx > 0 ? 1 : -1);
+  };
+
+  // state classes are toggled directly, so classes added by the section's
+  // entrance observer (row-in, row-visible) survive re-renders
+  useEffect(() => {
+    rootRef.current?.classList.toggle('is-dragging', drag !== null);
+    rootRef.current?.classList.toggle('is-back', showingBack);
+  }, [drag, showingBack]);
+
+  // touchpad two-finger swipe (horizontal wheel)
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    let acc = 0, timer = 0;
+    const onWheel = (e) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      if (performance.now() - lastFlip.current < COOLDOWN_MS) return;
+      acc += e.deltaX;
+      clearTimeout(timer);
+      timer = setTimeout(() => { acc = 0; }, 200);
+      if (Math.abs(acc) > 60) {
+        const dir = acc > 0 ? -1 : 1; // fingers moving left scroll right
+        acc = 0;
+        lastFlip.current = performance.now();
+        setLean(0);
+        setAngle((a) => a + dir * 180);
+      }
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => { el.removeEventListener('wheel', onWheel); clearTimeout(timer); };
+  }, []);
 
   const onPointerDown = (e) => {
     if (e.button !== 0 || e.target.closest('a, button')) return;
@@ -26,7 +85,7 @@ export default function FlipCard({ project, index, p, cardRef }) {
   };
   const onPointerMove = (e) => {
     const s = start.current;
-    if (!s || s.id !== e.pointerId) return;
+    if (!s || s.id !== e.pointerId) { onMouseSweep(e); return; }
     const dx = e.clientX - s.x, dy = e.clientY - s.y;
     if (s.locked === null && Math.hypot(dx, dy) > 8) {
       // decide once: sideways = flip gesture, up/down = let the page scroll
@@ -46,14 +105,14 @@ export default function FlipCard({ project, index, p, cardRef }) {
     if (Math.abs(dx) > FLIP_AT) flip(dx > 0 ? 1 : -1);
   };
 
-  const live = drag !== null;
-  const rot = angle + (drag || 0);
+  const rot = angle + (drag ?? lean);
 
   return (
     <div
-      className={`p-flip${live ? ' is-dragging' : ''}${showingBack ? ' is-back' : ''}`}
-      ref={cardRef}
+      className="p-flip"
+      ref={(el) => { rootRef.current = el; cardRef(el); }}
       onPointerDown={onPointerDown}
+      onPointerLeave={() => { trail.current = []; setLean(0); }}
       onPointerMove={onPointerMove}
       onPointerUp={end}
       onPointerCancel={end}
