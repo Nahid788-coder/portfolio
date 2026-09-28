@@ -658,3 +658,24 @@ h1, h2, h3, h4, h5,
   .portfolio-filter::-webkit-scrollbar { display: none; }
   .filter-btn { flex: 0 0 auto; white-space: nowrap; }
 }
+
+/* front shows only the essentials; the details live on the back */
+.p-face--front .p-row__body { gap: 14px; }
+.p-face--front .p-row__title { font-size: clamp(34px, 4vw, 48px); line-height: 1.02; }
+.p-face--front .p-row__actions { margin-top: 10px; }
+.p-face--back { cursor: pointer; }
+.p-face--back a { cursor: pointer; }
+@media (max-width: 768px) {
+  .p-face--front .p-row__title { font-size: 30px; }
+}
+
+/* both faces share one grid cell, so the card is as tall as the taller face (no clipped backs on phones) */
+.p-flip__inner { display: grid; }
+.p-flip__inner > .p-face { grid-area: 1 / 1; }
+.p-face--back { position: relative; inset: auto; overflow: visible; }
+@media (max-width: 1024px) {
+  /* stacked layout: the image grows to fill the extra height instead of leaving a gap */
+  .p-face--front { grid-template-rows: 1fr auto; }
+  .p-face--front .p-row__img { height: auto !important; min-height: 200px; }
+  .p-face--front .p-row__img img { position: absolute; inset: 0; }
+}

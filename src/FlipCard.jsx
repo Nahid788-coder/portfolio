@@ -127,10 +127,6 @@ export default function FlipCard({ project, index, p, cardRef }) {
           <div className="p-row__body">
             <span className="p-row__cat">{project.category}</span>
             <h3 className="p-row__title">{project.title}</h3>
-            <p className="p-row__desc">{project.description}</p>
-            <div className="p-row__tech">
-              {project.technologies.map((tech) => <span key={tech}>{tech}</span>)}
-            </div>
             <div className="p-row__actions">
               <button type="button" onClick={() => flip(index % 2 ? -1 : 1)} className="p-row__btn">
                 {p.viewProject}
@@ -144,7 +140,13 @@ export default function FlipCard({ project, index, p, cardRef }) {
         </div>
 
         {/* back */}
-        <div className="p-face p-face--back" aria-hidden={!showingBack} inert={!showingBack}>
+        <div
+          className="p-face p-face--back"
+          aria-hidden={!showingBack}
+          inert={!showingBack}
+          onClick={(e) => { if (!moved.current && !e.target.closest('a')) flip(index % 2 ? 1 : -1); }}
+          onKeyDown={(e) => { if (e.key === 'Escape') flip(index % 2 ? 1 : -1); }}
+        >
           <div className="p-back__main">
             <span className="p-row__cat">{p.aboutProject}</span>
             <h3 className="p-back__title">{project.title}</h3>
@@ -163,9 +165,6 @@ export default function FlipCard({ project, index, p, cardRef }) {
               <a className="p-back__live" href={project.link} target="_blank" rel="noopener noreferrer">
                 <i className="fa-solid fa-arrow-up-right-from-square"></i> {p.viewLive}
               </a>
-              <button type="button" className="p-row__btn" onClick={() => flip(index % 2 ? 1 : -1)}>
-                <i className="fa-solid fa-rotate-left"></i> {p.flipBack}
-              </button>
             </div>
           </div>
         </div>
