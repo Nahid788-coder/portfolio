@@ -1,6 +1,7 @@
 import { useReveal } from './hooks';
 import { useLanguage } from './context/LanguageContext';
 import SkillsGlobe from './SkillsGlobe';
+import StackCard from './StackCard';
 
 const TECHS = [
     { icon: 'fa-brands fa-react', name: 'React' },
@@ -29,6 +30,7 @@ const TECHS = [
 
 function Skill() {
     const headingRef = useReveal();
+    const leftRef = useReveal();
     const rightRef = useReveal();
     const { t } = useLanguage();
 
@@ -55,7 +57,11 @@ function Skill() {
                     <p className="section-subtitle">{s.subtitle}</p>
                 </div>
 
-                <div className="skills-container skills-container--globe">
+                <div className="skills-container">
+                    <div className="skills-left-stack reveal-left" ref={leftRef}>
+                        <StackCard title={s.proficiency} />
+                    </div>
+
                     <div className="skills-right-globe reveal" ref={rightRef}>
                         <SkillsGlobe techs={TECHS} />
                     </div>
