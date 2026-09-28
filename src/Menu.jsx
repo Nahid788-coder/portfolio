@@ -9,8 +9,9 @@ function Menu() {
     const { lang, setLang, t } = useLanguage();
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener('scroll', handleScroll);
+        // a little hysteresis so the bar doesn't flicker between states near the top
+        const handleScroll = () => setScrolled(prev => (prev ? window.scrollY > 24 : window.scrollY > 64));
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 

@@ -772,3 +772,48 @@ h1, h2, h3, h4, h5,
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22px);
           mask-image: linear-gradient(180deg, transparent 0, #000 22px);
 }
+
+/* ---------- navbar: morph smoothly from the full-width bar into the floating glass pill ----------
+   The nav always sits centred, so width, top, padding and corner radius can animate.
+   The glass itself lives on ::before and fades in, since gradients and blur can't transition. */
+.menu {
+  left: 50%; right: auto; top: 0; width: 100%;
+  transform: translateX(-50%);
+  border-radius: 0;
+  border: 1px solid transparent;
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  box-shadow: none;
+  isolation: isolate;
+  transition:
+    width 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s ease,
+    box-shadow 0.6s ease;
+}
+.menu::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  pointer-events: none; opacity: 0;
+  background:
+    radial-gradient(120% 80% at 25% 0%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 55%),
+    var(--glass-fill);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  transition: opacity 0.55s ease;
+}
+.menu.scrolled {
+  top: 14px;
+  width: min(1140px, calc(100% - 32px));
+  border-radius: 40px;
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: var(--glass-shadow);
+}
+.menu.scrolled::before { opacity: 1; }
+@media (max-width: 768px) {
+  .menu.scrolled { top: 10px; width: calc(100% - 20px); }
+  .menu::before { -webkit-backdrop-filter: blur(12px) saturate(150%); backdrop-filter: blur(12px) saturate(150%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu, .menu::before { transition: none; }
+}
