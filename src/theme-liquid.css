@@ -865,3 +865,14 @@ h1, h2, h3, h4, h5,
 /* the marquee and hint animations idle when the tab is in the background anyway;
    keep them off for people who asked for less motion */
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* contact: form card and the left column end on the same line; the message box takes the extra height */
+@media (min-width: 1025px) {
+  .contact-grid { align-items: stretch; }
+  .contact-left { display: flex; flex-direction: column; }
+  .contact-left .contact-info-item:last-child { margin-bottom: 0; }
+  .contact-form-wrap { display: flex; flex-direction: column; }
+  .contact-form-wrap .contact-form { flex: 1; display: flex; flex-direction: column; }
+  .contact-form-wrap .contact-form .form-group.full:has(textarea) { flex: 1; display: flex; flex-direction: column; }
+  .contact-form-wrap .contact-form .form-group.full:has(textarea) textarea { flex: 1; resize: none; }
+}
