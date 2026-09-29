@@ -29,7 +29,7 @@ Projects (all have live demos):
 4. Lyric Studio — Awwwards-tier creative agency with magnetic cursor, page transitions, CMS. Live: https://nahid788-coder.github.io/live-designs/andia/
 5. Catalyst Consulting — Financial advisory platform with live ROI calculator, booking system, blog CMS. Live: https://nahid788-coder.github.io/live-designs/babun/
 6. Vesper Journal — Editorial travel magazine with parallax storytelling, boutique hotel booking. Live: https://nahid788-coder.github.io/live-designs/elegance/
-7. Slice & Crust — Pizzeria app with Razorpay payments, Socket.io live order tracking, admin dashboard. Live: https://nahid788-coder.github.io/live-designs/pizza/
+7. Slice & Crust — Full-stack pizzeria app (React + Node/Express + MongoDB Atlas, deployed on Vercel + Render): pizza builder, server-side pricing, Socket.io live order tracking, table booking, admin dashboard with charts and a read-only Admin Demo. Live: https://food-grid-app.vercel.app · Code: https://github.com/Nahid788-coder/food-grid-app
 8. Verde Living — Premium furniture store with 2D Room Visualizer, wishlist, full checkout. Live: https://nahid788-coder.github.io/live-designs/mfurniro/
 9. Helix Industrial — Industrial B2B platform with live RFQ calculator, product catalog. Live: https://nahid788-coder.github.io/live-designs/nisuka/
 10. Atelier 9 — Architecture studio with horizontal scroll showcase, case studies, inquiry system. Live: https://nahid788-coder.github.io/live-designs/studio-people/

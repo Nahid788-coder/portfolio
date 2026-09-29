@@ -23,6 +23,15 @@ function Protfolio() {
             features: ['25+ Live AI Models', 'Real-time Streaming', 'Secure Server-side API Keys', 'Searchable Chat History'],
         },
         {
+            image: '/image/slice-and-crust.webp',
+            title: 'Slice & Crust',
+            category: 'Business',
+            link: 'https://food-grid-app.vercel.app',
+            description: 'Full-stack pizzeria app, live with its own API: pizza builder, cart and checkout with server-side pricing, Socket.io live order tracking, table booking, and an admin dashboard with charts (try the read-only Admin Demo).',
+            technologies: ['React', 'Node.js', 'Express', 'MongoDB Atlas', 'Socket.io'],
+            features: ['Pizza Customizer', 'Live Order Tracking', 'Secure Server Pricing', 'Admin Dashboard + Demo'],
+        },
+        {
             image: '/image/github-explorer.png',
             title: 'GitHub Explorer',
             category: 'TypeScript',
@@ -66,15 +75,6 @@ function Protfolio() {
             description: 'Editorial travel magazine with parallax storytelling, long-form article CMS, boutique hotel booking with auto-tax, and newsroom admin dashboard.',
             technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
             features: ['Parallax Storytelling', 'Boutique Booking', 'Editorial CMS', 'Newsroom Dashboard'],
-        },
-        {
-            image: '/image/pizza.png',
-            title: 'Slice & Crust',
-            category: 'Business',
-            link: `${BASE}/pizza/`,
-            description: 'Pizzeria app with full Pizza Customizer, Razorpay payments, Socket.io live order tracking, table booking system, and admin charts dashboard.',
-            technologies: ['React', 'Node.js', 'MongoDB', 'Socket.io'],
-            features: ['Pizza Customizer', 'Razorpay Payments', 'Live Order Tracking', 'Admin Dashboard'],
         },
         {
             image: '/image/mfurniro.png',
