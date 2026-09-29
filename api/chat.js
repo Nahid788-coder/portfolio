@@ -34,7 +34,7 @@ Projects (all have live demos):
 9. Helix Industrial — Industrial B2B platform with live RFQ calculator, product catalog. Live: https://nahid788-coder.github.io/live-designs/nisuka/
 10. Atelier 9 — Architecture studio with horizontal scroll showcase, case studies, inquiry system. Live: https://nahid788-coder.github.io/live-designs/studio-people/
 
-Experience (close to 2 years, internship + full-time):
+Experience (2+ years, internship + full-time):
 - Junkies Coder (Feb 2026 – present): Prompt Engineer. Full-stack apps (React, Next.js, Node.js, MongoDB), a vehicle/logo detection pipeline in Python + TypeScript (results in 9–11 seconds per image), redesigned Giviz (Flutter app on Google Play; fixed 15 bugs, built a leaderboard module), AI face-swap and virtual try-on for the Zeeper Flutter app.
 - Xipra Technology (Jan 2025 – Jan 2026): Full Stack Engineer (intern, then full-time). Delivered 3 client web apps on the MERN stack with PostgreSQL.
 English level: Professional (B2)

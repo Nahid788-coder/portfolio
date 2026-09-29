@@ -32,7 +32,7 @@ export const translations = {
     about: {
       tag: 'About Me',
       titleParts: ['Crafting', 'Digital', 'Experiences'],
-      para1: "Hey! I'm Nahid, a Full Stack Developer with close to 2 years of hands-on experience building web and mobile apps. I currently work as a Prompt Engineer at Junkies Coder, shipping full-stack features with React.js, Next.js, Node.js, TypeScript and Flutter, and bringing AI into real products.",
+      para1: "Hey! I'm Nahid, a Full Stack Developer with 2+ years of hands-on experience building web and mobile apps. I currently work as a Prompt Engineer at Junkies Coder, shipping full-stack features with React.js, Next.js, Node.js, TypeScript and Flutter, and bringing AI into real products.",
       para2: "What sets me apart is my honest approach — I believe in accurately representing my skills and continuously growing. I actively incorporate AI-assisted development and Prompt Engineering into my workflow to build smarter and faster.",
       downloadBtn: 'Download CV',
       cards: [
@@ -127,7 +127,7 @@ export const translations = {
     about: {
       tag: 'Über mich',
       titleParts: ['Digitale', 'Erlebnisse', 'gestalten'],
-      para1: "Hallo! Ich bin Nahid, ein Full Stack Entwickler mit fast 2 Jahren praktischer Erfahrung in der Entwicklung von Web- und Mobile-Apps. Derzeit arbeite ich als Prompt Engineer bei Junkies Coder, entwickle Full-Stack-Features mit React.js, Next.js, Node.js, TypeScript und Flutter und bringe KI in echte Produkte.",
+      para1: "Hallo! Ich bin Nahid, ein Full Stack Entwickler mit über 2 Jahren praktischer Erfahrung in der Entwicklung von Web- und Mobile-Apps. Derzeit arbeite ich als Prompt Engineer bei Junkies Coder, entwickle Full-Stack-Features mit React.js, Next.js, Node.js, TypeScript und Flutter und bringe KI in echte Produkte.",
       para2: 'Was mich auszeichnet, ist mein ehrlicher Ansatz — ich glaube daran, meine Fähigkeiten korrekt darzustellen und mich kontinuierlich weiterzuentwickeln. Ich setze aktiv KI-gestützte Entwicklung und Prompt Engineering ein, um schneller und intelligenter zu arbeiten.',
       downloadBtn: 'Lebenslauf herunterladen',
       cards: [
@@ -222,7 +222,7 @@ export const translations = {
     about: {
       tag: 'À propos',
       titleParts: ['Créer des', 'Expériences', 'Numériques'],
-      para1: "Bonjour ! Je suis Nahid, développeur Full Stack avec près de 2 ans d'expérience pratique dans la création d'applications web et mobiles. Je travaille actuellement comme Prompt Engineer chez Junkies Coder, où je développe des fonctionnalités full-stack avec React.js, Next.js, Node.js, TypeScript et Flutter, et j'intègre l'IA dans de vrais produits.",
+      para1: "Bonjour ! Je suis Nahid, développeur Full Stack avec plus de 2 ans d'expérience pratique dans la création d'applications web et mobiles. Je travaille actuellement comme Prompt Engineer chez Junkies Coder, où je développe des fonctionnalités full-stack avec React.js, Next.js, Node.js, TypeScript et Flutter, et j'intègre l'IA dans de vrais produits.",
       para2: "Ce qui me distingue, c'est mon approche honnête — je crois en la représentation précise de mes compétences et en la croissance continue. J'intègre activement le développement assisté par IA dans mon flux de travail.",
       downloadBtn: 'Télécharger CV',
       cards: [
@@ -317,7 +317,7 @@ export const translations = {
     about: {
       tag: 'Sobre mí',
       titleParts: ['Creando', 'Experiencias', 'Digitales'],
-      para1: "¡Hola! Soy Nahid, Desarrollador Full Stack con casi 2 años de experiencia práctica creando aplicaciones web y móviles. Actualmente trabajo como Prompt Engineer en Junkies Coder, desarrollando funcionalidades full-stack con React.js, Next.js, Node.js, TypeScript y Flutter, y llevando la IA a productos reales.",
+      para1: "¡Hola! Soy Nahid, Desarrollador Full Stack con más de 2 años de experiencia práctica creando aplicaciones web y móviles. Actualmente trabajo como Prompt Engineer en Junkies Coder, desarrollando funcionalidades full-stack con React.js, Next.js, Node.js, TypeScript y Flutter, y llevando la IA a productos reales.",
       para2: 'Lo que me distingue es mi enfoque honesto — creo en representar con precisión mis habilidades y seguir creciendo. Incorporo activamente el desarrollo asistido por IA y el Prompt Engineering para trabajar de forma más inteligente y rápida.',
       downloadBtn: 'Descargar CV',
       cards: [
@@ -412,7 +412,7 @@ export const translations = {
     about: {
       tag: 'मेरे बारे में',
       titleParts: ['डिजिटल', 'अनुभव', 'बनाना'],
-      para1: "नमस्ते! मैं नाहिद हूँ, एक Full Stack Developer, जिसके पास वेब और मोबाइल ऐप्स बनाने का लगभग 2 साल का व्यावहारिक अनुभव है। अभी मैं Junkies Coder में Prompt Engineer के रूप में काम करता हूँ, जहाँ मैं React.js, Next.js, Node.js, TypeScript और Flutter से full-stack फ़ीचर बनाता हूँ और असली प्रोडक्ट्स में AI जोड़ता हूँ।",
+      para1: "नमस्ते! मैं नाहिद हूँ, एक Full Stack Developer, जिसके पास वेब और मोबाइल ऐप्स बनाने का 2+ साल का व्यावहारिक अनुभव है। अभी मैं Junkies Coder में Prompt Engineer के रूप में काम करता हूँ, जहाँ मैं React.js, Next.js, Node.js, TypeScript और Flutter से full-stack फ़ीचर बनाता हूँ और असली प्रोडक्ट्स में AI जोड़ता हूँ।",
       para2: 'जो मुझे अलग बनाता है वह है मेरा ईमानदार दृष्टिकोण — मैं अपने कौशल को सटीक रूप से प्रस्तुत करने और लगातार बढ़ते रहने में विश्वास करता हूँ। मैं अपने workflow में AI-assisted development और Prompt Engineering को सक्रिय रूप से शामिल करता हूँ।',
       downloadBtn: 'CV डाउनलोड करें',
       cards: [
@@ -507,7 +507,7 @@ export const translations = {
     about: {
       tag: 'عني',
       titleParts: ['صياغة', 'تجارب', 'رقمية'],
-      para1: "مرحباً! أنا ناهد، مطور Full Stack بخبرة عملية تقارب سنتين في بناء تطبيقات الويب والموبايل. أعمل حالياً كـ Prompt Engineer في Junkies Coder، حيث أطوّر ميزات full-stack باستخدام React.js و Next.js و Node.js و TypeScript و Flutter، وأدمج الذكاء الاصطناعي في منتجات حقيقية.",
+      para1: "مرحباً! أنا ناهد، مطور Full Stack بخبرة عملية تزيد عن سنتين في بناء تطبيقات الويب والموبايل. أعمل حالياً كـ Prompt Engineer في Junkies Coder، حيث أطوّر ميزات full-stack باستخدام React.js و Next.js و Node.js و TypeScript و Flutter، وأدمج الذكاء الاصطناعي في منتجات حقيقية.",
       para2: 'ما يميزني هو نهجي الصادق — أؤمن بتمثيل مهاراتي بدقة والنمو المستمر. أدمج بنشاط التطوير بمساعدة الذكاء الاصطناعي وهندسة الـ Prompt في سير عملي.',
       downloadBtn: 'تحميل السيرة الذاتية',
       cards: [
