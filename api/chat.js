@@ -50,9 +50,15 @@ const PREFERRED = [/gpt-oss-120b/, /llama-4-maverick/, /llama-3\.3-70b/, /qwen3?
 const NOT_CHAT = /whisper|tts|guard|playai|orpheus|compound|prompt-guard|safeguard|embed|vision/;
 let cachedModels = null;
 let cachedAt = 0;
+let modelsRequest = null; // requests that arrive together share one lookup
 
-async function pickModels(key) {
-  if (cachedModels && Date.now() - cachedAt < 10 * 60 * 1000) return cachedModels;
+function pickModels(key) {
+  if (cachedModels && Date.now() - cachedAt < 10 * 60 * 1000) return Promise.resolve(cachedModels);
+  modelsRequest ??= fetchModels(key).finally(() => { modelsRequest = null; });
+  return modelsRequest;
+}
+
+async function fetchModels(key) {
   try {
     const r = await fetch('https://api.groq.com/openai/v1/models', { headers: { Authorization: `Bearer ${key}` } });
     const data = await r.json();

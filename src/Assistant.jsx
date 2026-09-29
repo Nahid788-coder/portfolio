@@ -19,6 +19,7 @@ function Assistant() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const sending = useRef(false); // blocks a second send before the first one finishes
   const [showHint, setShowHint] = useState(false);
   const bottomRef = useRef(null);
 
@@ -54,7 +55,8 @@ function Assistant() {
   };
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || sending.current) return;
+    sending.current = true;
     const userMsg = { role: 'user', content: input.trim() };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
@@ -80,6 +82,7 @@ function Assistant() {
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: `I can't connect right now. You can reach Nahid at doiznahidhusain1234@gmail.com.` }]);
     } finally {
+      sending.current = false;
       setLoading(false);
     }
   };
