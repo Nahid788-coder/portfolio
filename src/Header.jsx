@@ -16,8 +16,7 @@ function Header() {
     const hireRef = useMagnetic(0.3);
     const viewRef = useMagnetic(0.3);
 
-    // ~1.75 years (Jan 2025 - now): show 2 without a plus so it is not an overclaim
-    const [yearRef, yearVal] = useCounter(2, { suffix: '' });
+    const [yearRef, yearVal] = useCounter(2, { suffix: '+' });
     const [projRef, projVal] = useCounter(8, { suffix: '+' });
     const [techRef, techVal] = useCounter(5, { suffix: '+' });
 
