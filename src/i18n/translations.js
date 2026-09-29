@@ -32,14 +32,14 @@ export const translations = {
     about: {
       tag: 'About Me',
       titleParts: ['Crafting', 'Digital', 'Experiences'],
-      para1: "Hey! I'm Nahid — an enthusiastic Full Stack Developer who loves turning ideas into clean, functional web applications. I'm currently interning at Junkies Coder, where I work with React.js, Node.js, Next.js, SQL, and Flutter.",
+      para1: "Hey! I'm Nahid, a Full Stack Developer with close to 2 years of hands-on experience building web and mobile apps. I currently work as a Prompt Engineer at Junkies Coder, shipping full-stack features with React.js, Next.js, Node.js, TypeScript and Flutter, and bringing AI into real products.",
       para2: "What sets me apart is my honest approach — I believe in accurately representing my skills and continuously growing. I actively incorporate AI-assisted development and Prompt Engineering into my workflow to build smarter and faster.",
       downloadBtn: 'Download CV',
       cards: [
-        { icon: 'fa-graduation-cap', title: 'Education', desc: 'Computer Engineering student with a strong foundation in software development.' },
-        { icon: 'fa-briefcase', title: 'Experience', desc: 'Full Stack Developer Intern at Junkies Coder, building real-world applications.' },
+        { icon: 'fa-certificate', title: "Certification", desc: "Certified in Full Stack Development, and self-taught through real client projects." },
+        { icon: 'fa-briefcase', title: "Experience", desc: "Prompt Engineer at Junkies Coder. Before that, Full Stack Engineer at Xipra Technology, where I delivered 3 client apps." },
         { icon: 'fa-robot', title: 'AI Integration', desc: 'Leveraging AI & Prompt Engineering to accelerate development workflows.' },
-        { icon: 'fa-mobile-screen-button', title: 'Mobile Dev', desc: 'Building cross-platform mobile apps using Flutter framework.' },
+        { icon: 'fa-mobile-screen-button', title: 'Mobile Dev', desc: "Redesigned Giviz, a Flutter app live on Google Play, and built features for more Flutter apps." },
       ],
     },
     skill: {
@@ -127,14 +127,14 @@ export const translations = {
     about: {
       tag: 'Über mich',
       titleParts: ['Digitale', 'Erlebnisse', 'gestalten'],
-      para1: 'Hallo! Ich bin Nahid — ein begeisterter Full Stack Entwickler, der Ideen in saubere, funktionale Webanwendungen umwandelt. Derzeit absolviere ich ein Praktikum bei Junkies Coder und arbeite mit React.js, Node.js, Next.js, SQL und Flutter.',
+      para1: "Hallo! Ich bin Nahid, ein Full Stack Entwickler mit fast 2 Jahren praktischer Erfahrung in der Entwicklung von Web- und Mobile-Apps. Derzeit arbeite ich als Prompt Engineer bei Junkies Coder, entwickle Full-Stack-Features mit React.js, Next.js, Node.js, TypeScript und Flutter und bringe KI in echte Produkte.",
       para2: 'Was mich auszeichnet, ist mein ehrlicher Ansatz — ich glaube daran, meine Fähigkeiten korrekt darzustellen und mich kontinuierlich weiterzuentwickeln. Ich setze aktiv KI-gestützte Entwicklung und Prompt Engineering ein, um schneller und intelligenter zu arbeiten.',
       downloadBtn: 'Lebenslauf herunterladen',
       cards: [
-        { icon: 'fa-graduation-cap', title: 'Ausbildung', desc: 'Informatikstudent mit einer starken Grundlage in der Softwareentwicklung.' },
-        { icon: 'fa-briefcase', title: 'Erfahrung', desc: 'Full Stack Entwickler Praktikant bei Junkies Coder, entwickelt reale Anwendungen.' },
+        { icon: 'fa-certificate', title: "Zertifizierung", desc: "Zertifiziert in Full Stack Development und autodidaktisch durch echte Kundenprojekte gewachsen." },
+        { icon: 'fa-briefcase', title: "Erfahrung", desc: "Prompt Engineer bei Junkies Coder. Davor Full Stack Engineer bei Xipra Technology, wo ich 3 Kunden-Apps geliefert habe." },
         { icon: 'fa-robot', title: 'KI-Integration', desc: 'Einsatz von KI & Prompt Engineering zur Beschleunigung von Entwicklungsworkflows.' },
-        { icon: 'fa-mobile-screen-button', title: 'Mobile-Entwicklung', desc: 'Plattformübergreifende mobile Apps mit dem Flutter-Framework.' },
+        { icon: 'fa-mobile-screen-button', title: 'Mobile-Entwicklung', desc: "Redesign von Giviz, einer Flutter-App auf Google Play, und Features für weitere Flutter-Apps." },
       ],
     },
     skill: {
@@ -222,14 +222,14 @@ export const translations = {
     about: {
       tag: 'À propos',
       titleParts: ['Créer des', 'Expériences', 'Numériques'],
-      para1: "Bonjour ! Je suis Nahid — un développeur Full Stack enthousiaste qui aime transformer des idées en applications web propres et fonctionnelles. Je travaille actuellement chez Junkies Coder avec React.js, Node.js, Next.js, SQL et Flutter.",
+      para1: "Bonjour ! Je suis Nahid, développeur Full Stack avec près de 2 ans d'expérience pratique dans la création d'applications web et mobiles. Je travaille actuellement comme Prompt Engineer chez Junkies Coder, où je développe des fonctionnalités full-stack avec React.js, Next.js, Node.js, TypeScript et Flutter, et j'intègre l'IA dans de vrais produits.",
       para2: "Ce qui me distingue, c'est mon approche honnête — je crois en la représentation précise de mes compétences et en la croissance continue. J'intègre activement le développement assisté par IA dans mon flux de travail.",
       downloadBtn: 'Télécharger CV',
       cards: [
-        { icon: 'fa-graduation-cap', title: 'Formation', desc: 'Étudiant en ingénierie informatique avec une solide base en développement logiciel.' },
-        { icon: 'fa-briefcase', title: 'Expérience', desc: "Développeur Full Stack stagiaire chez Junkies Coder, construisant des applications réelles." },
+        { icon: 'fa-certificate', title: "Certification", desc: "Certifié en développement Full Stack, et autodidacte grâce à de vrais projets clients." },
+        { icon: 'fa-briefcase', title: "Expérience", desc: "Prompt Engineer chez Junkies Coder. Auparavant, Full Stack Engineer chez Xipra Technology, où j'ai livré 3 applications clients." },
         { icon: 'fa-robot', title: "Intégration IA", desc: "Utilisation de l'IA & du Prompt Engineering pour accélérer les workflows de développement." },
-        { icon: 'fa-mobile-screen-button', title: 'Dev Mobile', desc: 'Création d\'applications mobiles multiplateforme avec le framework Flutter.' },
+        { icon: 'fa-mobile-screen-button', title: 'Dev Mobile', desc: "Refonte de Giviz, une app Flutter disponible sur Google Play, et création de fonctionnalités pour d'autres apps Flutter." },
       ],
     },
     skill: {
@@ -317,14 +317,14 @@ export const translations = {
     about: {
       tag: 'Sobre mí',
       titleParts: ['Creando', 'Experiencias', 'Digitales'],
-      para1: '¡Hola! Soy Nahid — un entusiasta Desarrollador Full Stack que ama convertir ideas en aplicaciones web limpias y funcionales. Actualmente hago prácticas en Junkies Coder trabajando con React.js, Node.js, Next.js, SQL y Flutter.',
+      para1: "¡Hola! Soy Nahid, Desarrollador Full Stack con casi 2 años de experiencia práctica creando aplicaciones web y móviles. Actualmente trabajo como Prompt Engineer en Junkies Coder, desarrollando funcionalidades full-stack con React.js, Next.js, Node.js, TypeScript y Flutter, y llevando la IA a productos reales.",
       para2: 'Lo que me distingue es mi enfoque honesto — creo en representar con precisión mis habilidades y seguir creciendo. Incorporo activamente el desarrollo asistido por IA y el Prompt Engineering para trabajar de forma más inteligente y rápida.',
       downloadBtn: 'Descargar CV',
       cards: [
-        { icon: 'fa-graduation-cap', title: 'Educación', desc: 'Estudiante de Ingeniería Informática con una sólida base en desarrollo de software.' },
-        { icon: 'fa-briefcase', title: 'Experiencia', desc: 'Desarrollador Full Stack en prácticas en Junkies Coder, construyendo aplicaciones reales.' },
+        { icon: 'fa-certificate', title: "Certificación", desc: "Certificado en Desarrollo Full Stack y autodidacta gracias a proyectos reales con clientes." },
+        { icon: 'fa-briefcase', title: "Experiencia", desc: "Prompt Engineer en Junkies Coder. Antes, Full Stack Engineer en Xipra Technology, donde entregué 3 apps para clientes." },
         { icon: 'fa-robot', title: 'Integración IA', desc: 'Uso de IA & Prompt Engineering para acelerar los flujos de trabajo de desarrollo.' },
-        { icon: 'fa-mobile-screen-button', title: 'Dev Móvil', desc: 'Creación de apps móviles multiplataforma usando el framework Flutter.' },
+        { icon: 'fa-mobile-screen-button', title: 'Dev Móvil', desc: "Rediseñé Giviz, una app Flutter publicada en Google Play, y creé funciones para otras apps Flutter." },
       ],
     },
     skill: {
@@ -412,14 +412,14 @@ export const translations = {
     about: {
       tag: 'मेरे बारे में',
       titleParts: ['डिजिटल', 'अनुभव', 'बनाना'],
-      para1: 'नमस्ते! मैं नाहिद हूँ — एक उत्साही Full Stack Developer जो विचारों को स्वच्छ, कार्यशील वेब एप्लिकेशन में बदलना पसंद करता है। मैं वर्तमान में Junkies Coder में इंटर्न हूँ जहाँ मैं React.js, Node.js, Next.js, SQL और Flutter के साथ काम करता हूँ।',
+      para1: "नमस्ते! मैं नाहिद हूँ, एक Full Stack Developer, जिसके पास वेब और मोबाइल ऐप्स बनाने का लगभग 2 साल का व्यावहारिक अनुभव है। अभी मैं Junkies Coder में Prompt Engineer के रूप में काम करता हूँ, जहाँ मैं React.js, Next.js, Node.js, TypeScript और Flutter से full-stack फ़ीचर बनाता हूँ और असली प्रोडक्ट्स में AI जोड़ता हूँ।",
       para2: 'जो मुझे अलग बनाता है वह है मेरा ईमानदार दृष्टिकोण — मैं अपने कौशल को सटीक रूप से प्रस्तुत करने और लगातार बढ़ते रहने में विश्वास करता हूँ। मैं अपने workflow में AI-assisted development और Prompt Engineering को सक्रिय रूप से शामिल करता हूँ।',
       downloadBtn: 'CV डाउनलोड करें',
       cards: [
-        { icon: 'fa-graduation-cap', title: 'शिक्षा', desc: 'सॉफ्टवेयर डेवलपमेंट में मजबूत आधार के साथ कंप्यूटर इंजीनियरिंग छात्र।' },
-        { icon: 'fa-briefcase', title: 'अनुभव', desc: 'Junkies Coder में Full Stack Developer इंटर्न, वास्तविक एप्लिकेशन बना रहा हूँ।' },
+        { icon: 'fa-certificate', title: "सर्टिफ़िकेशन", desc: "Full Stack Development में सर्टिफ़ाइड, और असली क्लाइंट प्रोजेक्ट्स से खुद सीखा।" },
+        { icon: 'fa-briefcase', title: "अनुभव", desc: "Junkies Coder में Prompt Engineer। उससे पहले Xipra Technology में Full Stack Engineer, जहाँ 3 क्लाइंट ऐप्स डिलीवर किए।" },
         { icon: 'fa-robot', title: 'AI एकीकरण', desc: 'विकास workflows को गति देने के लिए AI & Prompt Engineering का उपयोग।' },
-        { icon: 'fa-mobile-screen-button', title: 'मोबाइल Dev', desc: 'Flutter framework का उपयोग करके क्रॉस-प्लेटफॉर्म मोबाइल ऐप्स बनाना।' },
+        { icon: 'fa-mobile-screen-button', title: 'मोबाइल Dev', desc: "Google Play पर लाइव Flutter ऐप Giviz को redesign किया, और दूसरे Flutter ऐप्स के लिए फ़ीचर बनाए।" },
       ],
     },
     skill: {
@@ -507,14 +507,14 @@ export const translations = {
     about: {
       tag: 'عني',
       titleParts: ['صياغة', 'تجارب', 'رقمية'],
-      para1: 'مرحباً! أنا ناهد — مطور Full Stack متحمس يحب تحويل الأفكار إلى تطبيقات ويب نظيفة وعملية. أعمل حالياً كمتدرب في Junkies Coder مع React.js و Node.js و Next.js و SQL و Flutter.',
+      para1: "مرحباً! أنا ناهد، مطور Full Stack بخبرة عملية تقارب سنتين في بناء تطبيقات الويب والموبايل. أعمل حالياً كـ Prompt Engineer في Junkies Coder، حيث أطوّر ميزات full-stack باستخدام React.js و Next.js و Node.js و TypeScript و Flutter، وأدمج الذكاء الاصطناعي في منتجات حقيقية.",
       para2: 'ما يميزني هو نهجي الصادق — أؤمن بتمثيل مهاراتي بدقة والنمو المستمر. أدمج بنشاط التطوير بمساعدة الذكاء الاصطناعي وهندسة الـ Prompt في سير عملي.',
       downloadBtn: 'تحميل السيرة الذاتية',
       cards: [
-        { icon: 'fa-graduation-cap', title: 'التعليم', desc: 'طالب هندسة حاسوبية بأساس قوي في تطوير البرمجيات.' },
-        { icon: 'fa-briefcase', title: 'الخبرة', desc: 'متدرب مطور Full Stack في Junkies Coder، يبني تطبيقات واقعية.' },
+        { icon: 'fa-certificate', title: "الشهادات", desc: "حاصل على شهادة في تطوير Full Stack، وتعلّمت ذاتياً من خلال مشاريع حقيقية للعملاء." },
+        { icon: 'fa-briefcase', title: "الخبرة", desc: "Prompt Engineer في Junkies Coder. وقبلها Full Stack Engineer في Xipra Technology حيث سلّمت 3 تطبيقات للعملاء." },
         { icon: 'fa-robot', title: 'تكامل الذكاء الاصطناعي', desc: 'الاستفادة من الذكاء الاصطناعي وهندسة الـ Prompt لتسريع سير عمل التطوير.' },
-        { icon: 'fa-mobile-screen-button', title: 'تطوير الموبايل', desc: 'بناء تطبيقات موبايل متعددة المنصات باستخدام إطار عمل Flutter.' },
+        { icon: 'fa-mobile-screen-button', title: 'تطوير الموبايل', desc: "أعدت تصميم Giviz، تطبيق Flutter متاح على Google Play، وبنيت ميزات لتطبيقات Flutter أخرى." },
       ],
     },
     skill: {
