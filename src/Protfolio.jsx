@@ -14,16 +14,16 @@ function Protfolio() {
     const BASE = 'https://nahid788-coder.github.io/live-designs';
     const projects = [
         {
-            image: '/image/github-explorer.png',
-            title: 'AI ChatBot',
+            image: '/image/aurora-chat.webp',
+            title: 'Aurora AI ChatBot',
             category: 'TypeScript',
             link: 'https://ai-chatbot-one-bice-57.vercel.app',
-            description: 'Multi-model AI chat app with 10+ free AI models (Groq, Gemini), Google login, email/phone auth, OTP verification, and full chat history saved to Supabase database.',
-            technologies: ['React', 'TypeScript', 'Supabase', 'Groq API', 'Gemini API'],
-            features: ['10+ AI Models', 'Google Login + OTP Auth', 'Chat History (Supabase)', 'Real-time Streaming'],
+            description: 'Multi-model AI chat app with 25+ live models (Groq, Gemini, OpenRouter), real-time streaming replies, Markdown and code blocks. API keys stay secure behind Vercel serverless functions; Supabase handles Google/OTP login and saved chat history.',
+            technologies: ['React', 'TypeScript', 'Supabase', 'Vercel Functions', 'Groq / Gemini API'],
+            features: ['25+ Live AI Models', 'Real-time Streaming', 'Secure Server-side API Keys', 'Searchable Chat History'],
         },
         {
-            image: '/image/ai-chatbot.png',
+            image: '/image/github-explorer.png',
             title: 'GitHub Explorer',
             category: 'TypeScript',
             link: 'https://github-explorer-ashen-two.vercel.app',
