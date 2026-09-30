@@ -20,7 +20,7 @@ function Footer() {
                             <a href="https://github.com/Nahid788-coder" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                 <i className="fa-brands fa-github"></i>
                             </a>
-                            <a href="https://www.linkedin.com/in/nahid-husain-doi-15160b1a9/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <a href="https://www.linkedin.com/in/nahid-doi/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                 <i className="fa-brands fa-linkedin-in"></i>
                             </a>
                             <a href="mailto:doiznahidhusain1234@gmail.com" aria-label="Email">
