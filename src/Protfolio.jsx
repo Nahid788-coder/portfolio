@@ -32,13 +32,13 @@ function Protfolio() {
             features: ['Pizza Customizer', 'Live Order Tracking', 'Secure Server Pricing', 'Admin Dashboard + Demo'],
         },
         {
-            image: '/image/github-explorer.png',
+            image: '/image/github-explorer.webp',
             title: 'GitHub Explorer',
             category: 'TypeScript',
             link: 'https://github-explorer-ashen-two.vercel.app',
-            description: 'GitHub profile explorer built with React + TypeScript. Search any GitHub user to view their profile, repositories, stars, languages, and activity stats in real-time.',
-            technologies: ['React', 'TypeScript', 'GitHub API', 'Vite'],
-            features: ['User Profile Search', 'Repository Explorer', 'Language Filter', 'Sort by Stars / Updated'],
+            description: 'Full-stack GitHub profile explorer: insights, language chart, activity timeline, repo details with README and commits, side-by-side compare and a downloadable dev card. Serverless API with MongoDB caching, so no request is made twice.',
+            technologies: ['React', 'TypeScript', 'Vercel Functions', 'MongoDB Atlas', 'GitHub OAuth'],
+            features: ['Compare Developers', 'GitHub Sign-in + Favorites', 'Downloadable Dev Card', 'Cached API, No Duplicate Calls'],
         },
         {
             image: '/image/organick.png',

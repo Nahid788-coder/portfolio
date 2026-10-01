@@ -24,7 +24,7 @@ Skills:
 
 Projects (all have live demos):
 1. Aurora AI ChatBot — Multi-model chat app with 25+ live models (Groq, Gemini, OpenRouter), real-time streaming, API keys secured in Vercel serverless functions, Supabase Google/OTP login and saved chat history, dark/light theme. Live: https://ai-chatbot-one-bice-57.vercel.app · Code: https://github.com/Nahid788-coder/ai-chatbot
-2. GitHub Explorer — Search any GitHub user, view repos, stats, languages. Built with React + TypeScript. Live: https://github-explorer-ashen-two.vercel.app
+2. GitHub Explorer — Full-stack GitHub profile explorer: insights, activity timeline, repo details, compare two developers, downloadable dev card, GitHub sign-in with saved favorites. React + TypeScript, Vercel serverless API with MongoDB caching. Live: https://github-explorer-ashen-two.vercel.app · Code: https://github.com/Nahid788-coder/github-explorer
 3. Harvest Co. — E-Commerce platform with Subscription Box Builder, React + Node + MongoDB. Live: https://nahid788-coder.github.io/live-designs/organick/
 4. Lyric Studio — Awwwards-tier creative agency with magnetic cursor, page transitions, CMS. Live: https://nahid788-coder.github.io/live-designs/andia/
 5. Catalyst Consulting — Financial advisory platform with live ROI calculator, booking system, blog CMS. Live: https://nahid788-coder.github.io/live-designs/babun/
