@@ -81,15 +81,15 @@ export default function LoaderN({ onReady }) {
     const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.5, bevelEnabled: true, bevelThickness: 0.09, bevelSize: 0.07, bevelSegments: 5, curveSegments: 4 });
     geo.center();
     const mat = new THREE.MeshPhysicalMaterial({
-      color: sc.glass, roughness: 0.05, transmission: 1, thickness: 0.9, ior: 1.33,
-      attenuationColor: new THREE.Color(sc.c3), attenuationDistance: 1.3,
-      clearcoat: 1, clearcoatRoughness: 0.04, iridescence: 0.4, iridescenceIOR: 1.25, envMapIntensity: 1.2,
+      color: '#ffffff', roughness: 0, transmission: 1, thickness: 0.6, ior: 1.33, dispersion: 0.35,
+      attenuationColor: new THREE.Color(sc.c3), attenuationDistance: 2.6,
+      clearcoat: 1, clearcoatRoughness: 0, iridescence: 0.4, iridescenceIOR: 1.25, envMapIntensity: 0.95,
     });
     const N = new THREE.Mesh(geo, mat);
     scene.add(N);
     const ring = new THREE.Mesh(
       new THREE.TorusGeometry(2.05, 0.05, 16, 180),
-      new THREE.MeshPhysicalMaterial({ color: sc.glass, roughness: 0.05, transmission: 1, thickness: 0.4, ior: 1.3, attenuationColor: new THREE.Color(sc.rim), attenuationDistance: 1.5, clearcoat: 1 })
+      new THREE.MeshPhysicalMaterial({ color: '#ffffff', roughness: 0, transmission: 1, thickness: 0.3, ior: 1.33, dispersion: 0.3, attenuationColor: new THREE.Color(sc.rim), attenuationDistance: 3, clearcoat: 1 })
     );
     scene.add(ring);
     const glint = new THREE.PointLight('#ffffff', 0, 6);

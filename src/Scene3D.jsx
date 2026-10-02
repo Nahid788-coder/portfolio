@@ -67,37 +67,52 @@ const backdropMaterial = (sc) =>
         col = mix(col, uC1, 0.55*pool(p, vec2(0.85, 0.45), 0.40));
         float grain = fract(sin(dot(vUv*vec2(1280.,720.)+uTime, vec2(12.9898,78.233)))*43758.5453);
         col += (grain-0.5)*0.018;
-        gl_FragColor = vec4(col,1.0);
+        // col is already what the screen should show. Hand three.js the linear value so the
+        // glass refracts the real colours (not a washed-out grey) and the screen still gets col.
+        gl_FragColor = linearToOutputTexel(vec4(pow(max(col, 0.0), vec3(2.2)), 1.0));
       }`,
     depthWrite: false,
+    toneMapped: false,
   });
 
 function glassMaterial({ sc, tint, liquid = false, mobile = false, thickness = 0.8, shell = false }) {
   if (shell) {
-    // looks like glass (reflections + tint) but skips the expensive refraction pass
-    return {
-      mat: new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(tint), metalness: 0, roughness: 0.08, transparent: true, opacity: 0.38,
-        clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.6, depthWrite: false,
-      }),
-      uniforms: null,
+    // a water droplet: almost invisible in the middle, bright at the rim (fresnel),
+    // without the expensive refraction pass
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#ffffff').lerp(new THREE.Color(tint), 0.35), metalness: 0, roughness: 0.02,
+      transparent: true, opacity: 1, clearcoat: 1, clearcoatRoughness: 0.02,
+      iridescence: mobile ? 0 : 0.6, iridescenceIOR: 1.3, envMapIntensity: 1.8, depthWrite: false,
+    });
+    mat.onBeforeCompile = (shader) => {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <opaque_fragment>',
+        `float fres = pow(1.0 - abs(dot(normalize(vViewPosition), normal)), 2.2);
+        diffuseColor.a = mix(0.05, 0.85, fres);
+        outgoingLight += fres * 0.22;
+        #include <opaque_fragment>`
+      );
     };
+    return { mat, uniforms: null };
   }
   const mat = new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color(sc.glass),
+    // clear like water: white body, a faint tint only where the glass is thick,
+    // water's refractive index and a little rainbow split at the edges
+    color: new THREE.Color('#ffffff'),
     metalness: 0,
-    roughness: 0.06,
+    roughness: 0.0,
     transmission: 1,
-    thickness: liquid ? 1.6 : thickness,
-    ior: 1.32,
+    thickness: liquid ? 1.1 : thickness * 0.6,
+    ior: 1.33,
+    dispersion: mobile ? 0 : 0.35,
     attenuationColor: new THREE.Color(tint),
-    attenuationDistance: liquid ? 2.4 : 1.8,
+    attenuationDistance: liquid ? 4.5 : 3.5,
     clearcoat: 1,
-    clearcoatRoughness: 0.04,
-    iridescence: liquid && !mobile ? 0.3 : 0,
+    clearcoatRoughness: 0.0,
+    iridescence: mobile ? 0 : liquid ? 0.35 : 0.2,
     iridescenceIOR: 1.25,
     specularIntensity: 1,
-    envMapIntensity: 1.15,
+    envMapIntensity: 0.9,
   });
   if (!liquid) return { mat, uniforms: null };
 
@@ -346,10 +361,10 @@ export default function Scene3D() {
     }
     let dpr = Math.min(window.devicePixelRatio, mobile ? 1 : 1.25);
     renderer.setPixelRatio(dpr);
-    renderer.transmissionResolutionScale = mobile ? 0.4 : 0.5;
+    renderer.transmissionResolutionScale = mobile ? 0.4 : 0.7;
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.NeutralToneMapping; // keeps colours seen through the glass true
+    renderer.toneMappingExposure = 1.0;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     mount.appendChild(renderer.domElement);
 
