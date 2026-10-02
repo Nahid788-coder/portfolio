@@ -41,13 +41,13 @@ function Protfolio() {
             features: ['Compare Developers', 'GitHub Sign-in + Favorites', 'Downloadable Dev Card', 'Cached API, No Duplicate Calls'],
         },
         {
-            image: '/image/organick.png',
+            image: '/image/harvest-co.webp',
             title: 'Harvest Co.',
             category: 'E-Commerce',
-            link: `${BASE}/organick/`,
-            description: 'Farm-to-table organic produce platform with a Subscription Box Builder — live pricing, size & frequency picker. Full-stack React + Node + MongoDB.',
-            technologies: ['React', 'Node.js', 'MongoDB', 'Framer Motion'],
-            features: ['Subscription Box Builder', 'Product Catalog', 'Recipes CMS', 'Admin Dashboard'],
+            link: 'https://agriculture-webflow-rust.vercel.app',
+            description: 'Full-stack organic grocery, live on Vercel: subscription boxes you can skip or pause, delivery slots by pincode, coupons, verified reviews, wishlist and stock that updates with every order. Prices are computed on the server (try the read-only Admin Demo).',
+            technologies: ['React', 'Node.js', 'Express', 'MongoDB Atlas', 'Vercel Functions'],
+            features: ['Subscription Box Builder', 'Delivery Slots + Coupons', 'Verified Reviews + Wishlist', 'Admin Console + Demo'],
         },
         {
             image: '/image/andia.png',
